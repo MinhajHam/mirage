@@ -1,0 +1,52 @@
+<div class="form-outline mb-4">
+    <h6>
+      Please enter the OTP to that send to your email address
+      <a href="#" style="color: #88742b; text-decoration: none;" data-toggle="collapse" data-target="#demo" title="Hooray!">ⓘ</a>
+    </h6>
+    <div id="demo" class="collapse">
+      Kindly provide us with your registered email address. We will promptly send a One-Time Password (OTP) to your email, allowing you to verify your identity and proceed with the process. Your security and privacy are of at most importance to us, and this additional verification step ensures more security. Thank you for your cooperation.
+    </div>
+    <input type="hidden" name="email" value="<%= email %>">
+    <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+      <input
+        class="m-2 text-center form-control rounded"
+        type="text"
+        id="first"
+        maxlength="1"
+      />
+      <input
+        class="m-2 text-center form-control rounded"
+        type="text"
+        id="second"
+        maxlength="1"
+      />
+      <input
+        class="m-2 text-center form-control rounded"
+        type="text"
+        id="third"
+        maxlength="1"
+      />
+      <input
+        class="m-2 text-center form-control rounded"
+        type="text"
+        id="fourth"
+        maxlength="1"
+      />
+      <input
+        class="m-2 text-center form-control rounded"
+        type="text"
+        id="fifth"
+        maxlength="1"
+      />
+      <input
+        class="m-2 text-center form-control rounded"
+        type="text"
+        id="sixth"
+        maxlength="1"
+      />
+    </div>
+    <input type="hidden" id="otpInput" name="otp" />
+    <label class="form-label" for="form3Example3">One Time Password</label>
+  </div>
+  <button type="submit" class="login-square btn btn-primary btn-lg mb-4">Verify</button>
+  

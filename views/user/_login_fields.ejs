@@ -1,0 +1,30 @@
+
+<div class="form-outline mb-4">
+    <input type="email" id="form3Example3" class="form-control" name="email" />
+    <label class="form-label" for="form3Example3">Email address</label>
+  </div>
+
+  <div class="form-outline mb-4 form-group">
+    <input type="password" id="form3Example4" class="form-control" name="password" />
+    <label for="form3Example4">Password</label>
+  <div class="forgot-password">
+    <a href="/login/forgot_pass" style="color: #17361b; text-decoration: none;">Forgot password?</a>
+  </div>
+</div>
+
+  
+  <button type="submit" class=" login-square bttn bttn-pri btn-block mb-4">Login</button>
+</form>
+
+<div class="form-check d-flex justify-content-center mb-4">
+  <% if (messages.error) { %>
+    <div class="error-message">
+      <%= messages.error[0] %>
+    </div>
+  <% } %>
+  
+  <label class="form-check-label" for="form2Example3">
+    Don't have an account? <a href="/signup"  style="color: #88742b; text-decoration: none;">Signup</a>
+  </label>
+</div>
+
