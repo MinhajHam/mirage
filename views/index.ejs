@@ -1,11 +1,42 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+
+
+  <style>
+    /* Additional styles */
+    .center-vertical {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20vh; 
+    }
+    .dual-vertical {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50vh; /* 80% of the viewport height */
+      }
+  </style>
+  
+  <div class="container">
+    <div class="row justify-content-center">
+      <a href="/women" class="col-5 bg-light dual-vertical mr-3 text-center">
+        <div style="font-size: 2em;">WOMEN</div>
+      </a>
+      <a href="/men" class="col-5 bg-light dual-vertical ml-3 text-center">
+        <div style="font-size: 2em;">MEN</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <a href="/kids" class="col-10 bg-light center-vertical text-center" style="font-size: 2em;">
+        KIDS
+      </a>
+    </div>
+  </div>
+
+
+
+
+
+
