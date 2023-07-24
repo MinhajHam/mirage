@@ -1,0 +1,340 @@
+
+
+<%- include('../temp_parts/layout_head.ejs') %>
+
+  <body>
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      
+      <%- include('../temp_parts/side_bar.ejs') %>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        
+        <%- include('../temp_parts/nav_head.ejs') %>
+
+
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <!-- newnewnenwenwnenwnenwnewnenwen -->
+
+
+              <div class="container mt-5">
+                <h1>Mens Page Banner Image Upload</h1>
+            
+                <!-- Main Image Upload -->
+                <form action="/admin/men-main-image" method="POST">
+                <div class="form-row">
+            
+                <div class="form-item form-item-no-grow">
+                    <label for="mainImage" class="form-label">Main Image</label>
+                    <input type="file" class="filepond book-cover" id="mainImage" name="mainImage" accept="image/*" >
+                </div>
+            
+                <div class="form-item">
+                    <label>Link</label>
+                    <input type="text" name="link1" min="1" /> <br><br>
+                    <label>Text 1</label>
+                    <input type="text" name="text1" min="1" />
+                  </div> 
+            
+            </div>
+            <button type="submit" class="bttn bttn-info">Upload Images</button>
+        </form><br><br>
+
+            
+                <!-- Main Topic Image Upload -->
+            
+                <div class="form-row">
+                
+                    <div class="form-item form-item-no-grow">
+                        <label for="mainTopicImage" class="form-label">Main Topic Image 1</label>
+                        <input type="file" class="filepond book-cover" id="mainTopicImage" name="mainTopicImage" accept="image/*" >
+                    </div>
+            
+                    <div class="form-item">
+                        <label>link 1</label>
+                        <input type="text" name="link1" min="1" /> <br><br>
+                        <label>Text 1</label>
+                        <input type="text" name="text1" min="1" />
+                      </div>
+            
+                    <div class="form-item form-item-no-grow">
+                        <label for="mainTopicImage" class="form-label">Main Topic Image 2</label>
+                        <input type="file" class="filepond book-cover" id="mainTopicImage" name="mainTopicImage" accept="image/*" >
+                    </div>
+                
+                    <div class="form-item">
+                        <label>link 2</label>
+                        <input type="text" name="link2" min="1" /> <br><br>
+                        <label>Text 2</label>
+                        <input type="text" name="text2" min="1" />
+                    </div>
+
+                    
+                </div>
+                
+            
+                <!-- Topic Images Upload -->
+                <div class="form-row">
+                <div class="form-item form-item-no-grow">
+                    <label for="topicImages" class="form-label">Topic Images 1</label>
+                    <input type="file" class="filepond book-cover" id="topicImages" name="topicImages" accept="image/*" >
+                </div>
+
+                <div class="form-item">
+                    <label>link 1</label>
+                    <input type="text" name="link1" min="1" /> <br><br>
+                    <label>Text 1</label>
+                    <input type="text" name="text1" min="1" />
+                </div>
+
+                <div class="form-item form-item-no-grow">
+                    <label for="topicImages" class="form-label">Topic Images 2</label>
+                    <input type="file" class="filepond book-cover" id="topicImages" name="topicImages" accept="image/*" >
+                </div>
+
+                <div class="form-item">
+                    <label>link 2</label>
+                    <input type="text" name="link2" min="1" /> <br><br>
+                    <label>Text 2</label>
+                    <input type="text" name="text2" min="1" />
+                </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-item form-item-no-grow">
+                        <label for="topicImages" class="form-label">Topic Images 3</label>
+                        <input type="file" class="filepond book-cover" id="topicImages" name="topicImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 3</label>
+                        <input type="text" name="link3" min="1" /> <br><br>
+                        <label>Text 3</label>
+                        <input type="text" name="text3" min="1" />
+                    </div>
+    
+                    <div class="form-item form-item-no-grow">
+                        <label for="topicImages" class="form-label">Topic Images 4</label>
+                        <input type="file" class="filepond book-cover" id="topicImages" name="topicImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 4</label>
+                        <input type="text" name="link4" min="1" /> <br><br>
+                        <label>Text 4</label>
+                        <input type="text" name="text4" min="1" />
+                    </div>
+    
+                    </div>
+            
+                <!-- New Arrivals Images Upload -->
+                <div class="form-row">
+                <div class="form-item form-item-no-grow">
+                    <label for="newArrivalsImages" class="form-label">New Arrivals Images 1</label>
+                    <input type="file" class="filepond book-cover" id="newArrivalsImages" name="newArrivalsImages" accept="image/*" >
+                </div>
+
+                <div class="form-item">
+                    <label>link 1</label>
+                    <input type="text" name="link1" min="1" /> <br><br>
+                    <label>Text 1</label>
+                    <input type="text" name="text1" min="1" />
+                </div>
+
+                <div class="form-item form-item-no-grow">
+                    <label for="newArrivalsImages" class="form-label">New Arrivals Images 2</label>
+                    <input type="file" class="filepond book-cover" id="newArrivalsImages" name="newArrivalsImages" accept="image/*" >
+                </div>
+
+                <div class="form-item">
+                    <label>link 2</label>
+                    <input type="text" name="link2" min="1" /> <br><br>
+                    <label>Text 2</label>
+                    <input type="text" name="text2" min="1" />
+                </div>
+
+                </div>
+
+                <!-- Clothing Images Upload -->
+                <div class="form-row">
+                    <div class="form-item form-item-no-grow">
+                        <label for="clothingImages" class="form-label">Clothing Images 1</label>
+                        <input type="file" class="filepond book-cover" id="clothingImages" name="clothingImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 1</label>
+                        <input type="text" name="link1" min="1" /> <br><br>
+                        <label>Text 1</label>
+                        <input type="text" name="text1" min="1" />
+                    </div>
+    
+                    <div class="form-item form-item-no-grow">
+                        <label for="clothingImages" class="form-label">Clothing Images 2</label>
+                        <input type="file" class="filepond book-cover" id="clothingImages" name="clothingImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 2</label>
+                        <input type="text" name="link2" min="1" /> <br><br>
+                        <label>Text 2</label>
+                        <input type="text" name="text2" min="1" />
+                    </div>
+                    </div>
+            
+                <!-- Shoes Images Upload -->
+                <div class="form-row">
+                <div class="form-item form-item-no-grow">
+                    <label for="shoesImages" class="form-label">Shoes Images 1</label>
+                    <input type="file" class="filepond book-cover" id="shoesImages" name="shoesImages" accept="image/*" >
+                </div>
+
+                <div class="form-item">
+                    <label>link 1</label>
+                    <input type="text" name="link1" min="1" /> <br><br>
+                    <label>Text 1</label>
+                    <input type="text" name="text1" min="1" />
+                </div>
+
+                <div class="form-item form-item-no-grow">
+                    <label for="shoesImages" class="form-label">Shoes Images 2</label>
+                    <input type="file" class="filepond book-cover" id="shoesImages" name="shoesImages" accept="image/*" >
+                </div>
+
+                <div class="form-item">
+                    <label>link 2</label>
+                    <input type="text" name="link2" min="1" /> <br><br>
+                    <label>Text 2</label>
+                    <input type="text" name="text2" min="1" />
+                </div>
+                </div>
+            
+                
+            
+                <!-- Bags Images Upload -->
+                <div class="form-row">
+                    <div class="form-item form-item-no-grow">
+                        <label for="bagsImages" class="form-label">Bags Images 1</label>
+                        <input type="file" class="filepond book-cover" id="bagsImages" name="bagsImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 1</label>
+                        <input type="text" name="link1" min="1" /> <br><br>
+                        <label>Text 1</label>
+                        <input type="text" name="text1" min="1" />
+                    </div>
+    
+                    <div class="form-item form-item-no-grow">
+                        <label for="bagsImages" class="form-label">Bags Images 2</label>
+                        <input type="file" class="filepond book-cover" id="bagsImages" name="bagsImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 2</label>
+                        <input type="text" name="link2" min="1" /> <br><br>
+                        <label>Text 2</label>
+                        <input type="text" name="text2" min="1" />
+                    </div>
+                    </div>
+
+
+                    <!-- Accessories Images Upload -->
+                    <div class="form-row">
+                    <div class="form-item form-item-no-grow">
+                        <label for="accessoriesImages" class="form-label">Accessories Images 1</label>
+                        <input type="file" class="filepond book-cover" id="accessoriesImages" name="accessoriesImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 1</label>
+                        <input type="text" name="link1" min="1" /> <br><br>
+                        <label>Text 1</label>
+                        <input type="text" name="text1" min="1" />
+                    </div>
+    
+                    <div class="form-item form-item-no-grow">
+                        <label for="accessoriesImages" class="form-label">Accessories Images 2</label>
+                        <input type="file" class="filepond book-cover" id="accessoriesImages" name="accessoriesImages" accept="image/*" >
+                    </div>
+    
+                    <div class="form-item">
+                        <label>link 2</label>
+                        <input type="text" name="link2" min="1" /> <br><br>
+                        <label>Text 2</label>
+                        <input type="text" name="text2" min="1" />
+                    </div>
+                    </div>
+
+                    <!-- Jewelry Images Upload -->
+                    <div class="form-row">
+                        <div class="form-item form-item-no-grow">
+                            <label for="jewelryImages" class="form-label">Jewelry Images 1</label>
+                            <input type="file" class="filepond book-cover" id="jewelryImages" name="jewelryImages" accept="image/*" >
+                        </div>
+        
+                        <div class="form-item">
+                            <label>link 1</label>
+                            <input type="text" name="link1" min="1" /> <br><br>
+                            <label>Text 1</label>
+                            <input type="text" name="text1" min="1" />
+                        </div>
+        
+                        <div class="form-item form-item-no-grow">
+                            <label for="jewelryImages" class="form-label">Jewelry Images 2</label>
+                            <input type="file" class="filepond book-cover" id="jewelryImages" name="jewelryImages" accept="image/*" >
+                        </div>
+        
+                        <div class="form-item">
+                            <label>link 2</label>
+                            <input type="text" name="link2" min="1" /> <br><br>
+                            <label>Text 2</label>
+                            <input type="text" name="text2" min="1" />
+                        </div>
+                        </div>
+
+                        <!-- Sale Images Upload -->
+                    <div class="form-row">
+                        <div class="form-item form-item-no-grow">
+                            <label for="saleImages" class="form-label">Sale Images 1</label>
+                            <input type="file" class="filepond book-cover" id="saleImages" name="saleImages" accept="image/*" >
+                        </div>
+        
+                        <div class="form-item">
+                            <label>link 1</label>
+                            <input type="text" name="link1" min="1" /> <br><br>
+                            <label>Text 1</label>
+                            <input type="text" name="text1" min="1" />
+                        </div>
+        
+                        <div class="form-item form-item-no-grow">
+                            <label for="saleImages" class="form-label">Sale Images 2</label>
+                            <input type="file" class="filepond book-cover" id="saleImages" name="saleImages" accept="image/*" >
+                        </div>
+        
+                        <div class="form-item">
+                            <label>link 2</label>
+                            <input type="text" name="link2" min="1" /> <br><br>
+                            <label>Text 2</label>
+                            <input type="text" name="text2" min="1" />
+                        </div>
+                        </div>
+            
+                <!-- Submit Button -->
+                <button type="submit" class="bttn bttn-info">Upload Images</button>
+            </div>
+            
+
+
+              <!-- newnewnenwenwnenwnenwnewnenwen -->
+
+             
+              <%- include('../temp_parts/layout_footer.ejs') %>
