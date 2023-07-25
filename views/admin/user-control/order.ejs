@@ -1,0 +1,51 @@
+<%- include('../temp_parts/layout_head.ejs') %>
+
+  <body>
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      
+      <%- include('../temp_parts/side_bar.ejs') %>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        <%- include('../temp_parts/nav_head.ejs') %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+             
+            </div>
+
+
+            <h2 class="page-header">Search Order</h2>
+            <form action="/admin/user-control/order" method="GET">
+              <div class="form-row">
+                <div class="form-item">
+                  <label>Name</label>
+                  <input type="text" name="fname" value="<%= searchOptions.fname %>">
+                </div>
+              </div>
+              <div class="form-row form-row-end">
+                <button class="bttn bttn-pri" type="submit">Search</button>
+              </div>
+            </form>
+            <br>
+            <% orders.forEach(order => { %>
+              <div class="author-row">
+                <div class="author-name"><%= order.shippingAddress.fname %></div>
+                <div class="author-name"><%= order.status %></div>
+                <div class="author-name"><%= order.shippingAddress.country %></div>
+                <div class="bttn-row">
+            
+                  <a class="bttn bttn-info" href="/admin/user-control/order/<%= order.id %>/view">View</a>
+                </div>
+              </div>
+            <% }) %>
+            
+          
+
+          
+            <%- include('../temp_parts/layout_footer.ejs') %>
