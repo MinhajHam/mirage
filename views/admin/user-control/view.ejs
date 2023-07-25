@@ -1,0 +1,128 @@
+<%- include('../temp_parts/layout_head.ejs') %>
+
+  <body>
+    <div class="container-scroller">
+    
+      <!-- partial:partials/_sidebar.html -->
+      
+      <%- include('../temp_parts/side_bar.ejs') %>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        <%- include('../temp_parts/nav_head.ejs') %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <!-- newnewnenwenwnenwnenwnewnenwen -->
+
+
+
+
+              <div class="book-details-grid">
+
+                <div class="book-details-label">Name:</div>
+                <div><%= order.shippingAddress.fname %> <%= order.shippingAddress.lname %></div>
+                <div class="book-details-label">Shipping Address:</div>
+                <div><%= order.shippingAddress.street %></div> <br>
+                <div><%= order.shippingAddress.city %> <%= order.shippingAddress.country %></div> <br>
+                <div><%= order.shippingAddress.postcode %></div><br>
+                <div><%=  %></div>
+                <div class="book-details-label">Phone No:</div>
+                <div><%= order.shippingAddress.phone %></div>
+                <div class="book-details-label">Cart Items:</div>
+              </div>
+                
+            <br>
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">○</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Size</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Total*</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% order.cart.items.forEach(item => { %>
+            
+                  
+                  <tr>
+                    <th scope="row">○</th>
+                    <td><%= item.product.name %></td>
+                    <td><%= item.size %></td>
+                    <td><%= item.quantity %></td>
+                    <td><%= item.product.price %></td>
+                    <td><%= item.subtotal %></td>
+                  </tr>
+            
+            
+                <% }) %>
+                
+              </tbody>
+              </table>
+            
+              <form action="/admin/user-control/order/<%= id %>/edit" method="POST">
+            
+            
+                <div class="form-row">
+                    <div class="form-item">
+                        <label>add a note</label>
+                        <textarea name="message"><%= order.message %></textarea>
+                      </div>
+                    </div>
+            
+                <div class="form-row">
+                      <div class="form-item">
+                        
+            
+                          <label class="custom-checkbox">
+                            <input type="radio" name="status" value="Placed">
+                            <span>Placed</span>
+                          </label>
+                        </div>
+                    
+                          <div class="form-item">
+                          <label class="custom-checkbox">
+                            <input type="radio" name="status" value="OD">
+                            <span>OFD</span>
+                          </label>
+                        </div>
+                    
+                          <div class="form-item">
+                          <label class="custom-checkbox">
+                            <input type="radio" name="status" value="Delivered">
+                            <span>Delivered</span>
+                          </label>
+                        </div>
+            
+                          <div class="form-item">
+                          <label class="custom-checkbox">
+                            <input type="radio" name="status" value="Cancelled">
+                            <span>Cancelled</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+            
+                </div>
+                <div class="form-row form-row-end btn-row">
+                  <a class="btn btn-danger" href="/admin/product-control/orders">Cancel</a>
+                  <button class="btn btn-primary" type="submit">update</button>
+                </div>
+              </form>
+            
+            
+            
+
+
+
+
+
+              <!-- newnewnenwenwnenwnenwnewnenwen -->
+
+              <%- include('../temp_parts/layout_footer.ejs') %>
