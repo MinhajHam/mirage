@@ -1,0 +1,56 @@
+<%- include('../temp_parts/layout_head.ejs') %>
+
+  <body>
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      
+
+
+      <%- include('../temp_parts/side_bar.ejs') %>
+
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        <%- include('../temp_parts/nav_head.ejs') %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+             
+            </div>
+
+
+
+            <h2 class="page-header">Search User</h2>
+<form action="/admin/user-control/user" method="GET">
+  <div class="form-row">
+    <div class="form-item">
+      <label>Name</label>
+      <input type="text" name="fname" value="<%= searchOptions.fname %>">
+    </div>
+  </div>
+  <div class="form-row form-row-end">
+    <button class="bttn bttn-pri" type="submit">Search</button>
+  </div>
+</form>
+<br>
+<% users.forEach(user => { %>
+  <div class="author-row">
+    <div class="author-name"><%= user.fname %></div>
+    <div class="author-name"><%= user.status %></div>
+    <div class="btn-row">
+      <form method="POST" action="/admin/user-control/user/<%= user.id %>/block?_method=PUT">
+        <% if(user.status === 'Active') { %>
+        <button class="bttn bttn-dan" type="submit">Block</button>
+          <% }else{ %>
+        <button class="bttn bttn-Info" style="background-color: rgb(139, 8, 8); color: white;" type="submit">Unblock</button>
+        <% } %>
+      </form>
+    </div>
+  </div>
+<% }) %>
+
+<%- include('../temp_parts/layout_footer.ejs') %>
