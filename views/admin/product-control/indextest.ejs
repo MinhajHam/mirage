@@ -1,0 +1,156 @@
+<%- include('../temp_parts/layout_head.ejs') %>
+
+  <body>
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      <%- include('../temp_parts/side_bar.ejs') %>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        <%- include('../temp_parts/nav_head.ejs') %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            
+            <div class="row">
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <a href="/admin/product-control/new">
+                  <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+                          <h3 class="mb-0">New Product</h3>
+                        </div>
+                  </div>
+                </a>
+                </div>
+              </div>
+
+
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <a href="/admin/product-control/add">
+                  <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+                          <h3 class="mb-0">New Category</h3>
+                        </div>
+                  </div>
+                </a>
+                </div>
+              </div>
+
+             <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <a href="/admin/product-control/inventory">
+                  <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+                          <h3 class="mb-0">INVENTORY</h3>
+                        </div>
+                  </div>
+                </a>
+                </div>
+              </div>
+
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <a href="/admin/product-control/coupon">
+                  <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+                          <h3 class="mb-0">Coupon</h3>
+                        </div>
+                  </div>
+                </a>
+                </div>
+              </div>
+              
+            </div>
+            
+           
+
+
+
+
+            <div class="container">
+              <div class="row">
+                
+                  
+                  <br>
+                    <h2>PRODUCT-CONTROLLER</h2>
+                    <div>
+            
+            <br>
+            
+            <h2 class="page-header">Search Products</h2>
+            
+            <form action="/admin/product-control" method="GET">
+              <label for="color">Select color:</label>
+              <select name="color" id="color">
+                <option value="">All Colors</option>
+                <% colors.forEach(color => { %>
+                  <% if (color.name === selectedColor) { %>
+                    <option selected value="<%= color.name %>"><%= color.name %></option>
+                  <% } else { %>
+                    <option value="<%= color.name %>"><%= color.name %></option>
+                  <% } %>
+                <% }) %>
+              </select>
+              
+              <label for="brand">Select brand:</label>
+              <select name="brand" id="brand">
+                <option value="">All Brands</option>
+                <% brands.forEach(brand => { %>
+                  <% if (brand._id.toString() === selectedBrand) { %>
+                    <option selected value="<%= brand._id %>"><%= brand.name %></option>
+                  <% } else { %>
+                    <option value="<%= brand._id %>"><%= brand.name %></option>
+                  <% } %>
+                <% }) %>
+              </select>
+              
+              <button type="submit">Apply Filter</button>
+            </form>
+            
+            <br>
+            <%- include('productGrid', { products: products, large: true }) %>
+            <br>
+            
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <% if (currentPage > 1) { %>
+                  <a class="bttn  <%= currentPage === 1 ? 'disabled' : '' %>" href="?page=1&color=<%= selectedColor %>" tabindex="-1">First</a>
+                  <a class="bttn " href="?page=<%= currentPage - 1 %>&color=<%= selectedColor %>">Previous</a>
+                <% } %>
+                
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                  <% if (i === parseInt(currentPage)) { %>
+                    <button class="bttn  active" href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></button>
+                  <% } else { %>
+                    <a class="bttn " href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></a>
+                  <% } %>
+                <% } %>
+                
+                <% if (currentPage < totalPages) { %>
+                  <a class="bttn " href="?page=<%= currentPage + 1 %>&color=<%= selectedColor %>">Next</a>
+                  <a class="bttn  <%= currentPage === totalPages ? 'disabled' : '' %>" href="?page=<%= totalPages %>&color=<%= selectedColor %>">Last</a>
+                <% } %>
+              </ul>
+            </nav>
+            
+            <!-- Your custom styles here -->
+            <style>
+              .pagination .bttn.active {
+                background-color: rgb(194, 214, 205) !important;
+                border-color: rgb(0, 0, 0) !important;
+                color: rgb(0, 0, 0) !important;
+              }
+            </style>
+             
+            
+                    </div>
+
+                  </div>  
+                  
+                  
+                  <%- include('../temp_parts/layout_footer.ejs') %>
