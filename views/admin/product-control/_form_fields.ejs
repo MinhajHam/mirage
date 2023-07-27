@@ -1,0 +1,191 @@
+<div class="form-row">
+  <div class="form-item">
+    <label>Product Name</label>
+    <input type="text" name="name" value="<%= product.name %>" />
+  </div>
+  <div class="form-item">
+    <label>Brand</label>
+    <select name="brand">
+      <% brands.forEach(brand => { %> <% if (brand.id === product.brand) { %>
+      <option selected label="<%= brand.name %>" value="<%= brand.id %>">
+        <% } else { %>
+      </option>
+
+      <option label="<%= brand.name %>" value="<%= brand.id %>">
+        <% } %> <% }) %>
+      </option>
+    </select>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-item">
+    <label>Gender</label>
+
+    <select id="gender" name="gender">
+      <option value="unisex">Unisex</option>
+      <option value="men">Men</option>
+      <option value="women">Women</option>
+      <option value="boy">boy</option>
+      <option value="girl">girl</option>
+    </select>
+  </div>
+
+
+  <div class="form-item">
+    <label>Category</label>
+
+    <select id="category" name="category">
+      <option value="clothings">clothings</option>
+      <option value="shoes">shoes</option>
+      <option value="bags">bags</option>
+      <option value="accessories">accessories</option>
+      <option value="jewelry">jewelry</option>
+    </select>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-item">
+    <label>Size</label>
+
+    <div class="checkbox-container">
+      <label class="custom-checkbox">
+        <input type="checkbox" name="sizes" value="XS">
+        <span>XS</span>
+      </label>
+      <input type="number" name="stock" placeholder="Stock Count" min="0" >
+
+      <label class="custom-checkbox">
+        <input type="checkbox" name="sizes" value="S">
+        <span>S</span>
+      </label>
+      <input type="number" name="stock" placeholder="Stock Count" min="0">
+
+      <label class="custom-checkbox">
+        <input type="checkbox" name="sizes" value="M">
+        <span>M</span>
+      </label>
+      <input type="number" name="stock" placeholder="Stock Count" min="0">
+    </div>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-item">
+    <div class="checkbox-container">
+      <label class="custom-checkbox">
+        <input type="checkbox" name="sizes" value="L">
+        <span>L</span>
+      </label>
+      <input type="number" name="stock" placeholder="Stock Count" min="0">
+
+      <label class="custom-checkbox">
+        <input type="checkbox" name="sizes" value="XL">
+        <span>XL</span>
+      </label>
+      <input type="number" name="stock" placeholder="Stock Count" min="0">
+
+      <label class="custom-checkbox">
+        <input type="checkbox" name="sizes" value="XXL">
+        <span>XXL</span>
+      </label>
+      <input type="number" name="stock" placeholder="Stock Count" min="0">
+    </div>
+  </div>
+</div>
+
+
+<div class="form-row">
+
+  <div class="form-item">
+    <label>Sub Category</label>
+    <input
+      type="text"
+      name="subCategory"
+      value="<%= product.subCategory %>"
+    />
+  </div>
+
+    <!-- Automatically calculated totalStock based on stock counts for each size -->
+    
+
+  <div class="form-item">
+    <label>Color</label>
+    <select name="color">
+      <% colors.forEach(color => { %> <% if (color.id === product.color) { %>
+      <option selected label="<%= color.name %>" value="<%= color.name %>">
+        <% } else { %>
+      </option>
+
+      <option label="<%= color.name %>" value="<%= color.name %>">
+        <% } %> <% }) %>
+      </option>
+    </select>
+  </div>
+</div>
+
+<div class="form-row">
+
+  <div class="form-item">
+    <label>Price</label>
+    <input type="number" name="price" min="1" value="<%= product.price %>" />
+  </div>
+
+  <div class="form-item">
+    <label>Discount</label>
+    <input
+      type="number"
+      name="discount"
+      min="0"
+      value="<%= product.discount %>"
+    />
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-item">
+    <label>Description</label>
+    <textarea name="description"><%= product.description %></textarea>
+  </div>
+</div>
+
+
+
+<div class="form-row">
+
+  <div class="form-item form-item-no-grow">
+    <label>Main Cover</label>
+    <input type="file" name="cover" class="book-cover filepond" />
+  </div>
+
+  <div class="form-item form-item-no-grow">
+    <label>Cover 2</label>
+    <input type="file" name="cover" class="book-cover filepond" />
+  </div>
+  <div class="form-item form-item-no-grow">
+    <label>Cover 3</label>
+    <input type="file" name="cover" class="book-cover filepond" />
+  </div>
+
+  <div class="form-item form-item-no-grow">
+    <label>Cover 4</label>
+    <input type="file" name="cover" class="book-cover filepond" />
+  </div>
+
+  <div class="form-item form-item-no-grow">
+    <label>Cover 5</label>
+    <input type="file" name="cover" class="book-cover filepond" />
+  </div>
+  
+</div>
+
+
+
+
+
+
+
+<label for="totalStock"></label>
+    <input type="hidden" id="totalStock" name="totalStock" readonly>
+    
