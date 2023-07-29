@@ -1,0 +1,80 @@
+<%- include('../temp_parts/layout_head.ejs') %>
+
+  <body>
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      
+      <%- include('../temp_parts/side_bar.ejs') %>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        
+        <%- include('../temp_parts/nav_head.ejs') %>
+
+
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <!-- newnewnenwenwnenwnenwnewnenwen -->
+
+
+
+
+              <h2 class="page-header">New Product</h2>
+              <form action="/admin/product-control" method="POST">
+                <%- include('_form_fields', { sizes: sizes }) %>
+                <div class="form-row form-row-end btn-row">
+                  <a class="btn btn-danger" href="/admin/product-control">Cancel</a>
+                  <button class="btn btn-primary" type="submit">Create</button>
+                </div>
+              </form>
+              
+              
+              <script>
+                // Function to update the totalStock based on stock counts for each size
+                function updateTotalStock() {
+                  const stockCounts = document.querySelectorAll('[name^="stockCount_"]');
+                  let totalStock = 0;
+              
+                  stockCounts.forEach(stockCountInput => {
+                    totalStock += parseInt(stockCountInput.value) || 0;
+                  });
+              
+                  document.getElementById('totalStock').value = totalStock;
+                }
+              
+                // Event listener to update totalStock when stock counts change
+                document.querySelectorAll('[name^="stockCount_"]').forEach(input => {
+                  input.addEventListener('change', updateTotalStock);
+                });
+              </script>
+              
+              <script>
+                // JavaScript to enable/disable the stock count input fields based on checkbox selections
+                const checkboxes = document.querySelectorAll('input[name="size"]');
+                const stockCountInputs = document.querySelectorAll('input[name^="stockCount_"]');
+              
+                checkboxes.forEach(checkbox => {
+                  checkbox.addEventListener('change', () => {
+                    const size = checkbox.value;
+                    const stockCountInput = document.querySelector(`input[name="stockCount_${size}"]`);
+                    stockCountInput.disabled = !checkbox.checked;
+                  });
+                });
+              </script>
+              
+              
+
+
+
+
+
+
+              <!-- newnewnenwenwnenwnenwnewnenwen -->
+
+             
+              <%- include('../temp_parts/layout_footer.ejs') %>
