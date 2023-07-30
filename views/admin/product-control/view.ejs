@@ -1,0 +1,68 @@
+<h2 class="page-header"><%= product.brand.name %></h2>
+<div class="book-details">
+    <div class="hover-pinch-zoom-img" style="width: 30vw; height: 70vh">
+        <img class="mob book-cover" src="<%= product.coverImagePath %>" />
+      </div>
+
+  <div class="book-details-grid">
+
+    <div class="book-details-label">Name:</div>
+    <div><%= product.name %></div>
+    <div class="book-details-label">Description:</div>
+    <div><%= product.description %></div>
+    <div class="book-details-label">Category:</div>
+    <div><%= product.category %></div>
+    <div class="book-details-label">Gender:</div>
+    <div><%= product.gender %></div>
+    <div class="book-details-label">Discount:</div>
+    <div><%= product.discount %></div>
+    <div class="book-details-label">Price:</div>
+    <div><%= product.price %></div>
+    <a class="btn btn-primary" href="/admin/product-control/<%= product.id %>/edit">Edit</a>
+    <%- include('deleteForm', { url: `/admin/product-control/${product.id}`, product: product }) %>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function (event) {
+      var el = document.querySelector("div.hover-pinch-zoom-img");
+      init_zoom(el);
+    });
+  </script>
+  <script>
+    try {
+      fetch(
+        new Request(
+          "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+          { method: "HEAD", mode: "no-cors" }
+        )
+      )
+        .then(function (response) {
+          return true;
+        })
+        .catch(function (e) {
+          var carbonScript = document.createElement("script");
+          carbonScript.src =
+            "//cdn.carbonads.com/carbon.js?serve=CE7DC2JW&placement=wwwcssscriptcom";
+          carbonScript.id = "_carbonads_js";
+          document.getElementById("carbon-block").appendChild(carbonScript);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  </script>
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-LLWL5N9CSM");
+  </script>
