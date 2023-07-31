@@ -1,0 +1,141 @@
+<%- include('../../temp_parts/layout_head.ejs') %>
+
+  <body>
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      <%- include('../../temp_parts/side_bar.ejs') %>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+
+
+        <%- include('../../temp_parts/nav_head.ejs') %>
+
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+             
+            
+
+
+
+            <h2 class="page-header">Add New</h2>
+<% if (locals.errorMessage != null) { %>
+<h5 class="text-danger"><%= errorMessage %></h5>
+<% } %>
+
+<form action="/admin/product-control/brand" method="POST">
+  <%- include('_brand_fields') %>
+  <div class="form-row form-row-end btn-row">
+    <button class="bttn bttn-info" type="submit">Create</button>
+  </div>
+</form>
+
+<form action="/admin/product-control/color" method="POST">
+  <%- include('_color_fields') %>
+  <div class="form-row form-row-end btn-row">
+    <button class="bttn bttn-info" type="submit">Create</button>
+  </div>
+</form>
+
+<a class="btn btn-danger" href="/admin/product-control">Cancel</a>
+
+
+<div class="brand-container">
+
+</div>
+
+
+
+
+
+<style>
+  .brand-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+  }
+  .green {
+      color: #37306B;
+  }
+  .red {
+      color: #66347F;
+  }
+  .yellow {
+      color: #9E4784;
+  }
+  .blue {
+      color: #D27685;
+  }
+  .cream {
+      color: #E84545;
+  }
+  .one {
+      font-size: 1rem;
+  }
+  .two {
+      font-size: 1.5rem;
+  }
+  .three {
+      font-size: 2rem;
+  }
+  .four {
+      font-size: 2.5rem;
+  }
+  .five {
+      font-size: 3rem;
+  }
+ 
+  
+</style>
+
+
+
+
+<script>
+
+let colors = ['green', 'yellow', 'red', 'blue', 'cream']
+let sizes = ['one', 'two', 'three', 'four', 'five']
+// let brands = ['Gucci', 'Cat', 'Red-Arrow', 'Green-Arrow', 'Beneton', 'Dior', 'Alamofire', 'bluemont']
+
+const brandsDataElement = document.getElementById("brands-data");
+const brandsData = JSON.parse(brandsDataElement.getAttribute("data-brands"));
+
+
+let container = document.querySelector(".brand-container");
+
+
+brandsData.forEach(item => { 
+
+const randomSize = getRandomItemFromArray(sizes);
+const randomColor = getRandomItemFromArray(colors);
+
+const brandName = document.createElement("div");
+brandName.classList.add(randomSize, randomColor);
+brandName.textContent = item.name;
+container.appendChild(brandName);
+
+}) 
+
+
+function getRandomItemFromArray(arr) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    
+    const randomItem = arr[randomIndex];
+    
+    return randomItem;
+  }
+
+</script>
+            
+           
+
+
+
+</div>
+<%- include('../../temp_parts/layout_footer.ejs') %>
