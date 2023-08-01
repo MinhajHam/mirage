@@ -19,7 +19,106 @@
             </div>
 
 
-            
+
+            <h2 class="page-header">Add Coupon</h2>
+<% if (locals.errorMessage != null) { %>
+<h5 class="text-danger"><%= errorMessage %></h5>
+<% } %>
+
+
+<form action="/admin/product-control/create-coupon" method="POST">
+    <!-- Coupon Code -->
+    <div class="form-row">
+    <div class="form-item">
+        <label for="code">Coupon Code</label>
+        <input type="text" id="code" name="code" required>
+    </div>
+</div>
+
+    <!-- Discount Type -->
+    <div class="form-row">
+
+    <div class="form-item">
+        <label for="discountType">Discount Type</label>
+        <select id="discountType" name="discountType" required>
+            <option value="percentage">Percentage</option>
+            <option value="fixed_amount">Fixed Amount</option>
+        </select>
+    </div>
+
+    <!-- Discount Value -->
+    <div class="form-item">
+        <label for="discountValue">Discount Value</label>
+        <input type="number" id="discountValue" name="discountValue" step="0.01" required>
+    </div>
+
+</div>
+
+<div class="form-row">
+
+    <!-- Valid From -->
+    <div class="form-item">
+        <label for="validFrom">Valid From</label>
+        <input type="date" id="validFrom" name="validFrom" required>
+    </div>
+
+    <!-- Valid To -->
+    <div class="form-item">
+        <label for="validTo">Valid To</label>
+        <input type="date" id="validTo" name="validTo" required>
+    </div>
+
+</div>
+
+<div class="form-row">
+
+    <!-- Max Uses -->
+    <div class="form-item">
+        <label for="maxUses">Max Uses (Leave empty for unlimited uses)</label>
+        <input type="number" id="maxUses" name="maxUses">
+    </div>
+
+    <div class="form-item">
+        <label for="walletUse">Wallet Use</label>
+        <select id="walletUse" name="walletUse" required>
+            <option value="false">false</option>
+            <option value="true">true</option>
+        </select>
+    </div>
+
+</div>
+
+
+    <!-- Description -->
+
+<div class="form-row">
+
+    <div class="form-item">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+    </div>
+
+</div>
+
+
+    <!-- Submit Button -->
+    <div class="form-row form-row-end btn-row">
+    
+        <a class="bttn bttn-dan" href="/admin/product-control">Cancel</a>
+        <button type="submit" class="bttn bttn-info">Create Coupon</button>
+
+    </div>
+</form>
+
+
+<div class="brand-container">
+
+</div>
+
+<div id="brands-data" data-brands="<%= JSON.stringify(brands) %>"></div>
+
+
+
            
 
 
