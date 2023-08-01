@@ -163,6 +163,43 @@
 
 
 
+<script>
+
+let colors = ['green', 'yellow', 'red', 'blue', 'cream']
+let sizes = ['one', 'two', 'three', 'four', 'five']
+// let brands = ['Gucci', 'Cat', 'Red-Arrow', 'Green-Arrow', 'Beneton', 'Dior', 'Alamofire', 'bluemont']
+
+const brandsDataElement = document.getElementById("brands-data");
+const brandsData = JSON.parse(brandsDataElement.getAttribute("data-brands"));
+
+
+let container = document.querySelector(".brand-container");
+
+
+brandsData.forEach(item => { 
+
+const randomSize = getRandomItemFromArray(sizes);
+const randomColor = getRandomItemFromArray(colors);
+
+const brandName = document.createElement("div");
+brandName.classList.add(randomSize, randomColor);
+brandName.textContent = item.name;
+container.appendChild(brandName);
+
+}) 
+
+
+function getRandomItemFromArray(arr) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    
+    const randomItem = arr[randomIndex];
+    
+    return randomItem;
+  }
+
+</script>
+            
+           
 
 
 
