@@ -1,0 +1,31 @@
+
+    <div class="row">
+    <div class="col-md-3 side-box"> 
+      <%- include('side_bar') %>
+    </div>
+    <div class="col-md-9 main-box">
+       <!-- Content (3/4 width on large screens) -->
+
+       
+        <h2>Welcome <%= user.fname %></h2>
+        <p class="text-secondary"><small>Your personal My Account overview shows your recent activity and account details.</small></p>
+        <h4>Your Details</h4>
+        <div>Name: <%= user.fname %> <%= user.lname %></div>
+        <div>Email: <%= user.email %></div>
+      <br>
+      <a href="/account/info" class="bttn bttn-pri">Update Information</a><br>
+</div>
+
+</div>
+
+      <style>
+
+/* .main-box {
+  border: solid 2px red;
+}
+.side-box {
+  border: solid 2px green;
+} */
+
+
+      </style>
