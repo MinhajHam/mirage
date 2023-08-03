@@ -1,0 +1,44 @@
+
+  <div class="row">
+    <div class="col-md-3 side-box"><%- include('side_bar') %></div>
+    <div class="col-md-9 main-box">
+
+
+<% if (!user.addresses) { %>
+  <p class="text-secondary"><small> You do not have any saved addresses. Please add one below...</small></p>
+<% } %>
+
+
+    <div class="col">
+      <h2 class="page-header">Your Address Book</h2>
+
+      <% if (user.addresses) { %>
+        <% user.addresses.forEach((address, index) => { %>
+          <div class="addr-bar">
+            <div class="author-row">
+              <div class="author-name"><%= address.fname %> <%= address.lname %></div><br>
+              <div class="author-name"><%= address.street %></div><br>
+              <div class="author-name"><%= address.city %> <%= address.country %></div>
+            </div>
+            <button style="width: 100%;" type="button" class="bttn bttn-info" data-bs-toggle="modal" data-bs-target="#popupModal">
+              VIEW
+            </button>
+          </div>
+          <br>
+        <% }) %>
+      <% } %>
+
+      <% if (user.addresses.length < 2) { %>
+        <h2>Add Another Address</h2>
+        <form action="/account/addresses" method="POST">
+          <%- include('_form_fields') %>
+          <div class="form-row form-row-end btn-row">
+            <a class="bttn bttn-dan" href="/admin/product-control">Cancel</a>
+            <button class="bttn bttn-pri" type="submit">Save</button>
+          </div>
+        </form>
+      <% } %>
+    </div>
+  </div>
+</div>
+
