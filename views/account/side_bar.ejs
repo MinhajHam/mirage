@@ -1,0 +1,66 @@
+<br>
+  <h6>MY ACCOUNT</h6><br>
+    <div class="side-display">
+       <a class="side-btn" href="/account">Overview <span><i class="bi bi-stars"></i></span></a><br>
+       <a class="side-btn" href="/account/orders">Orders <span><i class="bi bi-truck"></i></span></a><br>
+       <a class="side-btn" href="/account/info">Account Informaion <span><i class="bi bi-journal"></i></span></a><br>
+       <a class="side-btn" href="/account/addresses">Address Book <span><i class="bi bi-book"></i></span></a><br>
+       <a class="side-btn" href="/account/giftcard">Credit Balance <span><i class="bi bi-coin"></i></span></a><br>
+       <a class="side-btn" href="/account/creditcardlist">Credit Cards Details <span><i class="bi bi-credit-card"></i></span></a><br>
+       <form action="/logout?_method=DELETE" method="POST">
+        <div class="side-log-btn">
+        <button class=" bttn bttn-pri" style=" width: 100%;" type="submit">Logout<i class="bi bi-x-square"></i></button>
+        </div>
+       </form>
+ </div>
+
+<style>
+
+.side-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-btn, .side-log-btn {
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  transition: border 0.3s ease;
+}
+
+.side-btn {
+  border: solid 2.2px black;
+  color: black;
+}
+
+.side-log-btn {
+  background-color: hsl(211, 0%,0%);
+  border: solid 2.2px rgb(151, 30, 30);
+  width: 100%;
+  color: red;
+}
+
+.side-btn .icon {
+  margin-left: 1rem; /* Adjust the spacing between text and icon */
+}
+
+.side-btn:hover {
+  color: black;
+  border: solid 1px rgb(235, 235, 235);
+  background-color: rgb(235, 235, 235);
+}
+
+
+.side-log-btn:hover {
+  color: red;
+  border: solid 1px rgb(235, 212, 212);
+  background-color: rgb(235, 212, 212);
+}
+
+
+</style>
