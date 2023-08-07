@@ -3,6 +3,65 @@
     <%- include('side_bar') %>
   </div>
 
+  <div class="col-md-9 main-box">
+    <h2 class="page-header">Your orders</h2>
+
+    <% if (order && order.length === 0) { %>
+      <!-- Display message for no orders -->
+    <p class="text-secondary"><small> You haven't placed any orders yet. Feel free to browse our new arrivals for inspiration. </small></p>
+    <% } else if (order) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qtn</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% order.forEach(order => { %>
+            <% order.cart.items.forEach(item => { %>
+              <tr>
+                <td><%= item.product.name %> <br>
+                  <span class="text-secondary">Note: <%= order.message %></span>
+                </td>
+                <td><%= item.product.price %></td>
+                <td><%= item.quantity %></td>
+                <td><%= item.total %></td>
+                <td class="<%= order.status === 'Cancelled' ? 'text-danger' : '' %>"><%= order.status %></td>
+                <td>
+                  <% if (order.status == 'Placed') { %>
+                    <button class="bttn bttn-dan show-more-button" type="button" data-bs-toggle="collapse" data-bs-target="#orderDetails<%= order.id %>">Cancel</button>
+                  <% } else { %>
+                    <button class="bttn" type="button" disabled>Cancel</button>
+                  <% } %>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <div class="collapse" id="orderDetails<%= order.id %>">
+                    <br>
+                    <form method="POST" action="/admin/user-control/order/<%= order.id %>/cancel?_method=PUT">
+                      <% if (order.status == 'Placed') { %>
+                        <p>Are you sure you want to cancel the order?</p>
+                        <button class="bttn bttn-dan" type="submit">Confirm</button>
+                      <% } else { %>
+                        <button class="bttn" type="button" disabled>Cancel</button>
+                      <% } %>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</div>
 
 
 
