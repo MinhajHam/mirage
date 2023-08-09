@@ -8,7 +8,109 @@
           <!-- Sidebar (1/4 width on large screens) -->
           <%- include('side_bar') %>
       </div>
-      
+      <div class="col-lg-9">
+          <!-- Content (3/4 width on large screens) -->
+          <div>
+              <h2>Your Credit Balance</h2>
+        <p class="text-secondary"><small> You can check the balance of your gift card, store credit or Vestiaire vouchers here. <br />
+        Simply type in your unique 8-digit code below..</small></p>
+
+          </div>
+
+          <% if(user.wallet && user.wallet.balance !== undefined && user.wallet.balance !== null) { %>
+
+          
+
+            <div class="credit-box">
+              <div class="credit-left">
+                <div class="credit-display">$<%= user.wallet && user.wallet.balance !== undefined && user.wallet.balance !== null ? walletBalance : '0' %></div>
+
+                  <div class="form-display">
+                      <form action="/account/wallet-redeem" method="POST">
+                          <input type="text" id="redeemCode" name="redeemCode" style="width: 100%;" placeholder="Enter code *" />
+
+                          <button class="bttn bttn-pri" style="width: 100%; margin-top: 0.5rem;" type="submit">Redeem</button>
+                      </form>
+                  </div>
+
+                  <div class="msg-display">
+                      <p class="text-secondary"><small>Enter your coupon or gift card code in the field above and click Redeem to apply the discount to your order.</small></p>
+                  </div>
+              </div>
+
+              <div class="credit-right" style="overflow-y: auto;">
+                  <!-- Add your content here -->
+                  <% if (user && user.wallet && user.wallet.transactions) { %>
+                    <% user.wallet.transactions.forEach(wallet => { %>
+                        <% if(wallet.operation === 'Deposit') { %>
+                        <div class="list-display" style="background-color: #dbebe2;">
+                            <% } else { %>
+                            <div class="list-display" style="background-color: #ebdbdb;">
+                                <% } %>
+                            <% if(wallet.operation === 'Deposit') { %>
+
+                            <div class="amount-display" style="color: #479166;">$<%= Math.floor(wallet.amount) %></div>
+
+                            <% } else { %>
+                            <div class="amount-display" style="color: #9e3a33;">$<%= Math.ceil(wallet.amount) %></div>
+                                <% }  %>
+                            <div class="amount-details">
+                                <div><%= wallet.transactionType %></div>
+                                <div class="text-secondary">
+                                    <small>
+                                        <%= wallet.timestamp.getDate().toString().padStart(2, '0') %>
+                                        <%= wallet.timestamp.toLocaleString('default', { month: 'short' }) %>
+                                        <%= wallet.timestamp.getFullYear().toString().slice(-2) %>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+
+                  <div class="list-display">
+                      <div class="amount-display">$0</div>
+                      <div class="amount-details">
+                          <div>- -</div>
+                          <div class="text-secondary"><small>- -</small></div>
+                      </div>
+                  </div>
+
+          <% } %>
+
+
+          <% } else { %>
+
+
+            <div class="credit-left"> 
+              <div class="form-display">
+                  <form action="/action_page.php">
+                      <input type="text" id="fname" name="fname" style="width: 100%;" placeholder="Enter code *" />
+            
+                      <input class="bttn bttn-pri" style="width: 100%; margin-top: 0.5rem;" type="submit" value="Redeem" />
+                  </form>
+              </div>
+            
+              <div class="msg-display">
+                  <p class="text-secondary"><small>Enter your coupon or gift card code in the field above and click Redeem to apply the discount to your order.</small></p>
+              </div>
+            </div>
+
+
+          
+
+
+              </div>
+          </div>
+      </div>
+  
+
+<% } %>
+
+</div>
+</div>
+
+
 
 
 
