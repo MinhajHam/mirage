@@ -1,0 +1,148 @@
+<div class="header-link">
+  <nav class="header-nav">
+      <ul>
+        <% if(locals.indexUrl) { %>
+
+        <% if(indexUrl == 'men') { %>
+          <li><a href="/men" style="text-decoration: underline; color: hsl(211, 28%, 29%);">Men</a></li>
+          <% } else { %>
+          <li><a href="/men">Men</a></li>
+          <% } %>
+
+          <% if(indexUrl == 'women') { %>
+          <li><a href="/women" style="text-decoration: underline; color: hsl(211, 28%, 29%);">Women</a></li>
+          <% } else { %>
+          <li><a href="/women">Women</a></li>
+          <% } %>
+
+          <% } %>
+          
+
+
+          <li><a href="/kids">Kids</a></li>
+          <li><a href="/admin" target="_blank">A</a></li>
+      </ul>
+  </nav>
+</div>
+
+<header>
+  <% if(locals.indexUrl) { %>
+  <nav class="header-nav">
+      <a href="/<%= indexUrl %>" class="header-logo">
+          <img src="/images/wer.png" alt="MIRAGE Logo" />
+      </a>
+
+      <a class="animated-link" href="/<%= indexUrl %>/new">New arrivals</a>
+      <a class="animated-link" href="/<%= indexUrl %>/clothing">Clothing</a>
+      <a class="animated-link" href="/<%= indexUrl %>/shoe">Shoe</a>
+      <a class="animated-link" href="/<%= indexUrl %>/bags">Bags</a>
+      <a class="animated-link" href="/<%= indexUrl %>/accessories">Accessories</a>
+      <a class="animated-link" href="/<%= indexUrl %>/jewelry">Jewelry</a>
+      <a class="animated-link text-danger" href="/<%= indexUrl %>/sale">Sale_</a>
+
+      <ul>
+          <li>
+              <a href="/account"><span class="bi bi-person"></span></a>
+          </li>
+          <li>
+              <a href="/#"><i class="bi bi-heart"></i></a>
+          </li>
+          <li>
+              <a href="/checkout/cart"><i class="bi bi-bag"></i></a>
+          </li>
+      </ul>
+  </nav>
+  <% } else { %>
+    <nav class="header-nav">
+      <a href="/men" class="header-logo">
+          <img src="/images/wer.png" alt="MIRAGE Logo" />
+      </a>
+
+      <a class="animated-link" href="/men/new">New arrivals</a>
+      <a class="animated-link" href="/men/clothing">Clothing</a>
+      <a class="animated-link" href="/men/shoe">Shoe</a>
+      <a class="animated-link" href="/men/bags">Bags</a>
+      <a class="animated-link" href="/men/accessories">Accessories</a>
+      <a class="animated-link" href="/men/jewelry">Jewelry</a>
+      <a class="animated-link text-danger" href="/men/sale">Sale_</a>
+
+      <ul>
+          <li>
+              <a href="/account"><span class="bi bi-person"></span></a>
+          </li>
+          <li>
+              <a href="/#"><i class="bi bi-heart"></i></a>
+          </li>
+          <li>
+              <a href="/checkout/cart"><i class="bi bi-bag"></i></a>
+          </li>
+      </ul>
+  </nav>
+  <% } %>
+  <div class="toppy" style="width: 100; border: 0.5px hsl(211, 28%, 29%) solid;"></div>
+</header>
+
+
+  
+  <!-- <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+          <a class="navbar-brand" href="/">
+            <img src="/images/wer.png" alt="MIRAGE Logo" height="60">
+          </a>
+  
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+  
+          <div class="collapse navbar-collapse" id="navbarNav">
+            
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link animated-link" href="/women/new">New arrivals</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link animated-link" href="/women/clothing">Clothing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link animated-link" href="/women/shoe">Shoe</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link animated-link" href="/women/bags">Bags</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link animated-link" href="/women/accessories">Accessories</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link animated-link" href="/women/jewelry">Jewelry</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link animated-link text-danger" href="/women/sale">Sale_</a>
+              </li>
+            </ul>
+            
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/account">
+                  <span class="bi bi-person"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="bi bi-heart"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/checkout/cart">
+                  <i class="bi bi-bag"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+   -->
+  
