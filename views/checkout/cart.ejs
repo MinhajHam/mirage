@@ -110,5 +110,109 @@
 <% } %>
 
 
+<style>
+
+  .checkout-details {
+    display: flex;
+    justify-content: space-between;
+  }
+  .cForm {
+    display: flex;
+  
+    margin-right: 2rem;
+    width: 32rem;
+
+  }
+
+  .underline{
+    width: 10rem;
+    border: 0.5px solid rgb(214, 214, 214);
+    margin-bottom: 0.5rem;
+  }
+  /* Add some spacing between the table cells */
+  table {
+    border-collapse: separate;
+    border-spacing: 10px;
+    width: 100%; /* Set the table width to 80% */
+    margin: auto; /* Center the table within its container */
+  }
+
+  /* Style for table headers and cells */
+  th, td {
+    padding: 10px;
+    text-align: left; /* Align text to the left */
+  }
+
+  /* Style for table headers */
+  th {
+    font-weight: bold;
+  }
+
+</style>
+
+
+
+<script>
+  // Function to update item quantity using AJAX
+  function updateQuantity(itemId, action) {
+    // Create a JSON object with the action and itemId
+    const data = {
+      action: action,
+      itemId: itemId
+    };
+
+    // Send a POST request to your server
+    fetch('/checkout/count', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json()) // Parse the JSON response
+    .then(updatedCart => {
+      console.log(updatedCart); // Log the updated cart data
+      updateCartUI(updatedCart);
+      })
+      .catch(error => {
+        console.error('Error updating quantity:', error);
+      });
+  }
+
+  // Function to update the cart UI with new data
+  function updateCartUI(cartData) {
+    // Update the cart table, total items, subtotal, and total price on the page
+    // You'll need to write code here to update your HTML elements
+  }
+
+
+
+  // Function to update the cart UI with new data
+function updateCartUI(cartData) {
+  // Update the cart table, total items, subtotal, and total price on the page
+  const cartTable = document.getElementById('cart-table');
+  const totalItems = document.getElementById('total-items');
+  const subtotal = document.getElementById('subtotal');
+  const totalPrice = document.getElementById('total-price');
+
+  // Update the cart table
+  cartTable.innerHTML = ''; // Clear existing table rows
+  cartData.items.forEach((item) => {
+    // Create and append rows to the table based on cartData
+    const row = document.createElement('tr');
+    // Build the row content based on item data
+    // Example:
+    row.innerHTML = `<td>${item.product.name}</td><td>${item.size}</td><td>${item.quantity}</td><td>${item.product.price}</td><td>${item.subtotal}</td>`;
+    cartTable.appendChild(row);
+  });
+
+  // Update total items, subtotal, and total price
+  totalItems.textContent = cartData.total_items;
+  subtotal.textContent = cartData.subtotal;
+  totalPrice.textContent = cartData.total;
+}
+
+
+</script>
 
 
