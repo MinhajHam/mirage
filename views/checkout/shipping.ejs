@@ -1,0 +1,61 @@
+
+<h2>SHIPPING ADDRESS</h2>
+<p>Please enter your shipping address in the form below.</p>
+<br>
+<form action="/checkout/shipping" method="post">
+
+    <% if(user.addresses) { %>
+
+    <% user.addresses.forEach((address, index) => { %>
+        <div class="author-row">
+            <div class="author-name"><%= address.fname %> <%= address.lname %></div><br>
+            <div class="author-name"><%= address.street %></div><br>
+            <div class="author-name"><%= address.city %> <%= address.country %></div>
+
+            <label for="addr<%= index %>" class="radio-button">
+                <input type="radio" id="addr<%= index %>" name="shipAddress" value="<%= address._id %>">
+                <span class="radio-dot"></span> Select
+            </label><br>
+
+        </div>
+        <br>
+        <% }) %>
+        <div class="edit-bar">
+        <a class="linkC bttn" href="/account/addresses" style="width: 100%;">Edit Address</a>
+      </div>
+<% } else { %>
+   <p>You have no saved address information</p>
+   <a href="/account/addresses">Add address</a>
+<% } %>
+
+<div class="form-row">
+    <div class="form-item">
+        <h3>BILLING ADDRESS</h3>
+   <p class="text-secondary">If your billing address differs from your shipping address, please click "add billing address" </p>
+
+<button type="button" id="toggleBtn">add billing address</button>
+    <div id="collapseSection">
+      
+        <% user.addresses.forEach((address, index) => { %>
+            <div class="author-row">
+                <div class="author-name"><%= address.fname %> <%= address.lname %></div><br>
+                <div class="author-name"><%= address.street %></div><br>
+                <div class="author-name"><%= address.city %> <%= address.country %></div>
+    
+                <label for="newAddr<%= index %>" class="radio-button">
+                    <input type="radio" id="newAddr<%= index %>" name="billAddress" value="<%= address._id %>">
+                    <span class="radio-dot"></span> Select
+                </label><br>
+    
+            </div>
+            <br>
+            <% }) %>
+            <div class="edit-bar">
+            <a class="linkC bttn" style="width: 100%;" href="/account/addresses">Edit Address</a>
+            </div>
+  </div>
+
+    </div>
+</div>
+<button type="submit" class="bttn bttn-pri" style="width: 100%;">PROCEED</button>
+</form>
