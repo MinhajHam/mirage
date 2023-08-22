@@ -1,4 +1,3 @@
-
 <h2>SHIPPING ADDRESS</h2>
 <p>Please enter your shipping address in the form below.</p>
 <br>
@@ -80,6 +79,44 @@
   background-color: #e0e0e0;
   color: black;
 }
+
+
+ /* Hide default radio input */
+ input[type="radio"] {
+        display: none;
+    }
+
+    /* Style the custom radio button dot */
+    .radio-button {
+        display: inline-block;
+        cursor: pointer;
+        margin-right: 10px;
+        position: relative;
+        padding-left: 20px; /* Add padding for the radio button dot */
+    }
+
+    /* Style the custom radio button dot */
+    .radio-button .radio-dot {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 1px solid #000;
+    }
+
+    /* Style the custom radio button dot when selected */
+    .radio-button input[type="radio"]:checked + .radio-dot {
+        border-color: #2196F3; /* Change this to the desired color */
+        background-color: #2196F3; /* Optional: Add a background color when selected */
+    }
+
+    /* Highlight the selected address */
+    .author-row.selected {
+        background-color: lightblue;
+    }
+    
   </style>
 
   <script>
