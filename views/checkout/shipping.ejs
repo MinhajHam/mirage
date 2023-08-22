@@ -82,3 +82,24 @@
 }
   </style>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const toggleBtn = document.getElementById('toggleBtn');
+  const collapseSection = document.getElementById('collapseSection');
+  
+  toggleBtn.addEventListener('click', function() {
+    if (collapseSection.style.display === 'none') {
+      collapseSection.style.display = 'block';
+    } else {
+      collapseSection.style.display = 'none';
+    }
+  });
+
+  const shippingForm = document.getElementById('shippingForm');
+  shippingForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting
+    // Additional form submission logic can be added here if needed
+  });
+});
+
+  </script>
