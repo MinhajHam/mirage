@@ -4,7 +4,28 @@
 
 
 
-
+<style>
+    .radio-button {
+      cursor: pointer;
+    }
+  
+    .radio-button input[type="radio"] {
+      display: none; /* Hide the radio input */
+    }
+  
+    .radio-button label {
+      text-align: center;
+      display: block;
+      padding: 10px;
+      border: 2px solid #000; /* Default border color */
+      background-color: transparent; /* Default background color */
+    }
+  
+    .radio-button input[type="radio"]:checked + label {
+      background-color: rgb(53, 73, 94); 
+      color: wheat;
+    }
+  </style>
   
   <form action="/checkout/payment" method="post">
     <div class="radio-button">
