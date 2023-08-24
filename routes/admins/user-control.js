@@ -39,6 +39,30 @@ router.get('/user', async (req, res) => {
 
 
 
+// Block/unblock user based on status
+router.put('/user/:id/block', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    if (user.status == 'Active') {
+      user.status = 'Blocked';
+    } else {
+      user.status = 'Active';
+    }
+    await user.save();
+   
+
+    return res.redirect('/admin/user-control/user');
+  } catch (error) {
+    console.error('Error blocking user:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 
