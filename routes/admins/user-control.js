@@ -19,6 +19,23 @@ router.get('/', (req, res) => {
 
 
 
+// Render the user control page with search functionality
+router.get('/user', async (req, res) => {
+  let searchOptions = {};
+  if (req.query.fname != null && req.query.fname !== '') {
+    searchOptions.fname = new RegExp(req.query.fname, 'i');
+  }
+  try {
+    const users = await User.find(searchOptions);
+    res.render('admin/user-control/user.ejs', {
+      layout: false,
+      users,
+      searchOptions: req.query,
+    });
+  } catch {
+    res.redirect('/');
+  }
+});
 
 
 
