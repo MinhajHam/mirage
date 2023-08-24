@@ -66,6 +66,20 @@ router.put('/user/:id/block', async (req, res) => {
 
 
 
+// Delete user
+router.delete('/user/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    await User.findByIdAndRemove(userId); // Find and remove the user by ID
+    res.redirect('/admin/user-control/user'); // Redirect to the user control page after deletion
+  } catch (error) {
+    console.error(error);
+    res.redirect('/admin/user-control/user'); // Redirect to the user control page in case of an error
+  }
+});
+
+
+// Order Control
 
 
 
