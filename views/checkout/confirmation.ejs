@@ -1,0 +1,125 @@
+<h2>CONFIRM</h2>
+<p>Please review your order below. Once you have read and accepted our terms and conditions, please click "Place Order" to continue.</p>
+<div class="form-row">
+    <div class="form-item">
+        <h4>SHIPPING ADDRESS</h4>
+        <div class="author-row">
+            <div class="author-name"><small><%= ship.fname %> <%= ship.lname %></small></div><br>
+            <div class="author-name"><small><%= ship.street %></small></div><br>
+            <div class="author-name"><small><%= ship.city %> <%= ship.country %></small></div>
+        </div>
+        <br>
+    </div>
+
+    <div class="form-item">
+        <h4>BILLING ADDRESS</h4>
+        <div class="author-row">
+            <div class="author-name"><small><%= bill.fname %> <%= bill.lname %></small></div><br>
+            <div class="author-name"><small><%= bill.street %></small></div><br>
+            <div class="author-name"><small><%= bill.city %> <%= bill.country %></small></div>
+        </div>
+        <br>
+    </div>
+</div>
+
+<div class="form-row">
+
+    <div class="form-item mid-field">
+        <div>PAYMENT METHOD:
+          <% if(paymethod == 'cod') { %>
+              Cash On Delivery
+            <% } else { %>
+              <%= paymethod %>
+              <% } %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-row">
+    <div class="form-item mid-field"> 
+      <p>Your Wallet Balance: $<%= user.wallet && user.wallet.balance !== undefined && user.wallet.balance !== null ? user.wallet.balance : '0' %> </p>
+
+  </div>
+
+</div>
+
+
+</div>
+
+<div class="form-row">
+    <div class="form-item">
+        <div>YOUR ITEMS</div>
+
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">○</th>
+              <th scope="col">Product</th>
+              <th scope="col">Size</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Total*</th>
+            </tr>
+          </thead>
+          <tbody>
+        
+        <% cart.items.forEach(item => { %>
+          <tr>
+            <th scope="row">○</th>
+            <td><%= item.product.name %></td>
+            <td><%= item.size %></td>
+            <td><%= item.quantity %></td>
+            <td><%= item.product.price %></td>
+            <td><%= item.subtotal %></td>
+          </tr>
+    
+          <% }) %>
+
+        </tbody>
+      </table>
+        
+          <p>Total Items: <%= cart.total_items %></p>
+          <p>Subtotal: <%= cart.subtotal %></p>
+          <p id="price">Total Price: <%= cart.total %></p>
+    </div>
+</div>
+
+<% if(paymethod == 'paypal') { %>
+
+  <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <h6>Place Your Order 🢃</h6>
+  <div id="paypal"></div>
+  </div>
+
+<% } else if(paymethod == 'cod') { %>
+
+  <div class="form-item mid-field">
+    <input type="checkbox" id="wallet" name="wallet" value="Bike"> 
+    <label for="wallet">Use Wallet Balance ✓</label>
+
+</div>
+<br>
+
+  <a class="bttn bttn-pri " style="width: 100%;" href="/checkout/updateProducts">Place Order</a>
+
+<% } else { %>
+
+  <div class="form-item mid-field">
+    <input type="checkbox" id="wallet" name="wallet" value="true"> 
+    <label for="wallet">Use Wallet Balance ✓</label>
+
+</div>
+<br>
+
+  <button class="bttn bttn-pri" style="width: 100%;">Place Order</button>
+
+  <% } %>
+
+
+
+
+
+
+
+
