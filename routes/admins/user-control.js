@@ -125,6 +125,43 @@ router.put('/order/:id/block', async (req, res) => {
 
 
 
+// View details of a specific order
+router.get('/order/:id/view', async (req, res) => {
+  const orderId = req.params.id;
+
+  try {
+    const order = await Order.findById(orderId)
+      .populate({
+        path: 'cart',
+        populate: {
+          path: 'items.product',
+        },
+      });
+
+    res.render('admin/user-control/view', { layout: false, order, id: orderId });
+  } catch (error) {
+    console.error('Error viewing order:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+// Edit order details
+router.post('/order/:id/edit', async (req, res) => {
+  const orderId = req.params.id;
+  const { status, message } = req.body;
+
+  try {
+    // Update the order's status and message
+    await Order.findByIdAndUpdate(orderId, { $set: { status, message } });
+
+    res.redirect('/admin/user-control/order'); // Redirect to the specified route
+  } catch (error) {
+    console.error('Error updating order:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 
