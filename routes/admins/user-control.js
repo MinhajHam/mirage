@@ -165,7 +165,56 @@ router.post('/order/:id/edit', async (req, res) => {
 
 
 
+router.put('/order/:id/cancel', async (req, res) => {
+  const userId = req.user._id;
+  const orderId = req.params.id;
 
+  try {
+    const order = await Order.findById(orderId);
+    const user = await User.findById(userId).populate('wallet.transactions').exec();
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    
+    if (order.status === 'Cancelled') {
+      // Don't process the same cancellation request again
+      return res.status(400).json({ error: 'Order is already cancelled' });
+    }
+
+    // Assuming order.cart.total is a positive number
+    if (order.status !== 'Cancelled') {
+      order.status = 'Cancelled';
+
+      if (order.paymentMethod !== 'cod') {
+      
+      // Update the user's wallet balance and add a refund transaction
+      if (!user.wallet) {
+        user.wallet = { balance: 0, transactions: [] };
+      }
+      const refundAmount = order.cart.total;
+
+      order.message = 'Your order cancelled and sent refund to your MIRAGE wallet'
+      user.wallet.balance += refundAmount;
+      user.wallet.transactions.push({
+        amount: order.cart.total,
+        transactionType: 'product cancellation refund',
+        operation: 'Deposit',
+      });
+
+      // Save the updated user and order
+      await user.save();
+    }
+
+      await order.save();
+    }
+
+    return res.redirect('/account/orders');
+  } catch (error) {
+    console.error('Error cancelling order:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 
