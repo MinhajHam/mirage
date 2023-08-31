@@ -1,0 +1,65 @@
+<br>
+
+<div class="row">
+  <form action="/men/new" method="GET" class="d-flex align-items-center">
+    <!-- Search Input -->
+    <div class="col-md-7">
+      <input  type="text" style="width: 95%;" placeholder="Search for..." name="keyword" value="<%= searchKeyword %>">
+    </div>
+
+   
+
+
+<br>
+<%- include('productGrid', { products: products, large: true }) %>
+<br>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <% if (currentPage > 1) { %>
+      <a class="bttn  <%= currentPage === 1 ? 'disabled' : '' %>" href="?page=1&color=<%= selectedColor %>" tabindex="-1">First</a>
+      <a class="bttn " href="?page=<%= currentPage - 1 %>&color=<%= selectedColor %>">Previous</a>
+    <% } %>
+    
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <% if (i === parseInt(currentPage)) { %>
+        <button class="bttn  active" href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></button>
+      <% } else { %>
+        <a class="bttn " href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></a>
+      <% } %>
+    <% } %>
+    
+    <% if (currentPage < totalPages) { %>
+      <a class="bttn " href="?page=<%= currentPage + 1 %>&color=<%= selectedColor %>">Next</a>
+      <a class="bttn  <%= currentPage === totalPages ? 'disabled' : '' %>" href="?page=<%= totalPages %>&color=<%= selectedColor %>">Last</a>
+    <% } %>
+  </ul>
+</nav>
+
+
+
+<div class="bottom-banner" style="width: 100%;">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="image-container">
+        <img src="/images/bott2.jpg" alt="Image description" class="bottom-banner-cover">
+        <div class="centered-content">
+          <p class="centered-text">Coat</p>
+        </div>
+        <a class="buttn bttn-secondary centered-button">Shop now</a>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="image-container">
+        <img src="/images/bott1.jpg" alt="Image description" class="bottom-banner-cover">
+        <div class="centered-content">
+          <p class="centered-text">Jackets</p>
+        </div>
+        <a class="buttn bttn-secondary centered-button">Shop now</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
