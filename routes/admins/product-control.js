@@ -71,6 +71,24 @@ router.get('/add', async (req, res) => {
 
 
 
+// Render the 'add' page for products
+router.get('/coupon', async (req, res) => {
+  const brands = await Brand.find();
+  res.render('admin/product-control/add/coupon.ejs', { 
+    layout: false,
+    brand: new Brand(),
+    color: new Color(),
+    brands,
+    errorMessage:
+    
+    
+    ''
+  });
+});
+
+
+
+
 
 
 
