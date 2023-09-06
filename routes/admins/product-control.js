@@ -89,6 +89,37 @@ router.get('/coupon', async (req, res) => {
 
 
 
+router.post('/create-coupon', async (req, res) => {
+  try {
+    // Extract form data from the request body
+    const { code, description, discountType, discountValue, validFrom, validTo, maxUses, walletUse } = req.body;
+
+    // Create a new coupon document
+    const newCoupon = new Coupon({
+      code,
+      description,
+      discountType,
+      walletUse,
+      discountValue,
+      validFrom,
+      validTo,
+      maxUses,
+    });
+
+    // Save the coupon to the database
+    await newCoupon.save();
+
+    // Redirect to a success page or display a success message
+    res.send('Coupon created successfully!');
+  } catch (error) {
+    // Handle errors (e.g., validation errors, database errors)
+    res.status(500).send('Error creating coupon: ' + error.message);
+  }
+});
+
+
+
+
 
 
 
