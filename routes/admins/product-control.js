@@ -55,6 +55,18 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// Render the 'add' page for products
+router.get('/add', async (req, res) => {
+  const brands = await Brand.find();
+  res.render('admin/product-control/add/add.ejs', { 
+    indexUrl: req.session.indexUrl,
+    layout: false,
+    brand: new Brand(),
+    color: new Color(),
+    brands,
+    errorMessage: req.session.brandError || ''
+  });
+});
 
 
 
