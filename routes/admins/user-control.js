@@ -82,6 +82,19 @@ router.delete('/user/:id', async (req, res) => {
 // Order Control
 
 
+// Render the order control page with search functionality
+router.get('/order', async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.render('admin/user-control/order.ejs', {
+      layout: false,
+      orders,
+      searchOptions: req.query,
+    });
+  } catch {
+    res.redirect('/');
+  }
+});
 
 
 
