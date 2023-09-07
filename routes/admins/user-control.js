@@ -98,6 +98,30 @@ router.get('/order', async (req, res) => {
 
 
 
+// Block/unblock order based on status
+router.put('/order/:id/block', async (req, res) => {
+  const orderId = req.params.id;
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    if (order.status == 'Placed') {
+      order.status = 'Cancelled';
+    } else {
+      order.status = 'Placed';
+    }
+    await order.save();
+    
+
+    return res.redirect('/admin/user-control/order');
+  } catch (error) {
+    console.error('Error blocking order:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 
