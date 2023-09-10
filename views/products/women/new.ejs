@@ -7,6 +7,29 @@
       <input  type="text" style="width: 95%;" placeholder="Search for..." name="keyword" value="<%= searchKeyword %>">
     </div>
 
+    <!-- Select Color Dropdown -->
+    <div class="col-md-2">
+      <label for="color" class="mr-2">Select color:</label>
+      <select name="color" id="color" class="form-control">
+        <option value="">All Colors</option>
+        <% colors.forEach(color => { %>
+          <% if (color.name === selectedColor) { %>
+            <option selected value="<%= color.name %>"><%= color.name %></option>
+          <% } else { %>
+            <option value="<%= color.name %>"><%= color.name %></option>
+          <% } %>
+        <% }) %>
+      </select>
+    </div>
+
+    
+
+    <!-- Apply Filter Button -->
+    <div class="col-md-1">
+      <button class="buttn" type="submit"><i class="bi bi-search"></i></button>
+    </div>
+  </form>
+</div>
 
 
 <br>
