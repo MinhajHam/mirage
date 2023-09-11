@@ -22,7 +22,20 @@
       </select>
     </div>
 
-    
+    <!-- Select Brand Dropdown -->
+    <div class="col-md-2">
+      <label for="brand" class="mr-2">Select brand:</label>
+      <select name="brand" id="brand" class="form-control">
+        <option value="">All Brands</option>
+        <% brands.forEach(brand => { %>
+          <% if (brand._id.toString() === selectedBrand) { %>
+            <option selected value="<%= brand._id %>"><%= brand.name %></option>
+          <% } else { %>
+            <option value="<%= brand._id %>"><%= brand.name %></option>
+          <% } %>
+        <% }) %>
+      </select>
+    </div>
 
     <!-- Apply Filter Button -->
     <div class="col-md-1">
