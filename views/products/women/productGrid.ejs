@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <% products.forEach(product => { %>
+      <div class="col-md-3 mb-4">
+        <a href="/women/<%= product.id %>" class="">
+          <img class="img-fluid img-with-underline" src="<%= product.coverImagePath1 %>" alt="<%= product.name %>">
+        </a>
+        <div class="cover-details">
+          <div class="cover-brand-label"><%= product.brand.name %></div>
+          <div class="cover-name-label"><%= product.name %></div>
+          <div class="cover-price-label">$<%= product.price %></div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+
+
+
