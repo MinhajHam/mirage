@@ -90,3 +90,33 @@
 </div>
 
 
+
+<script>
+  // Add event listener to collapse elements
+  const collapseButtons = document.querySelectorAll('[data-bs-toggle="collapse"]');
+  collapseButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-bs-target');
+      const target = document.querySelector(targetId);
+
+      // Close all other collapse elements
+      collapseButtons.forEach(otherButton => {
+        if (otherButton !== this) {
+          const otherTargetId = otherButton.getAttribute('data-bs-target');
+          const otherTarget = document.querySelector(otherTargetId);
+
+          if (otherTarget && otherTarget.classList.contains('show')) {
+            const collapse = new bootstrap.Collapse(otherTarget);
+            collapse.hide();
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
