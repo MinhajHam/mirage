@@ -80,6 +80,48 @@ router.get('/', async (req, res) => {
 
 
 
+router.get('/mens-banner', (req, res, next) => {
+  res.render('admin/banner/mens.ejs', {layout: false});
+});
+
+
+router.post('/men-main-image', async (req, res) => {
+  try {
+    // Create a new MensBanner instance with the relevant fields
+    const mensBanner = new MensBanner();
+
+    const imageArray = req.body.mainImage;
+    const link = req.body.link1;
+    const text = req.body.text1;
+
+    if (!imageArray || imageArray.length === 0) {
+      return res.redirect('/admin/noooo');
+    }
+
+    const maxCoverCount = 4;
+    const coverCount = Math.min(imageArray.length, maxCoverCount);
+    req.body.cover = imageArray.slice(0, coverCount);
+
+    console.log("Before saveCovers:", mensBanner, link, text);
+    
+    // Add a log statement to confirm the function call
+    saveCovers(mensBanner, req.body.mainImage, link, text);
+    
+    console.log("After saveCovers:", mensBanner); // Add a log statement after the function call
+
+    await mensBanner.save();
+    res.redirect('/admin/yes');
+  } catch (error) {
+    console.error("Error saving mensBanner:", error);
+    res.redirect('/admin/no');
+  }
+});
+
+
+
+
+
+
 
 
 // Export the router for use in other parts of your application
