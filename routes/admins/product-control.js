@@ -146,6 +146,21 @@ router.post('/brand', async (req, res) => {
   }
 });
 
+// Handle POST request to create a new color
+router.post('/color', async (req, res) => {
+  const color = new Color({
+    name: req.body.name
+  });
+
+  try {
+    const newColor = await color.save();
+    res.redirect('/admin/product-control');
+  } catch {
+    req.session.brandError = 'Error: That name is already added.'
+    res.redirect('/admin/product-control/add')
+  }
+});
+
 
 
 
