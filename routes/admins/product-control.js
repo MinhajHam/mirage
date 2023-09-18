@@ -123,6 +123,28 @@ router.post('/create-coupon', async (req, res) => {
 
 
 
+// Render the 'inventory' page
+router.get('/inventory', (req, res) => {
+  res.render('admin/product-control/inventory.ejs', { layout: false });
+});
+
+
+// Handle POST request to create a new brand
+router.post('/brand', async (req, res) => {
+  const brand = new Brand({
+    name: req.body.name
+  });
+
+  try {
+
+    const viewBrands = await Brand.find();
+    const newBrand = await brand.save();
+    res.redirect('/admin/product-control');
+  } catch {
+    req.session.brandError = 'Error: That name is already added.'
+    res.redirect('/admin/product-control/add')
+  }
+});
 
 
 
