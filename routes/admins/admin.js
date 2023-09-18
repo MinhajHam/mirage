@@ -122,6 +122,34 @@ router.post('/men-main-image', async (req, res) => {
 
 
 
+function saveCovers(product, coverEncodedArray, link, param) {
+  if (!Array.isArray(coverEncodedArray)) {
+    return;
+  }
+console.log('check');
+  const mainImage = [];
+
+  for (const coverEncoded of coverEncodedArray) {
+    try {
+      const cover = JSON.parse(coverEncoded);
+
+      if (cover != null && imageMimeTypes.includes(cover.type)) {
+        const imageBuffer = Buffer.from(cover.data, 'base64');
+        const imageType = cover.type;
+        mainImage.push({ image: imageBuffer, imageType, link, param });
+      }
+    } catch (error) {
+      console.error("Error parsing cover image:", error);
+    }
+  }
+  console.log('check2',mainImage.length);
+
+  if (mainImage.length > 0) {
+    product.mainImage = mainImage;
+  }
+console.log('check3');
+
+}
 
 
 // Export the router for use in other parts of your application
