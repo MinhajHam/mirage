@@ -162,6 +162,10 @@ router.post('/color', async (req, res) => {
 });
 
 
+// Render the 'new' page for adding a new product
+router.get('/new', async (req, res) => {
+  renderNewPage(res, new Product());
+});
 
 
 
