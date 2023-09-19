@@ -206,6 +206,22 @@ router.post('/', async (req, res) => {
 });
 
 
+// Show product Route
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id)
+      .populate('brand')
+      .populate('color')
+      .exec();
+    res.render('admin/product-control/view.ejs', {
+      indexUrl: req.session.indexUrl,
+      product,
+    });
+  } catch {
+    res.redirect('/');
+  }
+});
+
 
 
 
