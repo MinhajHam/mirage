@@ -167,6 +167,45 @@ router.get('/new', async (req, res) => {
   renderNewPage(res, new Product());
 });
 
+// Handle POST request to create a new product
+router.post('/', async (req, res) => {
+  const product = new Product({
+    name: req.body.name,
+    description: req.body.description,
+    gender: req.body.gender,
+    category: req.body.category,
+    subCategory: req.body.subCategory,
+    brand: req.body.brand,
+    color: req.body.color,
+    price: req.body.price,
+    discount: req.body.discount,
+    totalStock: req.body.totalStock,
+  });
+
+  saveSizes(product, req.body.sizes, req.body.stock);
+
+  const coverArray = req.body.cover;
+
+  if (!coverArray || coverArray.length === 0) {
+    return renderNewPage(res, product, true, "At least one cover image is required.");
+  }
+
+  const maxCoverCount = 4;
+  const coverCount = Math.min(coverArray.length, maxCoverCount);
+  req.body.cover = coverArray.slice(0, coverCount);
+
+  saveCovers(product, req.body.cover);
+
+  try {
+    const newProduct = await product.save();
+    res.redirect(`/admin/product-control/${newProduct.id}`);
+  } catch (error) {
+    console.error("Error saving product:", error);
+    renderNewPage(res, product, true);
+  }
+});
+
+
 
 
 
