@@ -222,6 +222,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Edit product Route
+router.get('/:id/edit', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    renderEditPage(res, product);
+  } catch {
+    res.redirect('/');
+  }
+});
+
+
 
 
 
