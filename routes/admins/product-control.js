@@ -232,7 +232,48 @@ router.get('/:id/edit', async (req, res) => {
   }
 });
 
+// Update product Route
+router.put('/:id', async (req, res) => {
+  let product;
 
+  try {
+    product = await Product.findById(req.params.id);
+    product.name = req.body.name;
+    product.description = req.body.description;
+    product.gender = req.body.gender;
+    product.category = req.body.category;
+    product.subCategory = req.body.subCategory;
+    product.brand = req.body.brand;
+    product.color = req.body.color;
+    product.price = req.body.price;
+    product.discount = req.body.discount;
+    product.totalStock = req.body.totalStock;
+    if (req.body.cover != null && req.body.cover !== '') {
+      saveCovers(product, req.body.cover);
+      saveSizes(product, req.body.sizes, req.body.stock);
+    }
+    await product.save();
+    res.redirect(`/admin/product-control/${product.id}`);
+  } catch {
+    if (product != null) {
+      renderEditPage(res, product, true);
+    } else {
+      res.redirect('/');
+    }
+  }
+});
+
+// Delete product Page
+router.delete('/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+    await Product.findByIdAndRemove(productId);
+    res.redirect('/admin/product-control');
+  } catch (error) {
+    console.error(error);
+    res.redirect('/admin/product-control');
+  }
+});
 
 
 
