@@ -275,6 +275,50 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+async function renderNewPage(res, product, hasError = false) {
+  renderFormPage(res, product, 'new', hasError);
+}
+
+async function renderEditPage(res, product, hasError = false) {
+  renderFormPage(res, product, 'edit', hasError);
+}
+
+async function renderFormPage(res, product, form, hasError = false) {
+  const predefinedSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  try {
+    const brands = await Brand.find({});
+    const colors = await Color.find({});
+    let params;
+    if (form === 'edit') {
+       params = {
+        brands,
+        colors,
+        product,
+        sizes: predefinedSizes,
+      };
+    } else {
+       params = {
+        layout: false,
+        brands,
+        colors,
+        product,
+        sizes: predefinedSizes,
+      };
+    }
+   
+    if (hasError) {
+      if (form === 'edit') {
+        params.errorMessage = 'Error Updating product';
+      } else {
+        params.errorMessage = 'Error Creating product';
+      }
+    }
+    res.render(`admin/product-control/${form}`, params);
+  } catch (e) {
+    console.log(e);
+    res.redirect('/products');
+  }
+}
 
 
 
