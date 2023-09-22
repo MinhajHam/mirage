@@ -19,6 +19,39 @@ router.get('/', checkAuthenticated, async (req, res) => {
 
 
 
+router.get('/orders', checkAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const orders = await Order.find({ user_id: userId })
+      .sort({ createdAt: 'desc' })
+      .populate({
+        path: 'cart',
+        populate: {
+          path: 'items.product',
+        },
+      })
+      .exec();
+
+    res.render('account/orders', { order:orders });
+  } catch (error) {
+    console.error(error);
+    // Handle the error gracefully
+  }
+});
+
+
+router.get('/info', (req, res) => {
+  res.render('account/info');
+});
+
+router.get('/addresses', checkAuthenticated, async (req, res, next) => {
+  const userId = req.user._id;
+  const user = await User.findOne(userId);
+
+  res.render('account/address', { user });
+});
+
+
 
 
 
