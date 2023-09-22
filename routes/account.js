@@ -52,6 +52,20 @@ router.get('/addresses', checkAuthenticated, async (req, res, next) => {
 });
 
 
+router.get('/giftcard', checkAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const order = await Order.findOne({ user_id: userId });
+    
+    const user = await User.findOne(userId).populate('wallet.transactions').exec();
+    let walletBalance = Math.floor(user.wallet.balance);
+
+    res.render('account/giftcard', { user: user, order: order, walletBalance: walletBalance });
+  } catch (error) {
+    console.log(error);
+    res.redirect('/account');
+  }
+});
 
 
 
