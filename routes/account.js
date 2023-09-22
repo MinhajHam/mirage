@@ -142,4 +142,43 @@ router.get('/creditcardlist', (req, res, next) => {
 });
 
 
+router.post('/addresses', checkAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const newAddress = {
+      salutation: req.body.salutation,
+      fname: req.body.fname,
+      lname: req.body.lname,
+      company: req.body.company,
+      country: req.body.country,
+      postcode: req.body.postcode,
+      city: req.body.city,
+      street: req.body.street,
+      address2: req.body.address2,
+      phone: req.body.phone,
+    };
+    const user = await User.findOne(userId);
+
+    // Add the new address to the user's addresses
+    user.addresses.push(newAddress);
+
+    // Save the user's data to the database
+    await user.save();
+    res.redirect('/account/addresses');
+  } catch (error) {
+    console.error("Error saving address:", error);
+    res.redirect('/account/nope');
+  }
+});
+
+
+// router.get('/:id/edit', async (req, res) => {
+//   try {
+//     const address = await Address.findById(req.params.id);
+//     renderEditPage(res, product);
+//   } catch {
+//     res.redirect('/');
+//   }
+// });
+
 module.exports = router;
