@@ -68,6 +68,70 @@ router.get('/giftcard', checkAuthenticated, async (req, res) => {
 });
 
 
+router.post('/wallet-redeem', async (req, res) => {
+  const redeemCode = req.body.redeemCode;
+
+  try {
+    // Check if the coupon code exists in the database
+    const coupon = await Coupon.findOne({ code: redeemCode });
+
+    if (!coupon) {
+      // Coupon code not found, redirect to a failure page or show an error message
+      return res.redirect('/coupon-not-found');
+    }
+
+    // Check if the coupon is active
+    if (!coupon.isActive) {
+      // Coupon is not active, redirect to a failure page or show an error message
+      return res.redirect('/coupon-not-active');
+    }
+
+    // Check if the coupon has expired
+    const currentDate = new Date();
+    if (currentDate < coupon.validFrom || currentDate > coupon.validTo) {
+      // Coupon is expired, redirect to a failure page or show an error message
+      return res.redirect('/coupon-expired');
+    }
+
+    // Check if the coupon has been fully used (maxUses reached)
+    if (coupon.maxUses !== null && coupon.currentUses >= coupon.maxUses) {
+      // Coupon has been fully used, redirect to a failure page or show an error message
+      return res.redirect('/coupon-max-uses-reached');
+    }
+
+    // If all validation checks pass, you can proceed to apply the coupon
+    const userId = req.user._id;
+    const user = await User.findOne(userId).populate('wallet.transactions').exec();
+
+    if (coupon.walletUse === 'true') {
+      if (!user.wallet) {
+        user.wallet = { balance: 0, transactions: [] };
+      }
+      let redeemAmount = coupon.discountValue;
+
+      user.wallet.balance += redeemAmount;
+      user.wallet.transactions.push({
+        amount: coupon.discountValue,
+        transactionType: 'Mirage Gift Card',
+        operation: 'Deposit',
+      });
+      coupon.currentUses += 1;
+
+      // Save the updated user and coupon
+      await user.save();
+      await coupon.save();
+    } else {
+    return res.redirect('/fail');
+    }
+
+
+
+    return res.redirect('/account/giftcard');
+  } catch (error) {
+    console.error(error);
+    return res.redirect('/fail');
+  }
+});
 
 
 
