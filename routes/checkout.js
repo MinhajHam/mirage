@@ -47,6 +47,100 @@ router.get('/shipping', checkAuthenticated, async (req, res, next) => {
 });
 
 
+router.post('/shipping', async (req, res, next) => {
+  try {
+      const {
+          shipAddress,
+          billAddress
+      } = req.body;
+
+
+      const userId = req.user._id;
+
+      // Find the user by ID
+      const user = await User.findById(userId);
+
+      if (!user) {
+          return res.status(404).json({
+              message: "User not found"
+          });
+      }
+
+      // Find the shipping address by ID
+      const sessionshipAddress = user.addresses.find((address) => address._id.toString() === shipAddress);
+
+      if (!sessionshipAddress) {
+          return res.status(404).json({
+              message: "Shipping address not found"
+          });
+      }
+
+      // Store the found shipping address in the session (you can customize this based on your session setup)
+      req.session.shipAddress = sessionshipAddress;
+
+      if (billAddress == undefined) {
+          req.session.billAddress = sessionshipAddress;
+      } else {
+          const sessionbillAddress = user.addresses.find((address) => address._id.toString() === billAddress);
+
+          req.session.billAddress = sessionbillAddress;
+      }
+
+      res.redirect('/checkout/payment')
+  } catch (error) {
+      console.error("Error during shipping checkout:", error);
+      res.status(500).json({
+          message: "Internal server error"
+      });
+  }
+})
+
+
+router.get('/payment', (req, res, next) => {
+  res.render('checkout/payment', {
+      indexUrl: req.session.indexUrl,
+  });
+});
+
+
+router.post('/payment', (req, res, next) => {
+  try {
+      const {
+          paymethod
+      } = req.body;
+      req.session.paymentMethod = paymethod;
+      res.redirect('/checkout/confirmation')
+  } catch (error) {
+      res.redirect('/checkout/payment')
+  }
+});
+
+router.get('/confirmation', async (req, res, next) => {
+  try {
+      const userId = req.user._id;
+      const user = await User.findOne(userId).populate('wallet.transactions').exec();
+      const cart = await Cart.findOne({
+          user_id: userId
+      }).populate('items.product');
+      const shipAddress = req.session.shipAddress;
+      const billAddress = req.session.billAddress;
+      const paymethod = req.session.paymentMethod;
+
+      res.render('checkout/confirmation', {
+          indexUrl: req.session.indexUrl,
+          user: user,
+          ship: shipAddress,
+          bill: billAddress,
+          paymethod: paymethod,
+          cart: cart,
+          paypalClientId: process.env.PAYPAL_CLIENT_ID,
+      });
+  } catch (error) {
+      console.log(error);
+      res.redirect('/checkout/failed')
+  }
+});
+
 
 
 
