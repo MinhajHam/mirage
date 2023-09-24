@@ -227,6 +227,55 @@ router.get('/updateProducts', async (req, res, next) => {
 
 
 
+router.get('/saveorder', async (req, res) => {
+  try {
+      const userId = req.user._id;
+
+      ;
+
+      // Find the cart by user_id
+      const cart = await Cart.findOne({
+          user_id: userId
+      });
+
+      console.log(cart);
+
+      if (!cart) {
+          return res.status(404).json({
+              message: 'Cart not found'
+          });
+      }
+
+      // Loop through items in the cart
+      for (const item of cart.items) {
+          const product = await Product.findById(item.product);
+
+          if (!product) {
+              continue; // Move to the next item if product not found
+          }
+
+          // Update product stock and total stock
+          const sizeIndex = product.sizes.findIndex(size => size.sizeName === item.size);
+          if (sizeIndex !== -1) {
+              product.sizes[sizeIndex].stock -= item.quantity;
+              product.totalStock -= item.quantity;
+              await product.save();
+          }
+      }
+
+      await cart.deleteOne();
+
+      res.render('checkout/save', {
+          indexUrl: req.session.indexUrl,
+      })
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+          message: 'Error updating products and cart'
+      });
+  }
+});
+
 
 
 
