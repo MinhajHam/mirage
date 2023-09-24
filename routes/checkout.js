@@ -143,6 +143,89 @@ router.get('/confirmation', async (req, res, next) => {
 
 
 
+router.get('/updateProducts', async (req, res, next) => {
+  try {
+      function generateRandomCode() {
+          const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+          const randomNumber = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+          return randomLetter + randomNumber;
+      }
+
+      
+        const userId = req.user._id;
+
+        const user = await User.findOne(userId).populate('wallet.transactions').exec();
+        
+      
+
+      const randomCode = generateRandomCode();
+      const shipAddress = req.session.shipAddress;
+
+      const fname = shipAddress.fname;
+      const lname = shipAddress.lname;
+
+      const paymethod = req.session.paymentMethod;
+      const cart = await Cart.findOne({
+          user_id: userId
+      }).populate('items.product');
+
+      let amount = cart.total;
+      let currStatus;
+      if (paymethod == 'cod') {
+          currStatus = 'Pending'
+      } else {
+          currStatus = 'Success'
+      }
+      
+
+      const newOrder = new Order({
+          orderNo: randomCode,
+          paymentMethod: req.session.paymentMethod,
+          user_id: userId,
+          cart: cart,
+          shippingAddress: shipAddress,
+          billingAddress: shipAddress,
+      })
+
+      await newOrder.save();
+
+      const newPayment = new Payment({
+          fname: fname,
+          lname: lname,
+          orderNo: randomCode,
+          order: newOrder,
+          paymentMethod: paymethod,
+          amount: amount,
+          status: currStatus,
+      })
+
+      await newPayment.save();
+
+
+
+        if (user && user.wallet && user.wallet.balance !== undefined) {
+            let newAmount = user.wallet.balance - req.session.newBalance;
+
+            user.wallet.transactions.push({
+                amount: -newAmount,
+                transactionType: 'Debited to Purchase',
+                operation: 'Withdrawal',
+              });
+
+        user.wallet.balance = req.session.newBalance;
+        await user.save();
+        } 
+
+
+      res.redirect('/checkout/saveorder');
+  } catch (error) {
+      console.log(error);
+      res.redirect('/checkout/fail')
+  }
+});
+
+
 
 
 
