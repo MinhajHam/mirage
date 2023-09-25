@@ -279,6 +279,196 @@ router.get('/saveorder', async (req, res) => {
 
 
 
+router.post("/payment-confirm", async (req, res) => {
+  try {
+      const user_id = req.user._id;
+      const wallet = req.body.wallet;
+      const cents = req.body.price;
+      let newBalance;
+      
+      console.log(wallet);
+
+    const user = await User.findOne(user_id).populate('wallet.transactions').exec();
+    let currBalance ;
+
+    if (user && user.wallet && user.wallet.balance !== undefined) {
+        currBalance = user.wallet.balance;
+      } else {
+        currBalance = 0;
+      }
+      
+
+      // Fetch the cart for the user
+      const cart = await Cart.findOne({
+          user_id
+      }).populate('items.product');
+
+      if (!cart) {
+          throw new Error("Cart not found for the user.");
+      }
+
+// Initialize total quantity
+    let totalQuantity = 0;
+
+    // Calculate total quantity
+    for (const cartItem of cart.items) {
+      totalQuantity += cartItem.quantity;
+    }
+
+    const tax = 110;
+    let discount;
+    let price = cents*100;
+    let newPrice;
+
+    if(cents < currBalance) {
+        newBalance = currBalance - cents;
+        discount = price / totalQuantity;
+    }
+
+    if(cents > currBalance) {
+        newBalance = 0;
+        newPrice = currBalance*100
+        discount = newPrice / totalQuantity;
+    }
+
+    req.session.newBalance = newBalance;
+
+      const session = await stripe.checkout.sessions.create({
+          payment_method_types: ["card"],
+          mode: "payment",
+          line_items: cart.items.map(cartItem => {
+              const product = cartItem.product;
+
+              return {
+                  price_data: {
+                      currency: "usd",
+                      product_data: {
+                          name: product.name,
+                      },
+                      unit_amount: cartItem.product.price * tax - discount,
+
+                  },
+                  quantity: cartItem.quantity,
+              };
+          }),
+
+          success_url: `${process.env.CLIENT_URL}/checkout/updateProducts`,
+          cancel_url: `${process.env.CLIENT_URL}/checkout/confirmation`,
+      });
+
+      res.json({
+          url: session.url
+      });
+  } catch (e) {
+    console.log(e);
+      res.status(500).json({
+          error: e.message
+      });
+  }
+});
+
+
+
+
+router.post("/create-order", async (req, res) => {
+  const userId = req.user.id; // Assuming you have user authentication in place
+
+  try {
+      const cart = await Cart.findOne({
+          user_id: userId
+      }).populate("items.product");
+
+      if (!cart) {
+          return res.status(400).json({
+              error: "Cart not found"
+          });
+      }
+
+      const request = new paypal.orders.OrdersCreateRequest();
+
+      const totalWithoutTax = cart.items.reduce((sum, cartItem) => {
+          return sum + cartItem.product.price * cartItem.quantity;
+      }, 0);
+
+      const totalTax = totalWithoutTax * 0.1; // 10% tax
+      const total = totalWithoutTax + totalTax;
+
+      request.prefer("return=representation");
+      request.requestBody({
+          intent: "CAPTURE",
+          purchase_units: [{
+              amount: {
+                  currency_code: "USD",
+                  value: total,
+                  breakdown: {
+                      item_total: {
+                          currency_code: "USD",
+                          value: totalWithoutTax,
+                      },
+                      tax_total: {
+                          currency_code: "USD",
+                          value: totalTax,
+                      },
+                  },
+              },
+              items: cart.items.map(cartItem => ({
+                  name: cartItem.product.name,
+                  unit_amount: {
+                      currency_code: "USD",
+                      value: cartItem.product.price,
+                  },
+                  quantity: cartItem.quantity,
+              })),
+          }, ],
+      });
+
+      const order = await paypalClient.execute(request);
+      res.json({
+          id: order.result.id
+      });
+  } catch (e) {
+      res.status(500).json({
+          error: e.message
+      });
+      console.log(e);
+  }
+});
+
+
+
+
+router.get('/cartsave', checkAuthenticated, async (req, res) => {
+  try {
+      // Retrieve the cart items from the session
+      const sessionCart = req.session.cart || [];
+
+      // Create a new Cart document based on the session cart
+      const cart = new Cart({
+          user_id: req.user.id, // Assuming you have user authentication and req.user is available
+          items: sessionCart,
+          total_items: req.session.totalItems || 0,
+          subtotal: req.session.cartSubtotal || 0,
+          tax: req.session.cartTax || 0,
+          total: req.session.cartTotal || 0,
+      });
+
+      // Save the cart to the database
+      await cart.save();
+
+      // Clear the session cart since it's now saved in the database
+      req.session.cart = [];
+      req.session.totalItems = 0;
+      req.session.cartSubtotal = 0;
+      req.session.cartTax = 0;
+      req.session.cartTotal = 0;
+
+      res.redirect('/checkout'); // Redirect to a success page
+  } catch (error) {
+      console.error('Error saving cart to database:', error);
+      res.status(500).send('An error occurred while processing the checkout.');
+  }
+});
+
 
 
 
