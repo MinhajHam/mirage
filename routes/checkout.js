@@ -668,6 +668,87 @@ router.post('/cart/add',checkAuthenticated, async (req, res) => {
 });
 
 
+// /////////////////
+
+router.post('/cart/:id/remove', async (req, res) => {
+  try {
+
+      if (req.session.authCart == 'closed' || req.session.authCart == undefined) {
+
+          const {
+              productId
+          } = req.params;
+          const cart = req.session.cart || [];
+
+          // Find the index of the item in the cart
+          const itemIndex = cart.findIndex(item => item.product === productId);
+
+          if (itemIndex !== -1) {
+              const removedItem = cart.splice(itemIndex, 1)[0];
+
+              // Update session variables for cart
+              req.session.cart = cart;
+              req.session.cartSubtotal -= removedItem.subtotal;
+              req.session.cartTax -= removedItem.subtotal * 0.1; // Update tax accordingly
+              req.session.cartTotal -= removedItem.subtotal * 1.1; // Update total accordingly
+              req.session.subtotalItems -= removedItem.quantity;
+          }
+
+          res.redirect('/checkout/cart');
+
+      } else {
+
+
+
+          const itemId = req.params.id;
+
+          // Find the cart that contains the item to be removed
+          const cart = await Cart.findOne({
+              'items._id': itemId
+          });
+
+          if (!cart) {
+              return res.status(404).json({
+                  error: 'Item not found in the cart'
+              });
+          }
+
+          // Find the index of the item to be removed within the cart's items array
+          const itemIndex = cart.items.findIndex(item => item._id.toString() === itemId);
+
+          if (itemIndex === -1) {
+              return res.status(404).json({
+                  error: 'Item not found in the cart'
+              });
+          }
+
+          // Get the item being removed for later calculations
+          const removedItem = cart.items[itemIndex];
+
+          // Remove the item from the cart's items array
+          cart.items.splice(itemIndex, 1);
+
+          // Update the cart's subtotal_items, total, tax, and subtotal based on the removed item
+          cart.total_items -= removedItem.quantity;
+          cart.subtotal -= removedItem.subtotal;
+          cart.tax -= removedItem.subtotal * 0.1; // Assuming tax is 10% of the removed item's subtotal
+          cart.total -= removedItem.total;
+
+          // Save the updated cart to the database
+          await cart.save();
+
+          res.redirect('/checkout/cart');
+
+      }
+
+  } catch (error) {
+      console.error('Error removing item from cart:', error);
+      res.status(500).json({
+          error: 'An error occurred while removing item from cart'
+      });
+  }
+});
+
 
 
 
