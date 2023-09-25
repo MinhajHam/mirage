@@ -524,6 +524,150 @@ router.get('/cart',checkAuthenticated, async (req, res, next) => {
 // ////////////
 
 
+// Add item to the cart
+router.post('/cart/add',checkAuthenticated, async (req, res) => {
+
+  try {
+    console.log(req.session.authCart);
+
+      if (req.session.authCart == 'closed' || req.session.authCart == undefined) {
+
+          const {
+              productId,
+              quantity,
+              productName
+          } = req.body;
+
+          // Get the product details (Replace this with your actual product retrieval code)
+          const product = await Product.findById(productId);
+
+          if (!product) {
+              return res.status(404).send('Product not found');
+          }
+
+          const price = product.price;
+          const subtotal = price * quantity;
+          const tax = subtotal * 0.1; // Assuming tax is 10% of the subtotal
+          const total = Math.floor(subtotal + tax);
+
+          // Check if the cart already exists in the session
+          if (!req.session.cart) {
+              req.session.cart = [];
+          }
+
+          // Check if the product is already in the cart
+          const existingItemIndex = req.session.cart.findIndex(item => item.product === productId);
+
+          if (existingItemIndex !== -1) {
+              // Increment the quantity of the existing item
+              req.session.cart[existingItemIndex].quantity += Number(quantity); // Convert to number
+              req.session.cart[existingItemIndex].subtotal += subtotal;
+          } else {
+              // Create a new cart item
+              const newItem = {
+                  name: productName,
+                  product: productId,
+                  quantity: Number(quantity), // Convert to number
+                  price: price,
+                  subtotal: subtotal,
+                  total: total,
+              };
+
+              // Add the new item to the cart
+              req.session.cart.push(newItem);
+          }
+
+          // Update the cart values in the session
+          req.session.cartSubtotal = (req.session.cartSubtotal || 0) + subtotal;
+          req.session.cartTax = (req.session.cartTax || 0) + tax;
+          req.session.cartTotal = (req.session.cartTotal || 0) + total;
+          req.session.totalItems = (req.session.totalItems || 0) + Number(quantity); // Convert to number
+
+          res.redirect('/');
+
+      } else {
+
+          const {
+              userId,
+              productId,
+              quantity,
+              size
+          } = req.body;
+
+
+          // Get the product details
+          const product = await Product.findById(productId);
+
+          if (!product) {
+              return res.status(404).json({
+                  error: 'Product not found'
+              });
+          }
+
+          // Calculate cart values based on the product and quantity
+          const price = product.price;
+          const subtotal = price * quantity;
+          const tax = subtotal * 0.1; // Assuming tax is 10% of the subtotal
+          const total = subtotal + tax;
+
+          // Find the user's cart or create a new cart if it doesn't exist
+          let cart = await Cart.findOne({
+              user_id: userId
+          });
+          if (!cart) {
+              cart = new Cart({
+                  user_id: userId,
+                  items: [],
+                  subtotal: 0,
+                  tax: 0,
+                  total: 0,
+                  total_items: 0, // Initialize total_items to 0
+              });
+          }
+
+          // Check if the product already exists in the cart
+          const existingItemIndex = cart.items.findIndex(item => item.product.toString() === productId && item.size === size);
+          if (existingItemIndex !== -1) {
+              // If the product with the same size already exists, update the existing item's quantity
+              cart.items[existingItemIndex].quantity++;
+              cart.items[existingItemIndex].subtotal += subtotal;
+              cart.items[existingItemIndex].total += total;
+          } else {
+              // Create a new cart item
+              const newItem = {
+                  product: productId,
+                  size: size, // Include the "size" property
+                  quantity: quantity,
+                  price: price,
+                  subtotal: subtotal,
+                  total: total,
+              };
+              cart.items.push(newItem);
+          }
+
+          // Calculate the total quantity of all items in the cart
+          const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+          cart.total_items = totalQuantity;
+
+          // Update the cart totals
+          cart.subtotal += subtotal;
+          cart.tax += tax;
+          cart.total += total;
+
+          // Save the cart to the database
+          await cart.save();
+
+          res.redirect('/checkout/cart');
+
+      }
+
+  } catch (error) {
+      console.error('Error adding item to cart:', error);
+      res.status(500).send('An error occurred while adding item to cart.');
+  }
+});
+
+
 
 
 
