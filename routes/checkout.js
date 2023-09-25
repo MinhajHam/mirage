@@ -470,6 +470,19 @@ router.get('/cartsave', checkAuthenticated, async (req, res) => {
 });
 
 
+// router.get('/cart', checkAuthenticated, async (req, res, next) => {
+//   const userId = req.user.id;
+//   try {
+//     let cart = await Cart.findOne({ user_id: userId }).populate('items.product');
+
+//     res.render('cart.ejs', { cart: cart });
+//   } catch (error) {
+//     console.error('Error rendering cart:', error);
+//     res.status(500).send('An Error getting User ID.');
+//   }
+// });
+
+
 
 
 
