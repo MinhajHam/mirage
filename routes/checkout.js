@@ -482,6 +482,47 @@ router.get('/cartsave', checkAuthenticated, async (req, res) => {
 //   }
 // });
 
+router.get('/cart',checkAuthenticated, async (req, res, next) => {
+  try {
+      const sessionCart = req.session.cart || [];
+      const auth = req.user;
+
+      if (auth) {
+          const userId = req.user._id;
+          nullCart = null;
+          const cart = await Cart.findOne({
+              user_id: userId
+          }).populate('items.product');
+
+          // Calculate the total price using the items array in the cart
+
+
+          res.render('checkout/cart.ejs', {
+              cart: cart,
+              sessionCart: nullCart,
+              indexUrl: req.session.indexUrl
+          });
+      } else {
+          // Calculate the total price using the session cart
+          const totalPrice = sessionCart.reduce((acc, item) => {
+              return acc + item.total;
+          }, 0);
+
+          res.render('checkout/cart.ejs', {
+              sessionCart: sessionCart,
+              totalPrice: totalPrice,
+              indexUrl: req.session.indexUrl,
+          });
+      }
+  } catch (error) {
+      console.error('Error rendering cart:', error);
+      res.status(500).send('An error occurred while getting cart items from the session.');
+  }
+});
+
+
+// ////////////
+
 
 
 
