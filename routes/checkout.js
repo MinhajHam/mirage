@@ -750,6 +750,62 @@ router.post('/cart/:id/remove', async (req, res) => {
 });
 
 
+router.post('/count', async (req, res) => {
+  const {
+      action,
+      itemId
+  } = req.body;
+  console.log('Received request:', req.body)
+
+  if (action && itemId) {
+      try {
+          const cart = await Cart.findOne({
+              'items._id': itemId
+          }).populate('items.product');
+
+          if (!cart) {
+              return res.status(404).json({
+                  error: 'Item not found in cart'
+              });
+          }
+
+          const item = cart.items.find(item => item._id.toString() === itemId);
+
+          if (!item) {
+              return res.status(404).json({
+                  error: 'Item not found in cart'
+              });
+          }
+
+          const quantityChange = action === 'increment' ? 1 : -1;
+
+          // Update item quantity and related properties
+          item.quantity += quantityChange;
+          item.subtotal = item.quantity * item.product.price;
+          item.total = item.subtotal;
+
+          // Update cart properties based on the item changes
+          const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+          cart.total_items = totalQuantity;
+
+          // Recalculate cart subtotal, tax, and total
+          cart.subtotal = cart.items.reduce((total, cartItem) => total + cartItem.subtotal, 0);
+          cart.tax = cart.subtotal * 0.1; // Assuming 10% tax
+          cart.total = cart.subtotal + cart.tax;
+
+          await cart.save();
+
+          res.redirect('/checkout/cart');
+      } catch (error) {
+          console.error('Error updating item quantity:', error);
+          res.status(500).send('An error occurred while updating item quantity.');
+      }
+  } else {
+      return res.status(400).json({
+          error: 'Invalid request parameters'
+      });
+  }
+});
 
 
 
