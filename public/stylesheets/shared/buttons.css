@@ -1,0 +1,92 @@
+:root {
+  --color-bttn-pri-background: hsl(var(--color-base-hue), 0%,0%);
+  --color-bttn-pri-background-dark: hsl(var(--color-base-hue), 28%, 29%);
+  --color-bttn-pri-text: hsl(var(--color-base-hue), 100%, 100%);
+  --color-bttn-pri-text-dark: hsl(var(--color-base-hue), 100%, 100%);
+
+  --color-bttn-border: black;
+
+  --color-bttn-dan-background: hsl(356, 100%, 100%);
+  --color-bttn-dan-background-dark: hsl(356, 57%, 52%);
+  --color-bttn-dan-text: hsl(356, 57%, 52%);
+  --color-bttn-dan-text-dark: rgb(255, 255, 255);
+
+  --color-bttn-info-background: hsl(211, 28%, 69%);
+  --color-bttn-info-background-dark: hsl(212, 20%, 32%);
+  --color-bttn-info-text: hsl(211, 51%, 26%);
+  --color-bttn-info-text-dark: rgb(255, 255, 255);
+  
+}
+
+.bttn, .buttn {
+  letter-spacing: .08rem;
+  padding: .3em 1rem;
+  font-size: .78rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  line-height: 130%;
+  letter-spacing: .07rem;
+  text-transform: uppercase;
+}
+
+.bttn {
+  letter-spacing: .08rem;
+  padding: .3em 2rem;
+  font-size: .88rem;
+  border: 1px solid var(--color-bttn-border);
+}
+
+.bttn-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.bttn-row > * {
+  margin-left: 1rem;
+}
+
+.bttn-row > *:first-child {
+  margin-left: 0;
+}
+
+.bttn-pri {
+  color: var(--color-bttn-pri-text);
+  background-color: var(--color-bttn-pri-background);
+}
+
+.bttn-pri:hover {
+  color: var(--color-bttn-pri-text-dark);
+  background-color: var(--color-bttn-pri-background-dark);
+}
+
+.bttn-dan {
+  color: var(--color-bttn-dan-text);
+  background-color: var(--color-bttn-dan-background);
+}
+
+.bttn-dan:hover {
+  color: var(--color-bttn-dan-text-dark);
+  background-color: var(--color-bttn-dan-background-dark);
+}
+
+.bttn-info {
+  color: var(--color-bttn-info-text);
+  background-color: var(--color-bttn-info-background);
+}
+
+.bttn-info:hover {
+  color: var(--color-bttn-info-text-dark);
+  background-color: var(--color-bttn-info-background-dark);
+}
+
+.bttn-secondary {
+  color: rgb(24, 24, 24);
+  background-color: rgb(231, 231, 231);
+}
+
+.bttn-secondary:hover {
+  color: rgb(24, 24, 24);
+  background-color: rgb(231, 231, 231);
+  opacity: 0.8;
+}

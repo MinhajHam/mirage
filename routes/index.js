@@ -1,9 +1,37 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const Product = require('../models/product');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+
+// Define routes and their handlers
+
+router.get('/', async (req, res, next) => {
+  req.session.indexUrl = 'men';
+  res.redirect('/men');
+});
+
+router.get('/open', async (req, res, next) => {
+  req.session.indexUrl = 'men';
+  res.redirect('/men');
+});
+
+router.get('/test', async (req, res, next) => {
+  res.render('test');
+});
+
+router.get('/blocked', async (req, res, next) => {
+  res.render('partials/block');
+});
+
+router.delete('/logout', (req, res) => {
+  req.logout(function (err) {
+    if (err) {
+      console.error(err);
+      return res.redirect('/');
+    }
+    res.redirect('/');
+  });
 });
 
 module.exports = router;
+

@@ -1,0 +1,214 @@
+@import 'shared/variables.css';
+@import 'shared/fonts.css';
+@import 'shared/header.css';
+@import 'shared/buttons.css';
+@import 'shared/form.css';
+@import 'shared/author.css';
+@import 'shared/books.css';
+@import 'shared/pages.css';
+
+:root {
+  font-family: 'Futura Std';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  color: var(--color-text-light);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html body {
+  background: linear-gradient(to right, var(--color-background-dark), var(--color-background-light));
+  padding-left: 25px;
+  padding-right: 25px;
+  font-family: 'Futura Std';
+
+}
+
+.main-container {
+  font-family: 'Futura Std';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  max-width: 1440px;
+  margin: auto;
+  margin-bottom: 3rem;
+}
+
+.inner-container {
+  margin: 0 2rem;
+}
+
+.page-header {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.error-message {
+  color: hsl(var(--color-danger-hue), 100%, 50%);
+}
+
+
+
+/* Hide the default checkboxes */
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+
+.custom-checkbox span {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 18px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-size: 26px; 
+}
+
+
+.custom-checkbox input[type="checkbox"]:checked + span {
+  color: #00ff95;
+}
+
+
+.checkbox-container label {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+
+.background-radial-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: hsl(128, 40%, 15%);
+      background-image: radial-gradient(650px circle at 0% 0%,
+          hsl(120, 41%, 35%) 15%,
+          hsla(120, 41%, 30%, 0.678) 35%,
+          hsl(140, 41%, 20%) 75%,
+          hsl(131, 40%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsla(128, 41%, 45%, 0.651) 15%,
+          hsl(128, 41%, 30%) 35%,
+          hsl(129, 41%, 20%) 75%,
+          hsl(151, 40%, 19%) 80%,
+          transparent 100%);
+    }
+
+    #radius-shape-1 {
+      height: 220px;
+      width: 220px;
+      top: -60px;
+      left: -130px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    #radius-shape-2 {
+      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+      bottom: -60px;
+      right: -110px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    .bg-glass {
+      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      backdrop-filter: saturate(200%) blur(25px);
+    }
+    
+    .vertical-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .login-square, .back-square {
+      background-color: #6F5E22;
+      color: #F7EAD8;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      height: 40px;
+      margin-top: 10px;
+    }
+    .back-square {
+      background-color: #ccc;
+      color: #6F5E22;
+      border: 1px solid #ccc;
+      width: 50%;
+    }
+    .back-square:hover, .login-square:hover {
+      background-color: 	#17361b;
+      color: #ccc;
+      border: 1px solid #ccc;
+    }
+    a:hover {
+      color: 	#122815;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .forgot-password {
+      align-self: flex-end;
+      margin-top: 5px;
+    }
+    .back-bar {
+        width: 50%;
+    }
+
+    .inputs input {
+        width: 40px;
+        height: 40px;
+      }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0;
+      }
+      .card-2 {
+        background-color: #fff;
+        padding: 10px;
+        width: 350px;
+        height: 100px;
+        bottom: -50px;
+        left: 20px;
+        position: absolute;
+        border-radius: 5px;
+      }
+      .card-2 .content {
+        margin-top: 50px;
+      }
+      .card-2 .content a {
+        color: red;
+      }
+      .form-control:focus {
+        box-shadow: none;
+        border: 2px solid red;
+      }
+      .validate {
+        border-radius: 20px;
+        height: 40px;
+        background-color: red;
+        border: 1px solid red;
+        width: 140px;
+      }
+
+      .addr-bar {
+        padding: 5%;
+        border: #989d9e 2px solid;
+      }

@@ -1,0 +1,74 @@
+:root {
+  --book-cover-width: 250px; /* Adjust the width as needed */
+  --book-cover-width-large: 330px; /* Adjust the width as needed */
+  --book-cover-aspect-ratio: 0.75;
+}
+
+
+.book-cover {
+  width: var(--book-cover-width);
+  height: calc(var(--book-cover-width) / var(--book-cover-aspect-ratio));
+}
+
+.book-cover-large {
+  --book-cover-width: var(--book-cover-width-large);
+}
+
+.book-grid {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next row */
+  justify-content: space-between;
+  align-content: flex-start;
+  max-width: 100%;
+}
+
+
+
+
+.book-details {
+  display: flex;
+}
+
+.book-details-label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.book-details-grid {
+  display: grid;
+  align-content: flex-start;
+  align-items: center;
+  grid-gap: 1rem;
+  grid-template-columns: auto auto;
+}
+
+.book-details-btn-grid {
+  display: grid;
+  justify-items: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  grid-template-areas:
+    "edit delete"
+    "author author";
+  grid-gap: .5rem;
+  margin-top: .5rem;
+}
+
+.book-details-author-button {
+  grid-area: author;
+  justify-self: stretch;
+}
+
+/* Example CSS modifications */
+#carouselExampleIndicators {
+  max-height: 400px; /* Set a maximum height for the carousel */
+  overflow: hidden; /* Hide overflowing content */
+}
+
+.carousel-inner img {
+  max-height: 100%; /* Ensure images fit within the carousel container */
+ 
+}
+
+

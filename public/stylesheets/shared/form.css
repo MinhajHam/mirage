@@ -1,0 +1,90 @@
+:root {
+  --form-label-font-size: 1.2rem;
+  --form-input-background-color: hsl(0, 0%, 97%);
+  --form-input-border-color: hsl(207, 6%, 65%);
+  --form-input-border-color-light: hsl(221, 100%, 80%);
+}
+
+.form-row {
+  display: flex;
+  margin-bottom: .5rem;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.form-item:first-child {
+  margin-left: 0;
+}
+
+.form-item-no-grow {
+  flex-grow: 0;
+}
+
+.form-row-end {
+  justify-content: flex-end;
+}
+
+.form-item > label {
+  font-size: var(--form-label-font-size);
+  margin-bottom: .25rem;
+  margin-left: .25rem;
+}
+
+.form-item input, .form-item select, .form-item textarea {
+  height: 2rem;
+  padding: .25rem .5rem;
+ background-color: white;
+  font-size: 1rem;
+
+  outline: none;
+}
+
+
+input {
+  border: none;
+  outline: none;
+  background-color: transparent; /* Optional: Remove input background */
+}
+
+/* Add a bottom border */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"] {
+  border-bottom: 2px solid #000; /* Change the color to your desired color */
+}
+
+
+.form-item textarea {
+  height: 100%;
+  resize: none;
+}
+
+.form-item select option {
+  background-color: rgb(223, 223, 223);
+}
+
+.form-item input:focus, .form-item select:focus, .form-item textarea:focus {
+  border-color: var(--form-input-border-color-light);
+}
+
+.filepond--root {
+  font-family: 'Gotham Rounded';
+  margin-bottom: 0;
+}
+
+.filepond--panel-root {
+  background-color: var(--form-input-background-color);
+  border: 1px solid var(--form-input-border-color);
+}
+
+.filepond--drop-label {
+  color: var(--color-text-light);
+  font-size: inherit;
+}
