@@ -810,6 +810,90 @@ router.post('/count', async (req, res) => {
 
 
 
+// Add item to the cart
+// router.post('/cart/add', async (req, res) => {
+//   try {
+//     const { productId, quantity, productName } = req.body;
+
+//     // Get the product details (Replace this with your actual product retrieval code)
+//     const product = await Product.findById(productId);
+
+//     if (!product) {
+//       return res.status(404).send('Product not found');
+//     }
+
+//     const price = product.price;
+//     const subtotal = price * quantity;
+//     const tax = subtotal * 0.1; // Assuming tax is 10% of the subtotal
+//     const total = Math.floor(subtotal + tax);
+
+//     // Check if the cart already exists in the session
+//     if (!req.session.cart) {
+//       req.session.cart = [];
+//     }
+
+//     // Check if the product is already in the cart
+//     const existingItemIndex = req.session.cart.findIndex(item => item.product === productId);
+
+//     if (existingItemIndex !== -1) {
+//       // Increment the quantity of the existing item
+//       req.session.cart[existingItemIndex].quantity += Number(quantity); // Convert to number
+//       req.session.cart[existingItemIndex].subtotal += subtotal;
+//     } else {
+//       // Create a new cart item
+//       const newItem = {
+//         name: productName,
+//         product: productId,
+//         quantity: Number(quantity), // Convert to number
+//         price: price,
+//         subtotal: subtotal,
+//         total: total,
+//       };
+
+//       // Add the new item to the cart
+//       req.session.cart.push(newItem);
+//     }
+
+//     // Update the cart values in the session
+//     req.session.cartSubtotal = (req.session.cartSubtotal || 0) + subtotal;
+//     req.session.cartTax = (req.session.cartTax || 0) + tax;
+//     req.session.cartTotal = (req.session.cartTotal || 0) + total;
+//     req.session.totalItems = (req.session.totalItems || 0) + Number(quantity); // Convert to number
+
+//     res.redirect('/checkout/cart');
+//   } catch (error) {
+//     console.error('Error adding item to cart:', error);
+//     res.status(500).send('An error occurred while adding item to cart.');
+//   }
+// });
+
+// // Remove item from cart
+// router.post('/cart/:productId/remove', async (req, res) => {
+//   try {
+//     const { productId } = req.params;
+//     const cart = req.session.cart || [];
+
+//     // Find the index of the item in the cart
+//     const itemIndex = cart.findIndex(item => item.product === productId);
+
+//     if (itemIndex !== -1) {
+//       const removedItem = cart.splice(itemIndex, 1)[0];
+
+//       // Update session variables for cart
+//       req.session.cart = cart;
+//       req.session.cartSubtotal -= removedItem.subtotal;
+//       req.session.cartTax -= removedItem.subtotal * 0.1; // Update tax accordingly
+//       req.session.cartTotal -= removedItem.subtotal * 1.1; // Update total accordingly
+//       req.session.subtotalItems -= removedItem.quantity;
+//     }
+
+//     res.redirect('/checkout/cart');
+//   } catch (error) {
+//     console.error('Error removing item from cart:', error);
+//     res.status(500).send('An error occurred while removing item from cart.');
+//   }
+// });
+
 
 
 module.exports = router;
