@@ -201,10 +201,22 @@ router.put('/order/:id/cancel', async (req, res) => {
         transactionType: 'product cancellation refund',
         operation: 'Deposit',
       });
+      
 
       // Save the updated user and order
       await user.save();
     }
+
+      // update and save the order track
+      const lastTrack = order.track[order.track.length - 1];
+      lastTrack.status = 'pending';
+      let newTrack = {
+        status: 'cancel',
+        note: 'Your order cancelled',
+        created_at: new Date()
+      }
+
+      order.track.push(newTrack);
 
       await order.save();
     }

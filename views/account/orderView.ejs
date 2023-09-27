@@ -1,0 +1,384 @@
+
+<div class="row">
+    <div class="col-md-3 side-box"> 
+      <%- include('side_bar') %>
+    </div>
+    <div class="col-md-9 main-box">
+       <!-- Content (3/4 width on large screens) -->
+
+      
+    <br>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">○</th>
+          <th scope="col">Product</th>
+          <th scope="col">Size</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+          <th scope="col">Total*</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% order.cart.items.forEach(item => { %>
+    
+          
+          <tr>
+            <th scope="row">○</th>
+            <td>
+                <img src="<%= item.product.coverImagePath1 %>" alt="<%= item.product.name %> Image" width="60" height="60">
+                <%= item.product.name %>
+              </td>
+            <td><%= item.size %></td>
+            <td><%= item.quantity %></td>
+            <td><%= item.product.price %></td>
+            <td><%= item.subtotal %></td>
+          </tr>
+    
+    
+        <% }) %>
+        
+      </tbody>
+      </table>
+    
+        
+
+      <div class="addr-order">
+        <div style="margin-top: 1rem;" class="author-row">
+          <div><%= order.shippingAddress.fname %> <%= order.shippingAddress.lname %></div><br>
+          <div><%= order.shippingAddress.street %></div><br>
+          <div><%= order.shippingAddress.city %></div>
+        </div>
+        <div class="author-row">
+            <div><%= order.shippingAddress.postcode %></div><br>
+            <div><%= order.shippingAddress.phone %></div><br>
+            <div> <%= order.shippingAddress.country %></div>
+      </div>
+    </div>
+    <br>
+    <% if(order.status !== 'Cancelled') { %>
+      <div>Status: <span style="color: #256ccf;"><%= order.status %></span></div>
+      <div>Note: <span style="color: #050202;"><%= order.message %>.</span></div>
+    <% }else{ %>
+      <div>Status: <span style="color: #cf2525;"><%= order.status %></span></div>
+      <div>Note: <span style="color: #cf2525;"><%= order.message %>.</span></div>
+      <% } %>
+    <br>
+
+    <p class="bttn bttn-pri text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#orderTrack">Track Order</p>
+
+          
+          <div id="orderTrack" class="collapse">
+
+            <div class="">
+
+              <% order.track.forEach(track => { %>
+              <% if(track.status === 'start') { %>
+
+                <div class="track-box-check">
+                  <div class="time-box-check">
+                    <div class="track-time"><%= track.created_at.getHours().toString().padStart(2, '0') %>:<%= track.created_at.getMinutes().toString().padStart(2, '0') %></div>
+                    <div class="track-date">
+                      <%= track.created_at.getDate().toString().padStart(2, '0') %>
+                      <%= track.created_at.toLocaleString('default', { month: 'short' }) %>
+                    </div>
+                  </div>
+          
+                  <div class="track-dot-check">
+                    <div class="order-line-cancel"></div>
+                    <div class="order-dot-check"><i class="bi bi-check-circle-fill"></i></div>
+                    <div class="order-line-check"></div>
+                  </div>
+                  <div class="track-msg-check">
+                    <h5><%= track.note %></h5>
+          
+                  </div>
+                </div>
+
+                <% } else if (track.status === 'done') { %>
+
+                  <div class="track-box-check">
+                    <div class="time-box-check">
+                      <div class="track-time"><%= track.created_at.getHours().toString().padStart(2, '0') %>:<%= track.created_at.getMinutes().toString().padStart(2, '0') %></div>
+                      <div class="track-date">
+                        <%= track.created_at.getDate().toString().padStart(2, '0') %>
+                        <%= track.created_at.toLocaleString('default', { month: 'short' }) %>
+                      </div>
+                    </div>
+            
+                    <div class="track-dot-check">
+                      <div class="order-line-check"></div>
+                      <div class="order-dot-check"><i class="bi bi-check-circle-fill"></i></div>
+                      <div class="order-line-check"></div>
+                    </div>
+                    <div class="track-msg-check">
+                      <h5><%= track.note %></h5>
+            
+                    </div>
+                  </div>
+
+                  <% } else if (track.status === 'pending') { %>
+
+                  <div class="track-box-uncheck">
+                    <div class="time-box-uncheck">
+                        <div class="track-time"><%= track.created_at.getHours().toString().padStart(2, '0') %>:<%= track.created_at.getMinutes().toString().padStart(2, '0') %></div>
+                        <div class="track-date">
+                          <%= track.created_at.getDate().toString().padStart(2, '0') %>
+                          <%= track.created_at.toLocaleString('default', { month: 'short' }) %>
+                        </div>
+                    </div>
+            
+                    <div class="track-dot-uncheck">
+                        <div class="order-line-check"></div>
+                        <div class="order-dot-uncheck"><i class="bi bi-circle-fill"></i></div>
+                        <div class="order-line-check"></div>
+                      </div>
+                    <div class="track-msg-uncheck">
+                        <p>
+                          <%= track.note %>
+                        </p>
+                    </div>
+                  </div>
+
+                <% } else if (track.status === 'end') { %>
+                  
+                  <div class="track-box-uncheck">
+                    <div class="time-box-uncheck">
+                        <div class="track-time"><%= track.created_at.getHours().toString().padStart(2, '0') %>:<%= track.created_at.getMinutes().toString().padStart(2, '0') %></div>
+                        <div class="track-date">
+                          <%= track.created_at.getDate().toString().padStart(2, '0') %>
+                          <%= track.created_at.toLocaleString('default', { month: 'short' }) %>
+                        </div>
+                    </div>
+          
+                    <div class="track-dot-uncheck">
+                        <div class="order-line-check"></div>
+                        <div class="order-dot-uncheck"><i class="bi bi-circle-fill"></i></div>
+                        <div class="order-line-cancel"></div>
+                      </div>
+                    <div class="track-msg-uncheck">
+                        <p>
+                          <%= track.note %>
+                        </p>
+                    </div>
+                  </div>
+
+                <% } else if (track.status === 'cancel') { %>
+                  
+                  <div class="track-box-cancel">
+                    <div class="time-box-cancel">
+                      <div class="track-time"><%= track.created_at.getHours().toString().padStart(2, '0') %>:<%= track.created_at.getMinutes().toString().padStart(2, '0') %></div>
+                      <div class="track-date">
+                        <%= track.created_at.getDate().toString().padStart(2, '0') %>
+                        <%= track.created_at.toLocaleString('default', { month: 'short' }) %>
+                      </div>
+                    </div>
+          
+                    <div class="track-dot-cancel">
+                        <div class="order-line-check"></div>
+                        <div class="order-dot-cancel"><i class="bi bi-x-circle-fill"></i></div>
+                        <div class="order-line-cancel"></div>
+                      </div>
+                    <div class="track-msg-cancel">
+                        <h5><%= track.note %></h5>
+                    </div>
+                  </div>
+
+                  <% } %>
+                  
+          
+                
+          
+              <% }) %>
+
+              
+        
+        
+              
+        
+        
+              
+        
+        
+                
+        
+            </div>
+            
+          </div>
+          <br>
+          <% if (order.status == 'Placed') { %>
+    <p class="bttn bttn-dan text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#confirmCancel">Cancel Order</p>
+    <% } else { %>
+    <p class="bttn text-secondary text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#">Cancel Order</p>
+      <% } %>
+    <div id="confirmCancel" class="collapse">
+
+
+      <form method="POST" action="/admin/user-control/order/<%= order.id %>/cancel?_method=PUT">
+    
+    
+        <% if (order.status == 'Placed') { %>
+            <p>Are you sure you want to cancel the order?</p>
+            <button class="bttn bttn-dan" type="submit">Confirm</button>
+          <% } else { %>
+            <button class="bttn" type="button" disabled>Cancel</button>
+          <% } %>
+        
+  </form>
+
+    </div>
+    
+
+
+    
+
+</div>
+</div>
+
+
+<style>
+    .vertical-line {
+      position: relative;
+      height: 100vh; /* Adjust the height as needed */
+      width: 2px;
+      background-color: #007bff; /* Adjust the color as needed */
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .circle {
+      font-size: 24px; /* Adjust the size as needed */
+      color: #007bff; /* Adjust the color as needed */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .circle.top {
+      top: 0;
+    }
+
+    .circle.bottom {
+      bottom: 0;
+    }
+
+    .circle.center-left {
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .circle.center-right {
+      top: 50%;
+      transform: translate(-50%, -50%);
+      left: auto;
+      right: 50%;
+    }
+
+
+    /* //////////////////// */
+
+
+    .track-box-check, .track-box-uncheck, .track-box-cancel {
+        display: flex;
+        width: 100%;
+        height: 5em;
+      }
+      .track-box-cancel {
+        color: rgb(173, 9, 9);
+      }
+      .time-box-check, .time-box-uncheck, .time-box-cancel {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 10%;
+      }
+      .track-dot-check, .track-dot-uncheck, .track-dot-cancel {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 5%;
+      }
+      .order-line-check {
+        height: 25%;
+        border: black solid 2px;
+      }
+      .order-line-uncheck {
+        height: 25%;
+        border: grey solid 2px;
+      }
+      .order-line-cancel {
+        height: 25%;
+        border: white solid 2px;
+      }
+      .order-dot-check {
+        color: rgb(17, 82, 126);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        width: 50%;
+        height: 50%;
+      }
+      .order-dot-uncheck {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        width: 50%;
+        height: 50%;
+      }
+      .order-dot-cancel {
+        color: rgb(173, 9, 9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        width: 50%;
+        height: 50%;
+      }
+      .track-time {
+        padding-top: 0.8em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        height: 50%;
+        font-size: 1rem;
+      }
+      .track-date {
+        text-align: center;
+        width: 100%;
+        height: 50%;
+        font-size: 0.7rem;
+      }
+      .track-msg-uncheck {
+        display: flex;
+        color: grey;
+        font-size: 1rem;
+        padding: 0.25em;
+        align-items: center;
+        height: 100%;
+        width: 80%;
+      }
+      .track-msg-check, .track-msg-cancel {
+        display: flex;
+        font-size: 2rem;
+        padding: 0.25em;
+        align-items: center;
+        height: 100%;
+        width: 80%;
+      }
+      .track-msg-cancel {
+        color: rgb(173, 9, 9);
+      }
+      h5, p {
+        margin-bottom: 0;
+      }
+  </style>
+
+

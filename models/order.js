@@ -83,6 +83,21 @@ const billingAddressSchema = new mongoose.Schema({
   },
 });
 
+const trackSchema = new mongoose.Schema({
+  status: {
+    type: String,
+    required: true,
+  },
+  note: {
+    type: String,
+    required: true,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const itemSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
@@ -142,6 +157,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   cart: cartSchema,
+  track: [trackSchema],
   shippingAddress: shippingAddressSchema,
   billingAddress: billingAddressSchema,
   createdAt: {

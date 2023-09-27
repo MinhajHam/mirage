@@ -212,3 +212,8 @@ html body {
         padding: 5%;
         border: #989d9e 2px solid;
       }
+
+      .addr-order {
+        padding: .5rem;
+        border: #989d9e 2px solid;
+      }

@@ -51,9 +51,10 @@
           </div>
           <button class="bttn bttn-pri custom-button" type="submit">ADD TO BAG</button>
         </form>
+
+        <button style="width: 100%;" type="button" class="bttn bttn-dan custom-button" data-bs-toggle="modal" data-bs-target="#popupModal">Wishlist <i class="bi bi-heart"></i></button>
       
         
-          <button class="bttn bttn-dan custom-button">Wishlist</button><br>
           <div class="the-line"></div>
           <p class="custom-bttn text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#productDetails">Product Details 🡫</p>
 
@@ -84,9 +85,168 @@
   </div>
 </div>
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="popupModal" tabindex="-1" aria-labelledby="popupModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="popupModalLabel">Select Size</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+
+          
+            <form action="/account/wishlist/add" method="post">
+
+            <% if (userId) { %>
+              <input type="hidden" name="userId" value="<%= userId %>">
+            <% } %>
+            <input type="hidden" name="productId" value="<%= product._id %>">
+            <input type="hidden" name="productName" value="<%= product.name %>">
+            <input type="hidden" name="quantity" value="1">
+            <div class="form-group custom-button">
+              <label for="size" class="form-label">Size:</label>
+              <select name="size" id="size" class="form-select">
+                <% product.sizes.forEach(size => { %>
+                  <option value="<%= size.sizeName %>"><%= size.sizeName %></option>
+                <% }) %>
+              </select>
+            </div>
+            <button class="bttn bttn-dan custom-button">Add to Wishlist</button><br>
+          </form>
+
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <div class="bottom-container">
   <h3 class="text-center d-flex align-items-center justify-content-center">You may also like</h3>
 
+
+
+  <div class="row-box">
+    <div class="row">
+      <div style="width: 100%;">
+        <div class="w-100">
+          <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <!-- First Post -->
+              <div class="carousel-item active">
+                <div class="row">
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Repeat similar card structure for Images 2, 3, and 4 -->
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+  
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+              <!-- Second Post -->
+              <div class="carousel-item">
+                <div class="row">
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+  
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+  
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                                  
+  
+                  <div class="col-3">
+                    <div class="card">
+                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
+                      <div class="card-body">
+                        <h5 class="card-title">Image 1</h5>
+                        <p class="card-text">Description for Image 1.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+  
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#imageCarousel" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#imageCarousel" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -119,4 +279,66 @@
 
 
 
+<script>
+  // This line will initialize Lightbox2
+  lightbox.option({
+    'resizeDuration': 200,
+    'wrapAround': true
+  });
+</script>
 
+
+
+ <style>
+
+  .the-line {
+  padding-bottom: 0.5rem;
+  width: 100%;
+  border-top: solid 1px rgb(196, 196, 196);
+  }
+
+.custom-bttn {
+  cursor: pointer;
+  align-items: center;
+  margin-top: 0.5rem; 
+}
+.custom-button {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+  .custom-carousel-img {
+    padding: 20px;
+    width: 40vw; 
+    height: 85vh;
+}
+
+  /* Add these styles to your existing <style> section */
+    /* .half-container {
+    
+    border: red 2px solid;
+  }
+  
+ 
+  
+  .left-half {
+    
+    border: blue 2px solid;
+  }
+  
+  .right-half {
+   
+    border: green 2px solid;
+  }
+  
+  .bottom-container {
+   
+    border: blueviolet 2px solid;
+  }
+   */
+  
+  
+  
+  
+  
+    </style> 

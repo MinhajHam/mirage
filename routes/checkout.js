@@ -170,6 +170,24 @@ router.get('/updateProducts', async (req, res, next) => {
           user_id: userId
       }).populate('items.product');
 
+
+      let newTrack = [
+        {
+          status: 'done',
+          note: 'Order Placed',
+        },
+        {
+          status: 'pending',
+          note: 'Estimated Shipping',
+          created_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        },
+        {
+          status: 'end',
+          note: 'Estimated Delivery',
+          created_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 7 days from the previous status
+        },
+      ];
+
       let amount = cart.total;
       let currStatus;
       if (paymethod == 'cod') {
@@ -182,6 +200,7 @@ router.get('/updateProducts', async (req, res, next) => {
       const newOrder = new Order({
           orderNo: randomCode,
           paymentMethod: req.session.paymentMethod,
+          track: newTrack,
           user_id: userId,
           cart: cart,
           shippingAddress: shipAddress,
@@ -279,7 +298,7 @@ router.get('/saveorder', async (req, res) => {
 
 
 
-router.post("/payment-confirm", async (req, res) => {
+router.post("/payment-stripe", async (req, res) => {
   try {
       const user_id = req.user._id;
       const wallet = req.body.wallet;
@@ -320,6 +339,16 @@ router.post("/payment-confirm", async (req, res) => {
     let price = cents*100;
     let newPrice;
 
+    console.log(discount);
+    console.log(price);
+
+    console.log('cent:', cents);
+    console.log('currBalance:', currBalance);
+    
+    if (wallet == true) {
+        
+    
+
     if(cents < currBalance) {
         newBalance = currBalance - cents;
         discount = price / totalQuantity;
@@ -331,46 +360,66 @@ router.post("/payment-confirm", async (req, res) => {
         discount = newPrice / totalQuantity;
     }
 
+} else {
+    discount = 0;
+    newBalance = currBalance;
+}
+
+    console.log('newBalance:', newBalance);
+    console.log('fDiscount:', discount);
+    console.log('new Price:', newPrice);
+
+    console.log(newPrice);
+    console.log(newBalance);
+
+
     req.session.newBalance = newBalance;
 
-      const session = await stripe.checkout.sessions.create({
-          payment_method_types: ["card"],
-          mode: "payment",
-          line_items: cart.items.map(cartItem => {
-              const product = cartItem.product;
+    const session = await stripe.checkout.sessions.create({
 
-              return {
-                  price_data: {
-                      currency: "usd",
-                      product_data: {
-                          name: product.name,
-                      },
-                      unit_amount: cartItem.product.price * tax - discount,
-
-                  },
-                  quantity: cartItem.quantity,
-              };
-          }),
-
-          success_url: `${process.env.CLIENT_URL}/checkout/updateProducts`,
-          cancel_url: `${process.env.CLIENT_URL}/checkout/confirmation`,
-      });
+        payment_method_types: ["card"],
+        mode: "payment",
+        discounts: [
+            {
+                coupon: 'MIRAGE500',
+            },
+        ],
+        line_items: cart.items.map(cartItem => {
+            const product = cartItem.product;
+            return {
+                price_data: {
+                    currency: "usd",
+                    product_data: {
+                        name: product.name,
+                    },
+                    unit_amount: cartItem.product.price * 100, // Make sure it's in cents
+                },
+                quantity: cartItem.quantity,
+            };
+        }),
+        success_url: `${process.env.CLIENT_URL}/checkout/updateProducts`,
+        cancel_url: `${process.env.CLIENT_URL}/checkout/confirmation`,
+    });
+    
+    
+    
 
       res.json({
           url: session.url
       });
-  } catch (e) {
-    console.log(e);
-      res.status(500).json({
-          error: e.message
-      });
-  }
+    } catch (e) {
+        console.error("Error:", e);
+        res.status(500).json({
+            error: e.message
+        });
+     }
+     
 });
 
 
 
 
-router.post("/create-order", async (req, res) => {
+router.post("/paypal-order", async (req, res) => {
   const userId = req.user.id; // Assuming you have user authentication in place
 
   try {

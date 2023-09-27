@@ -21,19 +21,9 @@
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5">
 
+                <h3 class="text-danger">Timeout</h3>
+                <p><%= message %></p>
 
-                <form action="/signup/verify" method="POST">
-
-                  <%- include('_otp_fields') %>
-                  
-                </form>
-
-
-                <div class="content d-flex justify-content-center align-items-center">
-                  <span>Didn't get the code</span>
-                  <a href="#" class="text-decoration-none ms-3" style="color: #88742b; text-decoration: none;">Resend</a>
-                </div>
-                <p><span id="countdown">2:00</span> remaining</p> 
               </div>
             </div>
           </div>

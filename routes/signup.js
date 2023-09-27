@@ -95,7 +95,7 @@ router.post('/', checkNotAuthenticated, async (req, res) => {
 router.get('/verify', (req, res) => {
   const toEmail = req.session.toEmail; // Retrieve 'toEmail' value from the session
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.render('user/verifyotp', { email: toEmail });
+  res.render('user/verifyotp', { email: toEmail, layout: false });
 });
 
 // POST POST POST POST POST POST POST POST POST POST
@@ -107,7 +107,7 @@ router.post('/verify', async (req, res) => {
   const otp = req.body.otp;
   const email = req.session.toEmail; // Retrieve 'toEmail' value from the session
 
-  console.log('Received OTP:', otp)
+  console.log('Received OTP:', otp);
   console.log('Sended OTP:', tempUserData[email].otpSecret);
 
   // Check if the provided OTP matches the stored OTP for the email
@@ -134,11 +134,28 @@ router.post('/verify', async (req, res) => {
   } else {
     console.log('error', email, otp);
     res.render('user/verifyotp', {
+      layout: false,
       email: email,
       error: 'Invalid OTP. Please try again.',
     });
   }
+
+  // Add a timeout here to redirect the user to a timeout page after 2 minutes
+  const timeoutDuration = 1 * 60 * 1000; // 2 minutes in milliseconds
+  setTimeout(() => {
+    res.redirect('/signup/timeout'); // Redirect to a timeout page
+  }, timeoutDuration);
 });
+
+router.get('/timeout', (req, res) => {
+  res.render('user/timeout', {
+    message: 'Your session has timed out. Please try again.',
+    layout: false,
+  });
+});
+
+
+
 
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {

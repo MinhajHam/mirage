@@ -87,8 +87,8 @@ app.use('/admin/user-control', adminUserControlRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Internal Server Error');
+  res.status(500).send('Internal Server Error',err.stack);
 });
 
 
-app.listen((process.env.PORT || 8000), () => console.log('server started on designated port'))
+app.listen((process.env.PORT || 7000), () => console.log('server started on designated port'))

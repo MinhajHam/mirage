@@ -1,3 +1,4 @@
+<div class="cart">
 <h1>Shopping Cart</h1>
 
   <% if (sessionCart) { %>
@@ -42,7 +43,13 @@
         
         <tr data-item-id="<%= item.id %>">
           <th scope="row">○</th>
-          <td><%= item.product.name %></td>
+
+          <td>
+            <a href="/men/<%= item.product.id %>">
+            <img src="<%= item.product.coverImagePath1 %>" alt="<%= item.product.name %> Image" width="100" height="100">
+            <%= item.product.name %>
+          </a>
+          </td>
           <td><%= item.size %></td>
           <td>
             <form action="/checkout/count" method="post">
@@ -108,7 +115,7 @@
 <% } else { %>
   <p>Your cart is empty.</p>
 <% } %>
-
+</div>
 
 <style>
 

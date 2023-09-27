@@ -76,7 +76,7 @@ router.post('/forgot_pass', async (req, res) => {
 router.get('/verify', (req, res) => {
   const toEmail = req.session.toEmail; // Retrieve 'toEmail' value from the session
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.render('user/passotp', { email: toEmail });
+  res.render('user/passotp', { email: toEmail, layout: false, });
 });
 
 
@@ -115,7 +115,7 @@ router.post('/verify', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const user = await Users.findById(req.params.id)
-  res.render('user/newPass.ejs', { user: user });
+  res.render('user/newPass.ejs', { user: user, layout: false, });
 })
 
 
