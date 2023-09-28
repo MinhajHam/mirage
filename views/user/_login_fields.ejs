@@ -18,9 +18,10 @@
 
 <div class="form-check d-flex justify-content-center mb-4">
   <% if (messages.error) { %>
-    <div class="error-message">
+  
+    <label style="color: red;" class="form-check-label" for="form2Example3">
       <%= messages.error[0] %>
-    </div>
+    </label>
   <% } %>
   
   <label class="form-check-label" for="form2Example3">

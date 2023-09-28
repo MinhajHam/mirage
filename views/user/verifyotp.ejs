@@ -31,7 +31,7 @@
 
                 <div class="content d-flex justify-content-center align-items-center">
                   <span>Didn't get the code</span>
-                  <a href="#" class="text-decoration-none ms-3" style="color: #88742b; text-decoration: none;">Resend</a>
+                  <a href="#" class="text-decoration-none ms-3" style="color: #88742b; text-decoration: none;" disabled >Resend</a>
                 </div>
                 <p><span id="countdown">2:00</span> remaining</p> 
               </div>
@@ -45,29 +45,28 @@
 
     <script>
 
-// JavaScript code for the OTP input page
-// This code assumes that the countdown starts at 2 minutes (120 seconds)
-
 const countdownElement = document.getElementById('countdown');
+const resendButton = document.querySelector('.text-decoration-none'); // Assuming the class is unique
+
 let countdown = 60; // Initial countdown time in seconds
 
 function updateCountdown() {
-  const minutes = Math.floor(countdown / 60);
-  const seconds = countdown % 60;
-  const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  countdownElement.textContent = formattedTime;
+    const minutes = Math.floor(countdown / 60);
+    const seconds = countdown % 60;
+    const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    countdownElement.textContent = formattedTime;
 }
 
 // Update the countdown every second
 const countdownInterval = setInterval(() => {
-  countdown--;
-  updateCountdown();
+    countdown--;
+    updateCountdown();
 
-  // Redirect to the timeout page when the countdown reaches 0
-  if (countdown <= 0) {
-    clearInterval(countdownInterval); // Stop the countdown
-    window.location.href = '/timeout'; // Redirect to the timeout page
-  }
+    // Enable the Resend button when the countdown reaches 0
+    if (countdown <= 0) {
+        clearInterval(countdownInterval); // Stop the countdown
+        resendButton.removeAttribute('disabled'); // Enable the Resend button
+    }
 }, 1000); // Update every 1 second (1000 milliseconds)
 
 
