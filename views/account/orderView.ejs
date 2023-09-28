@@ -209,8 +209,19 @@
           <% if (order.status == 'Placed') { %>
     <p class="bttn bttn-dan text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#confirmCancel">Cancel Order</p>
     <% } else { %>
-    <p class="bttn text-secondary text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#">Cancel Order</p>
+    <p class="bttn text-secondary text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#">Order Cancelled</p>
       <% } %>
+
+      <br>
+
+
+
+
+      <% if (order.status == 'Delivered') { %>
+        <p class="bttn bttn-dan text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#returnOrder">Request Return Order</p>
+        <% } %>
+
+
     <div id="confirmCancel" class="collapse">
 
 
@@ -225,6 +236,64 @@
           <% } %>
         
   </form>
+
+    </div>
+
+
+
+    <div id="returnOrder" class="collapse">
+
+      <br>
+      <div class="container">
+        <h2 class="mb-4">Return Product Form</h2>
+    
+        <form action="/admin/user-control/order/<%= order.id %>/return?_method=PUT" method="POST">
+          <!-- Reason "Why" using radio buttons -->
+          <div class="mb-3">
+            <label for="returnWhy" class="form-label">Why do you need to return the product?</label>
+    
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="returnWhy" id="damagedProduct" value="damagedProduct" required>
+              <label class="form-check-label" for="damagedProduct">
+                Damaged Product
+              </label>
+            </div>
+    
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="returnWhy" id="wrongProduct" value="wrongProduct" required>
+              <label class="form-check-label" for="wrongProduct">
+                Wrong Product
+              </label>
+            </div>
+    
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="returnWhy" id="doesntFit" value="doesntFit" required>
+              <label class="form-check-label" for="doesntFit">
+                Doesn't Fit
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="returnWhy" id="doesntFit" value="doesntFit" required>
+              <label class="form-check-label" for="doesntFit">
+                Other
+              </label>
+            </div>
+    
+            <!-- Add more options as needed -->
+    
+          </div>
+    
+          <!-- Additional suggestions -->
+          <div class="mb-3">
+            <label for="extraSuggestions" class="form-label">Any extra suggestions?</label>
+            <textarea class="form-control" id="extraSuggestions" name="extraSuggestions" rows="4" placeholder="Enter additional suggestions"></textarea>
+          </div>
+    
+          <!-- Submit button -->
+          <button type="submit" class="bttn bttn-pri">Submit</button>
+        </form>
+      </div>
 
     </div>
     
