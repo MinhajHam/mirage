@@ -154,7 +154,7 @@
       }
       const totalPrice = parseFloat(totalPriceElement.textContent.split("Total Price: ")[1]);
 
-      fetch("http://localhost:7000/checkout/payment-stripe", {
+      fetch("http://localhost:8000/checkout/payment-stripe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
