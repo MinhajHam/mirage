@@ -228,6 +228,48 @@ router.put('/order/:id/cancel', async (req, res) => {
   }
 });
 
+router.put('/order/:id/return', async (req, res) => {
+  const userId = req.user._id;
+  const orderId = req.params.id;
+
+  try {
+    const order = await Order.findById(orderId);
+    const user = await User.findById(userId).populate('wallet.transactions').exec();
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    
+    
+
+    // Assuming order.cart.total is a positive number
+    if (order.status !== 'Cancelled') {
+      order.status = 'Return order';
+
+      
+
+      // update and save the order track
+      const lastTrack = order.track[order.track.length - 1];
+      lastTrack.status = 'pending';
+      let newTrack = {
+        status: 'end',
+        note: 'requested for return order',
+        created_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      }
+
+      order.track.push(newTrack);
+
+      await order.save();
+    }
+
+    return res.redirect('/account/orders');
+  } catch (error) {
+    console.error('Error cancelling order:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 
 
