@@ -91,4 +91,4 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen((process.env.PORT || 7000), () => console.log('server started on designated port'))
+app.listen((process.env.PORT || 8000), () => console.log('server started on designated port'))
