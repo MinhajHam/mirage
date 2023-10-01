@@ -26,7 +26,7 @@
 <% } %>
 
 
-<form action="/admin/product-control/create-coupon" method="POST">
+<form action="/admin/create-coupon" method="POST">
     <!-- Coupon Code -->
     <div class="form-row">
     <div class="form-item">
@@ -74,8 +74,8 @@
 
     <!-- Max Uses -->
     <div class="form-item">
-        <label for="maxUses">Max Uses (Leave empty for unlimited uses)</label>
-        <input type="number" id="maxUses" name="maxUses">
+        <label for="maxUses">Max Uses</label>
+        <input type="number" min="1" id="maxUses" name="maxUses">
     </div>
 
     <div class="form-item">

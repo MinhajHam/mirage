@@ -577,7 +577,6 @@ router.get('/cart',checkAuthenticated, async (req, res, next) => {
 router.post('/cart/add',checkAuthenticated, async (req, res) => {
 
   try {
-    console.log(req.session.authCart);
 
       if (req.session.authCart == 'closed' || req.session.authCart == undefined) {
 

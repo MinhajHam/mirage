@@ -20,7 +20,11 @@
         <br>
         <% }) %>
         <div class="edit-bar">
-        <a class="linkC bttn" href="/account/addresses" style="width: 100%;">Edit Address</a>
+          <% if(user.addresses && user.addresses.length < 1) { %>
+            <a class="linkC bttn" href="/account/addresses" style="width: 100%;">Add Address</a>
+          <% } else { %>
+            <a class="linkC bttn" href="/account/addresses" style="width: 100%;">Edit Address</a>
+          <% } %>
       </div>
 <% } else { %>
    <p>You have no saved address information</p>
@@ -32,7 +36,7 @@
         <h3>BILLING ADDRESS</h3>
    <p class="text-secondary">If your billing address differs from your shipping address, please click "add billing address" </p>
 
-<button type="button" id="toggleBtn">add billing address</button>
+<p type="button" id="toggleBtn" style="text-decoration: underline;">add billing address +</p>
     <div id="collapseSection">
       
         <% user.addresses.forEach((address, index) => { %>
@@ -50,7 +54,11 @@
             <br>
             <% }) %>
             <div class="edit-bar">
+              <% if(user.addresses && user.addresses.length < 1) { %>
+            <a class="linkC bttn" style="width: 100%;" href="/account/addresses">add Address</a>
+              <% } else { %>
             <a class="linkC bttn" style="width: 100%;" href="/account/addresses">Edit Address</a>
+                <% } %>
             </div>
   </div>
 

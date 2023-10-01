@@ -41,10 +41,12 @@
       </tbody>
       </table>
     
-        
+      
+      <div>Shipping Address:</div>
+
 
       <div class="addr-order">
-        <div style="margin-top: 1rem;" class="author-row">
+        <div style="margin-top: 1rem; font-size: 1rem;" class="author-row">
           <div><%= order.shippingAddress.fname %> <%= order.shippingAddress.lname %></div><br>
           <div><%= order.shippingAddress.street %></div><br>
           <div><%= order.shippingAddress.city %></div>
@@ -63,6 +65,7 @@
       <div>Status: <span style="color: #cf2525;"><%= order.status %></span></div>
       <div>Note: <span style="color: #cf2525;"><%= order.message %>.</span></div>
       <% } %>
+    <div>Order No: <span style="color: #050202;"><%= order.orderNo %></span></div>
     <br>
 
     <p class="bttn bttn-pri text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#orderTrack">Track Order</p>
@@ -209,7 +212,7 @@
           <% if (order.status == 'Placed') { %>
     <p class="bttn bttn-dan text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#confirmCancel">Cancel Order</p>
     <% } else { %>
-    <p class="bttn text-secondary text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#">Order Cancelled</p>
+    <p class="bttn text-secondary text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#">Cancel Order</p>
       <% } %>
 
       <br>
@@ -217,8 +220,8 @@
 
 
 
-      <% if (order.status == 'Delivered') { %>
-        <p class="bttn bttn-dan text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#returnOrder">Request Return Order</p>
+      <% if (order.status == 'Delivered' || returnOrder == true) { %>
+        <p class="buttn bttn-info text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#returnOrder">Request Return Order</p>
         <% } %>
 
 
@@ -245,6 +248,12 @@
 
       <br>
       <div class="container">
+
+        <div class="col text-center">
+          <p style="color: #4e0b0b;">.. You Have <span class="dayLeft"><%= daysLeft %> Days left</span> to request for a return order ..</p>
+        </div>
+        <br>
+
         <h2 class="mb-4">Return Product Form</h2>
     
         <form action="/admin/user-control/order/<%= order.id %>/return?_method=PUT" method="POST">
@@ -286,8 +295,8 @@
     
           <!-- Additional suggestions -->
           <div class="mb-3">
-            <label for="extraSuggestions" class="form-label">Any extra suggestions?</label>
-            <textarea class="form-control" id="extraSuggestions" name="extraSuggestions" rows="4" placeholder="Enter additional suggestions"></textarea>
+            <label for="extraSuggestions" class="form-label">Any additional request?</label>
+            <textarea class="form-control" id="extraSuggestions" name="extraSuggestions" rows="4" placeholder="Enter additional request"></textarea>
           </div>
     
           <!-- Submit button -->
@@ -343,6 +352,14 @@
       right: 50%;
     }
 
+    .dayLeft {
+      color: #cf2525;
+      text-decoration: underline;
+    }
+
+    .dayLeft:hover {
+      color: #ff5b5b;
+    }
 
     /* //////////////////// */
 

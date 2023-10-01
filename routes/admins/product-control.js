@@ -71,54 +71,6 @@ router.get('/add', async (req, res) => {
 
 
 
-// Render the 'add' page for products
-router.get('/coupon', async (req, res) => {
-  const brands = await Brand.find();
-  res.render('admin/product-control/add/coupon.ejs', { 
-    layout: false,
-    brand: new Brand(),
-    color: new Color(),
-    brands,
-    errorMessage:
-    
-    
-    ''
-  });
-});
-
-
-
-
-router.post('/create-coupon', async (req, res) => {
-  try {
-    // Extract form data from the request body
-    const { code, description, discountType, discountValue, validFrom, validTo, maxUses, walletUse } = req.body;
-
-    // Create a new coupon document
-    const newCoupon = new Coupon({
-      code,
-      description,
-      discountType,
-      walletUse,
-      discountValue,
-      validFrom,
-      validTo,
-      maxUses,
-    });
-
-    // Save the coupon to the database
-    await newCoupon.save();
-
-    // Redirect to a success page or display a success message
-    res.send('Coupon created successfully!');
-  } catch (error) {
-    // Handle errors (e.g., validation errors, database errors)
-    res.status(500).send('Error creating coupon: ' + error.message);
-  }
-});
-
-
-
 
 
 
@@ -320,6 +272,32 @@ async function renderFormPage(res, product, form, hasError = false) {
   }
 }
 
+
+function saveCovers(product, coverEncodedArray) {
+  if (!Array.isArray(coverEncodedArray)) {
+    return;
+  }
+
+  const coverImages = [];
+
+  for (const coverEncoded of coverEncodedArray) {
+    try {
+      const cover = JSON.parse(coverEncoded);
+
+      if (cover != null && imageMimeTypes.includes(cover.type)) {
+        const imageBuffer = Buffer.from(cover.data, 'base64');
+        const imageType = cover.type;
+        coverImages.push({ image: imageBuffer, imageType });
+      }
+    } catch (error) {
+      console.error("Error parsing cover image:", error);
+    }
+  }
+
+  if (coverImages.length > 0) {
+    product.coverImages = coverImages;
+  }
+}
 
 
 module.exports = router;

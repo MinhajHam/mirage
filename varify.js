@@ -2,10 +2,10 @@ const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 
 // Your Gmail API credentials should come from the .env file or some secure configuration
-const CLIENT_ID = '1008716893793-nv2m74faokabu2i9pr2n9jnegsd6l20i.apps.googleusercontent.com';
-const CLEINT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//04fmQ7HHJ_NDyCgYIARAAGAQSNwF-L9IrtLX0zsUJIz90EkKKlGddvsNVo67ubMGq-FnEIOpqZ60XsmJwMnxqywprzVFAZcvXhFg';
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;;
+const CLEINT_SECRET = process.env.GOOGLE_CLEINT_SECRET;
+const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
+const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,

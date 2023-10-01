@@ -93,26 +93,3 @@ productSchema.virtual('coverImagePath1').get(function() {
 
 
 module.exports = mongoose.model('Product', productSchema);
-
-
-
-  // clothCategory: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'ClothCategory',
-  // },
-  // shoesCategory: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'ShoeCategory',
-  // },
-  // bagsCategory: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'BagsCategory',
-  // },
-  // accessoriesCategory: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'AccessoriesCategory',
-  // },
-  // jewelryCategory: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'JewelryCategory',
-  // }

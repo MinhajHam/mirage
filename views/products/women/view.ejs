@@ -32,7 +32,19 @@
       <div class="col-md-5">
         <h3><%= product.brand.name %></h3>
         <h6 class="text-secondary"><%= product.name %></h6>
-        <p><small><span class="font-weight-bold">€ <%= product.price %> </span><br><span class="text-secondary">VAT not included</span></small></p>
+        <p><small><span class="font-weight-bold">€ <%= product.price %> <span>
+          <% if(product.totalStock < 20 && product.totalStock != 0 ) { %>
+            | 
+            <span style="color: red;">
+            Low on stock
+          </span>
+            <% } else if(product.totalStock < 1 ) { %>
+              | 
+            <span style="color: red;">
+            Out of stock
+          </span>
+              <% }  %>
+        </span> </span><br><span class="text-secondary">VAT not included</span></small></p>
       
         <form action="/checkout/cart/add" method="post">
           <% if (userId) { %>
@@ -49,10 +61,26 @@
               <% }) %>
             </select>
           </div>
-          <button class="bttn bttn-pri custom-button" type="submit">ADD TO BAG</button>
+          <% if(product.totalStock < 1 ) { %>
+            <button class="bttn custom-button" type="submit" disabled>Out of stock <i class="bi bi-emoji-frown"></i></button>
+          <% } else { %>
+            <button class="bttn bttn-pri custom-button" type="submit">ADD TO BAG</button>
+          <% }  %>
+
         </form>
 
-        <button style="width: 100%;" type="button" class="bttn bttn-dan custom-button" data-bs-toggle="modal" data-bs-target="#popupModal">Wishlist <i class="bi bi-heart"></i></button>
+        <form action="/wishlist/add" method="post">
+
+          <% if (userId) { %>
+            <input type="hidden" name="userId" value="<%= userId %>">
+          <% } %>
+          <input type="hidden" name="productId" value="<%= product._id %>">
+          <input type="hidden" name="productName" value="<%= product.name %>">
+          <input type="hidden" name="pageUrl" value="/men/<%= product._id %>">
+          <input type="hidden" name="quantity" value="1">
+    
+          <button style="width: 100%;" type="submit" class="bttn bttn-dan custom-button">Wishlist <i class="bi bi-heart"></i></button>
+        </form>
       
         
           <div class="the-line"></div>
@@ -98,24 +126,7 @@
         <div class="modal-body">
 
           
-            <form action="/account/wishlist/add" method="post">
-
-            <% if (userId) { %>
-              <input type="hidden" name="userId" value="<%= userId %>">
-            <% } %>
-            <input type="hidden" name="productId" value="<%= product._id %>">
-            <input type="hidden" name="productName" value="<%= product.name %>">
-            <input type="hidden" name="quantity" value="1">
-            <div class="form-group custom-button">
-              <label for="size" class="form-label">Size:</label>
-              <select name="size" id="size" class="form-select">
-                <% product.sizes.forEach(size => { %>
-                  <option value="<%= size.sizeName %>"><%= size.sizeName %></option>
-                <% }) %>
-              </select>
-            </div>
-            <button class="bttn bttn-dan custom-button">Add to Wishlist</button><br>
-          </form>
+            
 
         </div>
     </div>

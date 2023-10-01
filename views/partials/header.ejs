@@ -48,8 +48,12 @@
               <a href="/account"><span class="bi bi-person"></span></a>
           </li>
           <li>
-              <a href="/wishlist"><i class="bi bi-heart"></i></a>
-          </li>
+        <% if(indexUrl == 'men') { %>
+              <a href="/wishlist"><i class="bi bi-stars"></i></a>
+        <% } else { %>
+          <a href="/wishlist"><i class="bi bi-heart"></i></a>
+          <% }  %>
+            </li>
           <li>
               <a href="/checkout/cart"><i class="bi bi-bag"></i></a>
           </li>
@@ -74,7 +78,7 @@
               <a href="/account"><span class="bi bi-person"></span></a>
           </li>
           <li>
-              <a href="/wishlist"><i class="bi bi-heart"></i></a>
+              <a href="/wishlist"><i class="bi bi-stars"></i></a>
           </li>
           <li>
               <a href="/checkout/cart"><i class="bi bi-bag"></i></a>

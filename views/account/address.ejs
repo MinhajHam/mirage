@@ -20,16 +20,21 @@
               <div class="author-name"><%= address.street %></div><br>
               <div class="author-name"><%= address.city %> <%= address.country %></div>
             </div>
-            <button style="width: 100%;" type="button" class="bttn bttn-info" data-bs-toggle="modal" data-bs-target="#popupModal">
-              VIEW
-            </button>
+            <div style="display: flex; justify-content: space-between;">
+            <button style="width: 48%;" type="button" class="bttn custom-btn" data-bs-toggle="modal" data-bs-target="#popupModal">VIEW</button>
+          
+            <form style="width: 48%;" action="/account/addresses/<%= address._id %>/remove" method="post">
+            <button style="width: 100%;" type="submit" class="bttn bttn-dan">REMOVE</button>
+            </form>
+          
+          </div>
           </div>
           <br>
         <% }) %>
       <% } %>
 
       <% if (user.addresses.length < 2) { %>
-        <h2>Add Another Address</h2>
+        <h5 class="text-secondary">Add Your Address</h5>
         <form action="/account/addresses" method="POST">
           <%- include('_form_fields') %>
           <div class="form-row form-row-end btn-row">
@@ -64,3 +69,17 @@
     </div>
   </div>
 </div>
+
+
+<style>
+
+.custom-btn {
+  background-color: hsl(356, 251%, 255%);
+}
+
+.custom-btn:hover {
+  color: aliceblue;
+  background-color: hsl(211, 0%,0%);
+}
+
+</style>

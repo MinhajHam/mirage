@@ -160,10 +160,7 @@ const orderSchema = new mongoose.Schema({
   track: [trackSchema],
   shippingAddress: shippingAddressSchema,
   billingAddress: billingAddressSchema,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  
   message: {
     type: String,
     required: true,
@@ -177,6 +174,14 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: "Placed",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now,
   },
 });
 

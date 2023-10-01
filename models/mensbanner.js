@@ -1,226 +1,58 @@
 const mongoose = require("mongoose");
 
+
+
+const imageSchema = new mongoose.Schema({
+  param: {
+    type: String,
+    required: true,
+  },
+  link: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: Buffer,
+    required: true,
+  },
+  imageType: {
+    type: String,
+    required: true,
+  },
+});
+
+
 // Create a Mongoose schema for the main page banner
 const mensBannerSchema = new mongoose.Schema({
   // Define the main image
-  mainImage: [
-     {
-    param: {
-      type: String,
-      required: true,
-    },
-    link: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: Buffer,
-      required: true,
-    },
-    imageType: {
-      type: String,
-      required: true,
-    },
-  },
-],
+  mainImage: [imageSchema],
 
-  // Define the main topic image
-  mainTopicImage: {
-    param: {
-      type: String,
-    },
-    link: {
-      type: String,
-    },
-    image: {
-      type: Buffer,
-    },
-    imageType: {
-      type: String, // Store the main topic image type (e.g., 'image/jpeg', 'image/png')
-    },
-  },
+  // // Define the main topic image
+  // mainTopicImage: [imageSchema],
 
-  // Define an array of topic images
-  topicImages: [
-    {
-      paramnk: {
-        type: String,
+  // // Define an array of topic images
+  // topicImages:[imageSchema],
 
-      },
-      link: {
-        type: String,
+  // // Define "New Arrivals" images
+  // newArrivalsImages: [imageSchema],
 
-      },
-      image: {
-        type: Buffer,
+  // // Define "Shoes" images
+  // shoesImages: [imageSchema],
 
-      },
-      imageType: {
-        type: String, // Store each topic image type (e.g., 'image/jpeg', 'image/png')
+  // // Define "Clothing" images
+  // clothingImages: [imageSchema],
 
-      },
-    },
-  ],
+  // // Define "Bags" images
+  // bagsImages: [imageSchema],
+});
 
-  // Define "New Arrivals" images
-  newArrivalsImages: [
-    {
-      paramnk: {
-        type: String,
 
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-    {
-      paramnk: {
-        type: String,
-
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-  ],
-
-  // Define "Shoes" images
-  shoesImages: [
-    {
-      paramnk: {
-        type: String,
-
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-    {
-      paramnk: {
-        type: String,
-
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-  ],
-
-  // Define "Clothing" images
-  clothingImages: [
-    {
-      paramnk: {
-        type: String,
-
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-    {
-      paramnk: {
-        type: String,
-
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-  ],
-
-  // Define "Bags" images
-  bagsImages: [
-    {
-      paramnk: {
-        type: String,
-
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-    {
-      paramnk: {
-        type: String,
-
-      },
-      link: {
-        type: String,
-
-      },
-      image: {
-        type: Buffer,
-
-      },
-      imageType: {
-        type: String,
-
-      },
-    },
-  ],
+mensBannerSchema.virtual('mainImagePath').get(function() {
+  if (this.mainImage && this.mainImage.length > 0) {
+    const firstImage = this.mainImage[0]; // Assuming you want to use the first image
+    return `data:${firstImage.imageType};charset=utf-8;base64,${firstImage.image.toString('base64')}`;
+  }
+  return null; // Handle case when no main images are available
 });
 
 // Create a Mongoose model for the main page banner using the schema

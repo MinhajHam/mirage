@@ -2,13 +2,37 @@
   <div class="row">
     <% products.forEach(product => { %>
       <div class="col-md-3 mb-4">
+
+        <form action="/wishlist/add" method="post">
+
+          
+          <input type="hidden" name="productId" value="<%= product._id %>">
+          <input type="hidden" name="productName" value="<%= product.name %>">
+          <input type="hidden" name="pageUrl" value="/men">
+          <input type="hidden" name="quantity" value="1">
+
+        <button type="submit" style="color: grey;" class="btn btn-link"><i class="bi bi-star"></i></button>
+        </form>
+        
         <a href="/men/<%= product.id %>" class="">
           <img class="img-fluid img-with-underline" src="<%= product.coverImagePath1 %>" alt="<%= product.name %>">
         </a>
         <div class="cover-details">
           <div class="cover-brand-label"><%= product.brand.name %></div>
           <div class="cover-name-label"><%= product.name %></div>
-          <div class="cover-price-label">$<%= product.price %></div>
+          <div class="cover-price-label">$<%= product.price %>
+            <% if(product.totalStock < 5 && product.totalStock != 0 ) { %>
+              | 
+              <span style="color: red;">
+              Low on stock
+            </span>
+              <% } else if(product.totalStock < 1 ) { %>
+                | 
+              <span style="color: red;">
+              Out of stock
+            </span>
+                <% }  %>
+          </div>
         </div>
       </div>
     <% }) %>

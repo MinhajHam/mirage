@@ -168,18 +168,6 @@ html body {
     .back-bar {
         width: 50%;
     }
-
-    .inputs input {
-        width: 40px;
-        height: 40px;
-      }
-      input[type="number"]::-webkit-inner-spin-button,
-      input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        margin: 0;
-      }
       .card-2 {
         background-color: #fff;
         padding: 10px;
@@ -209,7 +197,7 @@ html body {
       }
 
       .addr-bar {
-        padding: 5%;
+        padding: 1rem;
         border: #989d9e 2px solid;
       }
 

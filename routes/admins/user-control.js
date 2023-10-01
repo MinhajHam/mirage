@@ -151,10 +151,10 @@ router.get('/order/:id/view', async (req, res) => {
 router.post('/order/:id/edit', async (req, res) => {
   const orderId = req.params.id;
   const { status, message } = req.body;
-
+  let newDate = new Date();
   try {
     // Update the order's status and message
-    await Order.findByIdAndUpdate(orderId, { $set: { status, message } });
+    await Order.findByIdAndUpdate(orderId, { $set: { status, message, updated_at: newDate } });
 
     res.redirect('/admin/user-control/order'); // Redirect to the specified route
   } catch (error) {
@@ -185,6 +185,7 @@ router.put('/order/:id/cancel', async (req, res) => {
     // Assuming order.cart.total is a positive number
     if (order.status !== 'Cancelled') {
       order.status = 'Cancelled';
+      order.updated_at = new Date();
 
       if (order.paymentMethod !== 'cod') {
       

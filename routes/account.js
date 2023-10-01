@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 const User = require('../models/user');
 const Order = require('../models/order');
 const Coupon = require('../models/coupon');
-const Wishlist = require('../models/wishlist');
 const Product = require('../models/product');
 const { checkAuthenticated } = require('../middleware/auth');
 
@@ -56,13 +56,21 @@ router.get('/order/:id/view', async (req, res) => {
         },
       });
 
-    res.render('account/orderView', { order, id: orderId });
+    // Calculate the difference in days between now and updated_at
+    const daysDifference = moment().diff(order.updated_at, 'days');
+
+    // Calculate how many days are left to reach 7 days
+    const daysLeft = 7 + daysDifference;
+
+    // Set returnOrder based on the condition
+    const returnOrder = daysDifference > -7;
+
+    res.render('account/orderView', { order, id: orderId, returnOrder, daysLeft });
   } catch (error) {
     console.error('Error viewing order:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 
 
@@ -76,6 +84,80 @@ router.get('/addresses', checkAuthenticated, async (req, res, next) => {
 
   res.render('account/address', { user });
 });
+
+
+
+router.post('/addresses', checkAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const newAddress = {
+      salutation: req.body.salutation,
+      fname: req.body.fname,
+      lname: req.body.lname,
+      company: req.body.company,
+      country: req.body.country,
+      postcode: req.body.postcode,
+      city: req.body.city,
+      street: req.body.street,
+      address2: req.body.address2,
+      phone: req.body.phone,
+    };
+    const user = await User.findOne(userId);
+
+    // Add the new address to the user's addresses
+    user.addresses.push(newAddress);
+
+    // Save the user's data to the database
+    await user.save();
+    res.redirect('/account/addresses');
+  } catch (error) {
+    console.error("Error saving address:", error);
+    res.redirect('/account/nope');
+  }
+});
+
+
+router.post('/addresses/:id/remove', async (req, res) => {
+  try {
+    const addressId = req.params.id;
+
+    // Find the user that contains the address to be removed
+    const user = await User.findOne({
+      'addresses._id': addressId
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'Address not found'
+      });
+    }
+
+    // Find the index of the address to be removed within the user's addresses array
+    const itemIndex = user.addresses.findIndex(item => item._id.toString() === addressId);
+
+    if (itemIndex === -1) {
+      return res.status(404).json({
+        error: 'Address not found'
+      });
+    }
+
+    // Get the address being removed for later calculations
+    const removedAddress = user.addresses[itemIndex];
+
+    // Remove the address from the user's addresses array
+    user.addresses.splice(itemIndex, 1);
+    await user.save();
+
+    res.redirect('/account/addresses');
+  } catch (error) {
+    console.error('Error removing address:', error);
+    res.status(500).json({
+      error: 'An error occurred while removing address'
+    });
+  }
+});
+
+
 
 
 router.get('/giftcard', checkAuthenticated, async (req, res) => {
@@ -166,110 +248,6 @@ router.post('/wallet-redeem', async (req, res) => {
 router.get('/creditcardlist', (req, res, next) => {
   res.render('account/creditcard');
 });
-
-
-router.post('/addresses', checkAuthenticated, async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const newAddress = {
-      salutation: req.body.salutation,
-      fname: req.body.fname,
-      lname: req.body.lname,
-      company: req.body.company,
-      country: req.body.country,
-      postcode: req.body.postcode,
-      city: req.body.city,
-      street: req.body.street,
-      address2: req.body.address2,
-      phone: req.body.phone,
-    };
-    const user = await User.findOne(userId);
-
-    // Add the new address to the user's addresses
-    user.addresses.push(newAddress);
-
-    // Save the user's data to the database
-    await user.save();
-    res.redirect('/account/addresses');
-  } catch (error) {
-    console.error("Error saving address:", error);
-    res.redirect('/account/nope');
-  }
-});
-
-
-router.get('/wishlist', (req, res, next) => {
-  res.render('account/creditcard');
-});
-
-
-
-
-
-// Add item to the wishlist
-router.post('/wishlist/add',checkAuthenticated, async (req, res) => {
-
-  try {
-    console.log(req.session.authwishlist);
-
-          const {
-              userId,
-              productId,
-              size
-          } = req.body;
-
-
-          // Get the product details
-          const product = await Product.findById(productId);
-
-          if (!product) {
-              return res.status(404).json({
-                  error: 'Product not found'
-              });
-          }
-
-          // Calculate wishlist values based on the product and quantity
-          const price = product.price;
-          // Find the user's wishlist or create a new wishlist if it doesn't exist
-          let wishlist = await Wishlist.findOne({
-              user_id: userId
-          });
-          if (!wishlist) {
-              wishlist = new Wishlist({
-                  user_id: userId,
-                  items: [],
-              });
-          }
-
-          const existingItemIndex = wishlist.items.findIndex(item => item.product.toString() === productId && item.size === size);
-          if (existingItemIndex !== -1) {
-              // Product already exists in the wishlist, you can handle this case if needed
-          } else {
-              // Create a new wishlist item
-              const newItem = {
-                  product: productId,
-                  size: size, 
-              };
-              wishlist.items.push(newItem);
-          }
-          
-
-          // Save the wishlist to the database
-          await wishlist.save();
-
-          res.redirect('/checkout/wishlist');
-
-    
-
-  } catch (error) {
-      console.error('Error adding item to wishlist:', error);
-      res.status(500).send('An error occurred while adding item to wishlist.');
-  }
-});
-
-
-
-
 
 
 
