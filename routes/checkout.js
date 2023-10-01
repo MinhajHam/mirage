@@ -117,6 +117,7 @@ router.post('/payment', (req, res, next) => {
 
 router.get('/confirmation', async (req, res, next) => {
   try {
+      const stripeURL = process.env.STRIPE_URL;
       const userId = req.user._id;
       const user = await User.findOne(userId).populate('wallet.transactions').exec();
       const cart = await Cart.findOne({

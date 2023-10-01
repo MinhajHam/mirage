@@ -141,46 +141,52 @@
 
 
 <script>
-    const button = document.querySelector("button");
-    const walletCheckbox = document.getElementById("wallet");
-    const totalPriceElement = document.getElementById("price");
-    button.addEventListener("click", () => {
+  const button = document.querySelector("button");
+  const walletCheckbox = document.getElementById("wallet");
+  const totalPriceElement = document.getElementById("price");
+  
+  button.addEventListener("click", () => {
       const user_id = ""; 
       let useWalletBalance;
+
       if (walletCheckbox.checked) {
-        useWalletBalance = walletCheckbox.checked;
+          useWalletBalance = walletCheckbox.checked;
       } else {
-        useWalletBalance = 'false';
+          useWalletBalance = 'false';
       }
+
       const totalPrice = parseFloat(totalPriceElement.textContent.split("Total Price: ")[1]);
 
-      fetch("http://localhost:8000/checkout/payment-stripe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: user_id,
-          items: [
-        { id: 1, quantity: 3 },
-        { id: 2, quantity: 1 },
-      ],
-      wallet: useWalletBalance,
-      price: totalPrice,
-        }),
+      // Assuming <%= stripeURL %> is a server-side variable rendered in the HTML
+      const stripeURL = "<%= stripeURL %>";
+
+      fetch(stripeURL, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              user_id: user_id,
+              items: [
+                  { id: 1, quantity: 3 },
+                  { id: 2, quantity: 1 },
+              ],
+              wallet: useWalletBalance,
+              price: totalPrice,
+          }),
       })
-        .then(res => {
+      .then(res => {
           if (res.ok) return res.json();
           return res.json().then(json => Promise.reject(json));
-        })
-        .then(({ url }) => {
+      })
+      .then(({ url }) => {
           window.location = url;
-        })
-        .catch(e => {
+      })
+      .catch(e => {
           console.log(e);
           console.error(e.error);
-        });
-    });
+      });
+  });
 </script>
 
 
