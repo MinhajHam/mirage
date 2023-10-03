@@ -134,6 +134,7 @@ router.get('/confirmation', async (req, res, next) => {
           bill: billAddress,
           paymethod: paymethod,
           cart: cart,
+          stripeURL: stripeURL,
           paypalClientId: process.env.PAYPAL_CLIENT_ID,
       });
   } catch (error) {
