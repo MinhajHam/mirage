@@ -29,13 +29,22 @@
                 Creating an account allows you to view auction results,
                 discover more, stay up to date and manage your activity.
             </p>
-            <!-- <div class="card bg-glass">
-            <p>test@gmail.com</p>
-            <p>test@gmail.com</p>
-            <p>test@gmail.com</p>
-            <p>test@gmail.com</p>
-            
-          </div> -->
+            <div style="background: rgb(255, 255, 255); opacity: 0.7; border-radius: 15px; padding: 0.5em;">
+              <h6>
+                  .. Use this credentials to explore my website ..<br />
+                  Happy journey <i class="bi bi-emoji-smile"></i>
+              </h6>
+              <p>
+                  Email:
+                  <span data-toggle="tooltip" data-placement="top" title="Click to save link to cilpboard" onclick="copy(this)" style="cursor: pointer;" class="text-dark font-weight-bold" id="copyLink">saladin@yahoo.com</span>
+              </p>
+          
+              <p>
+                  Password:
+                  <span data-toggle="tooltip" data-placement="top" title="Click to save link to cilpboard" onclick="copy(this)" style="cursor: pointer;" class="text-dark font-weight-bold" id="copyLink">Saladin@123</span>
+              </p>
+          </div>
+          
         </div>
   
   
@@ -52,6 +61,20 @@
               </div>
               </div>
   </section>
+
+  <script>
+
+    function copy(that){
+    var inp =document.createElement('input');
+    document.body.appendChild(inp)
+    inp.value =that.textContent
+    inp.select();
+    document.execCommand('copy',false);
+    inp.remove();
+    }
+    
+    </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>

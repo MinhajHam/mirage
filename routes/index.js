@@ -14,25 +14,32 @@ router.get('/', async (req, res, next) => {
 
 
 
-router.get('/wishlist',checkAuthenticated, async (req, res, next) => {
+router.get('/wishlist', checkAuthenticated, async (req, res, next) => {
   try {
-    
-
     const userId = req.user._id;
-
 
     // Fetch the wishlists with pagination and populate the 'brand' field
     const wishlists = await Wishlist.findOne({ user_id: userId }).populate('items.product');
 
+    // Check if wishlists is null or undefined
+    if (!wishlists) {
+      // If there are no wishlists, you can render an empty wishlist or handle it as needed
+      res.render('wishlist.ejs', {
+        indexUrl: req.session.indexUrl,
+        wishlists: { items: [] },  // Provide an empty array for items
+        userId: userId
+      });
+      return;
+    }
 
-
+    // Render the wishlist with populated items
     res.render('wishlist.ejs', {
       indexUrl: req.session.indexUrl,
       wishlists: wishlists,
       userId: userId
     });
-  } catch(e) {
-    console.log(e);
+  } catch (e) {
+    console.error(e);
     res.redirect('/fail');
   }
 });

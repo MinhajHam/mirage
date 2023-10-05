@@ -20,6 +20,7 @@ router.get('/new', async (req, res, next) => {
     
     // Define the base query based on gender
     const query = { $or: [{ gender: 'women' }, { gender: 'unisex' }] };
+    let viewHead = 'New Arrivals';
     
     const selectedColor = req.query.color; // Get the selected color from query parameters
     const selectedBrand = req.query.brand; // Get the selected brand from query parameters
@@ -75,6 +76,7 @@ router.get('/new', async (req, res, next) => {
       brands: brands,
       currentPage: currentPage,
       totalPages: totalPages,
+      viewHead,
     });
   } catch {
     res.redirect('/');
@@ -88,7 +90,7 @@ router.get('/clothing', async (req, res, next) => {
   try {
     const selectedColor = req.query.color; // Get the selected color from query parameters
     const selectedBrand = req.query.brand; // Get the selected brand from query parameters
-
+    let viewHead = 'Clothing';
     // Define the query based on category, gender, color, and brand (if selected)
     const query = { 
       $and: [
@@ -148,6 +150,7 @@ router.get('/clothing', async (req, res, next) => {
       brands: brands,
       currentPage: currentPage,
       totalPages: totalPages,
+      viewHead,
     });
   } catch {
     res.redirect('/');
@@ -158,6 +161,7 @@ router.get('/shoe', async (req, res, next) => {
   try {
     const selectedColor = req.query.color; // Get the selected color from query parameters
     const selectedBrand = req.query.brand; // Get the selected brand from query parameters
+    let viewHead = 'Shoe';
 
     // Define the query based on category, gender, color, and brand (if selected)
     const query = { 
@@ -218,6 +222,7 @@ router.get('/shoe', async (req, res, next) => {
       brands: brands,
       currentPage: currentPage,
       totalPages: totalPages,
+      viewHead,
     });
   } catch {
     res.redirect('/');
@@ -229,6 +234,7 @@ router.get('/bags', async (req, res, next) => {
   try {
     const selectedColor = req.query.color; // Get the selected color from query parameters
     const selectedBrand = req.query.brand; // Get the selected brand from query parameters
+    let viewHead = 'Bags';
 
     // Define the query based on category, gender, color, and brand (if selected)
     const query = { 
@@ -289,6 +295,7 @@ router.get('/bags', async (req, res, next) => {
       brands: brands,
       currentPage: currentPage,
       totalPages: totalPages,
+      viewHead,
     });
   } catch {
     res.redirect('/');
@@ -300,6 +307,7 @@ router.get('/accessories', async (req, res, next) => {
   try {
     const selectedColor = req.query.color; // Get the selected color from query parameters
     const selectedBrand = req.query.brand; // Get the selected brand from query parameters
+    let viewHead = 'Accessories';
 
     // Define the query based on category, gender, color, and brand (if selected)
     const query = { 
@@ -360,6 +368,7 @@ router.get('/accessories', async (req, res, next) => {
       brands: brands,
       currentPage: currentPage,
       totalPages: totalPages,
+      viewHead,
     });
   } catch {
     res.redirect('/');
@@ -372,6 +381,7 @@ router.get('/jewelry', async (req, res, next) => {
   try {
     const selectedColor = req.query.color; // Get the selected color from query parameters
     const selectedBrand = req.query.brand; // Get the selected brand from query parameters
+    let viewHead = 'Jewelry';
 
     // Define the query based on category, gender, color, and brand (if selected)
     const query = { 
@@ -432,6 +442,7 @@ router.get('/jewelry', async (req, res, next) => {
       brands: brands,
       currentPage: currentPage,
       totalPages: totalPages,
+      viewHead,
     });
   } catch {
     res.redirect('/');
@@ -445,6 +456,7 @@ router.get('/sale', async (req, res, next) => {
   try {
     const selectedColor = req.query.color; // Get the selected color from query parameters
     const selectedBrand = req.query.brand; // Get the selected brand from query parameters
+    let viewHead = 'Sale';
 
     // Define the query based on category, gender, color, and brand (if selected)
     const query = { 
@@ -505,6 +517,7 @@ router.get('/sale', async (req, res, next) => {
       brands: brands,
       currentPage: currentPage,
       totalPages: totalPages,
+      viewHead,
     });
   } catch {
     res.redirect('/');

@@ -74,8 +74,15 @@ router.get('/order/:id/view', async (req, res) => {
 
 
 
-router.get('/info', (req, res) => {
-  res.render('account/info');
+router.get('/info',checkAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    res.render('account/info', { user: user });
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');    
+  }
 });
 
 router.get('/addresses', checkAuthenticated, async (req, res, next) => {
@@ -163,14 +170,22 @@ router.post('/addresses/:id/remove', async (req, res) => {
 router.get('/giftcard', checkAuthenticated, async (req, res) => {
   try {
     const userId = req.user._id;
-    const order = await Order.findOne({ user_id: userId });
     
-    const user = await User.findOne(userId).populate('wallet.transactions').exec();
-    let walletBalance = Math.floor(user.wallet.balance);
+    // Use findOne with a query object
+    const order = await Order.findOne({ user_id: userId });
 
-    res.render('account/giftcard', { user: user, order: order, walletBalance: walletBalance });
+    // Use findById to find a user by ID and populate the wallet transactions
+    const user = await User.findById(userId).populate('wallet.transactions').exec();
+    
+    // Check if the user or user.wallet is null before accessing properties
+    let walletBalance = 0;
+    if (user && user.wallet) {
+      walletBalance = Math.floor(user.wallet.balance);
+    }
+
+    res.render('account/giftcard', { user, order, walletBalance });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.redirect('/account');
   }
 });

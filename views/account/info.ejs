@@ -1,6 +1,78 @@
 <div class="row">
   <div class="col-md-3 side-box"><%- include('side_bar') %></div>
   <div class="col-md-9 main-box">
-    <h2 class="page-header">Account Information</h2>
+    <h2 style="margin-top: 0.5em;" class="page-header">Account Information</h2>
+    <br>
+    <h5>..Your Details..</h5><br>
+        <div>Name: <%= user.fname %> <%= user.lname %></div><br>
+        <div>Email: <%= user.email %></div><br>
+        <div>Status: <%= user.status %></div>
+      <br>
+      <button type="button"  class="bttn bttn-pri" data-bs-toggle="modal" data-bs-target="#popupModal">Update Information</button><br>
   </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="popupModal" tabindex="-1" aria-labelledby="popupModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="popupModalLabel">Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/check" method="post">
+        <div class="modal-body">
+          <div class="form-item">
+            
+            
+            
+            
+            <div class="form-row">
+          
+              <div class="form-item">
+                <label for="fname">First Name:</label>
+                <input type="text" name="fname" value="<%= user.fname %>" placeholder="First Name *"/>
+              </div>
+              
+            </div>
+          
+            <div class="form-row">
+          
+              <div class="form-item">
+                <label for="lname">Last Name:</label>
+                <input type="text" name="lname" value="<%= user.lname %>" placeholder="Last Name *"/>
+              </div>
+          
+            </div>
+          
+            
+            <div class="form-row">
+              <div class="form-item">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<%= user.email %>" placeholder="Email"/>
+              </div> 
+            </div>
+
+            <div class="form-row">
+              <div class="form-item">
+                <label for="phone">Phone:</label>
+                <input type="text" name="phone" value="" placeholder="Phone *"/>
+              </div> 
+            </div>
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-info">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  
+</style>

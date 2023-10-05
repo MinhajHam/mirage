@@ -20,15 +20,15 @@
         <div class="cover-details">
           <div class="cover-brand-label"><%= product.brand.name %></div>
           <div class="cover-name-label"><%= product.name %></div>
-          <div class="cover-price-label">$<%= product.price %>
+          <div class="cover-price-label">$ <%= product.price %>
             <% if(product.totalStock < 5 && product.totalStock != 0 ) { %>
               | 
-              <span style="color: red;">
+              <span style="color: rgb(255, 60, 0);">
               Low on stock
             </span>
               <% } else if(product.totalStock < 1 ) { %>
                 | 
-              <span style="color: red;">
+              <span style="color: rgb(255, 60, 0);">
               Out of stock
             </span>
                 <% }  %>
@@ -47,14 +47,14 @@
 .img-with-underline {
   position: relative;
   transition: border-bottom 0.3s ease;
-  border-bottom: solid 2.2px black;
+  border-bottom: solid 2.2px rgb(241, 214, 162);
 
 }
 
 
 .cover-brand-label {
   text-align: center;
-  color: black;
+  color: rgb(146, 127, 92);
   font-size: 1rem;
 }
 
@@ -67,7 +67,7 @@
 
 .cover-price-label {
   text-align: center;
-  color: black;
+  color: rgb(122, 115, 100);
   font-size: .8rem;
   font-weight: 500;
   margin-bottom: 1.5em;

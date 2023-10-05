@@ -34,13 +34,16 @@ const paypalClient = new paypal.core.PayPalHttpClient(
 
 router.get('/shipping', checkAuthenticated, async (req, res, next) => {
   const userId = req.user._id;
+  let errorMsg = req.session.errorMsg || '';
   try {
       const user = await User.findById(userId);
       res.render('checkout/shipping', {
           indexUrl: req.session.indexUrl,
           user: user,
+          errorMsg: errorMsg,
       });
   } catch (error) {
+    
       console.error('Error fetching user:', error);
       res.redirect('/checkout/cart');
   }
@@ -70,9 +73,9 @@ router.post('/shipping', async (req, res, next) => {
       const sessionshipAddress = user.addresses.find((address) => address._id.toString() === shipAddress);
 
       if (!sessionshipAddress) {
-          return res.status(404).json({
-              message: "Shipping address not found"
-          });
+      req.session.errorMsg = '** Error adding Address **';
+          return res.redirect('/checkout/shipping')
+
       }
 
       // Store the found shipping address in the session (you can customize this based on your session setup)
@@ -89,9 +92,8 @@ router.post('/shipping', async (req, res, next) => {
       res.redirect('/checkout/payment')
   } catch (error) {
       console.error("Error during shipping checkout:", error);
-      res.status(500).json({
-          message: "Internal server error"
-      });
+      req.session.errorMsg = '** Error adding Address **';
+      res.redirect('/checkout/shipping')
   }
 })
 
@@ -135,7 +137,7 @@ router.get('/confirmation', async (req, res, next) => {
           paymethod: paymethod,
           cart: cart,
           stripeURL: stripeURL,
-          paypalClientId: process.env.PAYPAL_CLIENT_ID,
+          
       });
   } catch (error) {
       console.log(error);

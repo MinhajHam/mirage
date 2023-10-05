@@ -1,5 +1,7 @@
 <h2>SHIPPING ADDRESS</h2>
 <p>Please enter your shipping address in the form below.</p>
+<p class="text-danger"><%= errorMsg %></p>
+
 <br>
 <form action="/checkout/shipping" method="post">
 
@@ -35,6 +37,7 @@
     <div class="form-item">
         <h3>BILLING ADDRESS</h3>
    <p class="text-secondary">If your billing address differs from your shipping address, please click "add billing address" </p>
+
 
 <p type="button" id="toggleBtn" style="text-decoration: underline;">add billing address +</p>
     <div id="collapseSection">

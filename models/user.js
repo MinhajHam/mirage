@@ -90,6 +90,7 @@ const userSchema = new mongoose.Schema({
   otpSecret: {
     type: String,
   },
+  role: { type: String, default: 'user' },
   status: {
     type: String,
     default: "Active",

@@ -88,11 +88,12 @@
       <div class="col-lg-9">
           <!-- Content (3/4 width on large screens) -->
           <div>
-              <h2>Your Credit Balance</h2>
+              <h2 style="margin-top: 0.5em;">Your Credit Balance</h2>
         <p class="text-secondary"><small> You can check the balance of your gift card, store credit or Vestiaire vouchers here. <br />
         Simply type in your unique 8-digit code below..</small></p>
 
           </div>
+          <% if(walletBalance !== null && walletBalance !== undefined) { %>
 
           <% if(user.wallet && user.wallet.balance !== undefined && user.wallet.balance !== null) { %>
 
@@ -154,6 +155,8 @@
                   </div>
 
           <% } %>
+    <% } %>
+
 
 
           <% } else { %>

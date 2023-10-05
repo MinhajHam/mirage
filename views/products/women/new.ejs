@@ -1,4 +1,7 @@
-<br>
+<!-- <div class="page-heading">
+<div class="page-head">_Clothing</div>
+
+</div> -->
 
 <div class="row">
   <form action="/women/new" method="GET" class="d-flex align-items-center">
@@ -52,21 +55,21 @@
 <nav aria-label="Page navigation">
   <ul class="pagination">
     <% if (currentPage > 1) { %>
-      <a class="bttn  <%= currentPage === 1 ? 'disabled' : '' %>" href="?page=1&color=<%= selectedColor %>" tabindex="-1">First</a>
-      <a class="bttn " href="?page=<%= currentPage - 1 %>&color=<%= selectedColor %>">Previous</a>
+      <a class="pagebtn  <%= currentPage === 1 ? 'disabled' : '' %>" href="?page=1&color=<%= selectedColor %>" tabindex="-1">First</a>
+      <a class="pagebtn " href="?page=<%= currentPage - 1 %>&color=<%= selectedColor %>">Previous</a>
     <% } %>
     
     <% for (let i = 1; i <= totalPages; i++) { %>
       <% if (i === parseInt(currentPage)) { %>
-        <button class="bttn  active" href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></button>
+        <button class="pagebtn  active" href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></button>
       <% } else { %>
-        <a class="bttn " href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></a>
+        <a class="pagebtn " href="?page=<%= i %>&color=<%= selectedColor %>"><%= i %></a>
       <% } %>
     <% } %>
     
     <% if (currentPage < totalPages) { %>
-      <a class="bttn " href="?page=<%= currentPage + 1 %>&color=<%= selectedColor %>">Next</a>
-      <a class="bttn  <%= currentPage === totalPages ? 'disabled' : '' %>" href="?page=<%= totalPages %>&color=<%= selectedColor %>">Last</a>
+      <a class="pagebtn " href="?page=<%= currentPage + 1 %>&color=<%= selectedColor %>">Next</a>
+      <a class="pagebtn  <%= currentPage === totalPages ? 'disabled' : '' %>" href="?page=<%= totalPages %>&color=<%= selectedColor %>">Last</a>
     <% } %>
   </ul>
 </nav>
@@ -102,11 +105,27 @@
 <!-- Your custom styles here -->
 <style>
 
+/* .page-heading{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5em 1.5em;
+  border-bottom: gray solid 2px;
+}
 
+.page-head{
+  font-size: 3rem;
+} */
+  .pagebtn {
+    margin-left: 1em;
+    margin-right: 1em;
+    color: black;
+  }
 
-  .pagination .bttn.active {
-    background-color: rgb(194, 214, 205) !important;
-    border-color: rgb(0, 0, 0) !important;
+  .pagination .pagebtn.active {
+    background-color: rgb(219, 214, 188) !important;
+    border-color: hsl( 211 , 0%, 100%) ;
     color: rgb(0, 0, 0) !important;
   }
 
