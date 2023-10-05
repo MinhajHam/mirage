@@ -157,37 +157,35 @@
 
       const totalPrice = parseFloat(totalPriceElement.textContent.split("Total Price: ")[1]);
 
-    
+      // Assuming <%= stripeURL %> is a server-side variable rendered in the HTML
+      const stripeURL = "<%= stripeURL %>";
 
-      fetch("https://mirages.online/checkout/payment-stripe", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-        user_id: user_id,
-        items: [
-            { id: 1, quantity: 3 },
-            { id: 2, quantity: 1 },
-        ],
-        wallet: useWalletBalance,
-        price: totalPrice,
-    }),
-})
-.then(res => {
-    if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-    return res.json();
-})
-.then(data => {
-    console.log(data);
-    // Handle the JSON response
-})
-.catch(error => {
-    console.error("Fetch error:", error);
-});
-
+      fetch(stripeURL, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              user_id: user_id,
+              items: [
+                  { id: 1, quantity: 3 },
+                  { id: 2, quantity: 1 },
+              ],
+              wallet: useWalletBalance,
+              price: totalPrice,
+          }),
+      })
+      .then(res => {
+          if (res.ok) return res.json();
+          return res.json().then(json => Promise.reject(json));
+      })
+      .then(({ url }) => {
+          window.location = url;
+      })
+      .catch(e => {
+          console.log(e);
+          console.error(e.error);
+      });
   });
 </script>
 
