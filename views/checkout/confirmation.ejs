@@ -157,10 +157,9 @@
 
       const totalPrice = parseFloat(totalPriceElement.textContent.split("Total Price: ")[1]);
 
-      // Assuming <%= stripeURL %> is a server-side variable rendered in the HTML
-      const stripeURL = "<%= stripeURL %>";
+    
 
-      fetch(stripeURL, {
+      fetch("https://mirages.online/checkout/payment-confirm", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
