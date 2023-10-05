@@ -381,11 +381,7 @@ router.post("/payment-stripe", async (req, res) => {
 
         payment_method_types: ["card"],
         mode: "payment",
-        discounts: [
-            {
-                coupon: 'MIRAGE500',
-            },
-        ],
+        allow_promotion_codes: true,
         line_items: cart.items.map(cartItem => {
             const product = cartItem.product;
             return {
