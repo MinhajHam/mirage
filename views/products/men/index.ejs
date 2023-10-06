@@ -6,110 +6,54 @@
 <div class="img-container text-center">
   <img src="/images/main1.png" alt="Image description" class="img-fluid" />
   <div class="centered-title">
-      Your title Here
+      <!-- Your title Here -->
   </div>
   <div class="centered-text">
-    Your Text Here Here Here
+    <!-- Your Text Here Here Here -->
 </div>
 </div>
 
+<br>
 
 <div class="row-box">
   <div class="row">
       <div style="width: 100%;">
           <div class="w-100">
               <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                      <!-- First Post -->
-                      <div class="carousel-item active">
-                          <div class="row">
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
+                <div class="carousel-inner">
+                    <!-- First Post -->
+                    <div class="carousel-item active">
+                      <div class="row">
+                        <% products.slice(0, 4).forEach(product => { %>
+                          <div class="col-3">
+                            <div class="card">
+                              <img src="<%= product.coverImagePath1 %>" class="card-img-top" alt="<%= product.name %>">
+                              <div class="card-body">
+                                <h5 class="card-title"><%= product.name %></h5>
                               </div>
-
-                              <!-- Repeat similar card structure for Images 2, 3, and 4 -->
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
-                              </div>
+                            </div>
                           </div>
+                        <% }) %>
                       </div>
-                      <!-- Second Post -->
-                      <div class="carousel-item">
-                          <div class="row">
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
+                    </div>
+                  
+                    <!-- Second Post -->
+                    <div class="carousel-item">
+                      <div class="row">
+                        <% products.slice(4, 8).forEach(product => { %>
+                          <div class="col-3">
+                            <div class="card">
+                              <img src="<%= product.coverImagePath1 %>" class="card-img-top" alt="<%= product.name %>">
+                              <div class="card-body">
+                                <h5 class="card-title"><%= product.name %></h5>
                               </div>
-
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="col-3">
-                                  <div class="card">
-                                      <div class="card-img-top" style="background-image: url('/images/main1.png'); background-size: cover; background-position: center; height: 200px;"></div>
-                                      <div class="card-body">
-                                          <h5 class="card-title">Image 1</h5>
-                                          <p class="card-text">Description for Image 1.</p>
-                                      </div>
-                                  </div>
-                              </div>
+                            </div>
                           </div>
+                        <% }) %>
                       </div>
+                    </div>
                   </div>
+                  
                   <a class="carousel-control-prev" href="#imageCarousel" role="button" data-bs-slide="prev">
                       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                       <span class="visually-hidden">Previous</span>
@@ -124,65 +68,21 @@
   </div>
 </div>
 
-<div class="threetopics">
-  <div class="topic-head">
+<br>
 
-    <div class="topic-img-text">
-      <div class="banner-side-title"> THE MODERN CHELSEA</div>
-      <div class="banner-side-param">An enduring style with fresh treads and touches</div>
-    </div>
-
-    <div class="topic-img-text">
-      <div class="banner-side-title"> THE MODERN CHELSEA</div>
-      <div class="banner-side-param">An enduring style with fresh treads and touches</div>
-    </div>
-
+<div class="img-container text-center">
+  <img src="/images/main2.png" alt="Image description" class="img-fluid" />
+  <div class="centered-title">
+      <!-- Your title Here -->
   </div>
-  <div class="topic-img">
-
-      <div class="topic-img-main"></div>
-
-      <div class="topic-img-side">
-          <div class="side-img"></div>
-          <div class="topic-img-text">
-            <div class="banner-side-title">DAY-TO-DAY DETAILS</div>
-            <div class="banner-side-param">Redefine routine with impeccably crafted flats</div>
-          </div>
-          <div class="side-img"></div>
-      </div>
-
-  </div>
+  <div class="centered-text">
+    <!-- Your Text Here Here Here -->
+</div>
 </div>
 
-<div class="threetopics">
-  <div class="topic-head">
 
-    <div class="topic-img-text">
-      <div class="banner-side-title"> THE MODERN CHELSEA</div>
-      <div class="banner-side-param">An enduring style with fresh treads and touches</div>
-    </div>
 
-    <div class="topic-img-text">
-      <div class="banner-side-title"> THE MODERN CHELSEA</div>
-      <div class="banner-side-param">An enduring style with fresh treads and touches</div>
-    </div>
 
-  </div>
-  <div class="topic-img">
-
-      <div class="topic-img-side">
-          <div class="side-img"></div>
-          <div class="topic-img-text">
-            <div class="banner-side-title"> THE MODERN CHELSEA</div>
-            <div class="banner-side-param">An enduring style with fresh treads and touches</div>
-          </div>
-          <div class="side-img"></div>
-      </div>
-
-      <div class="topic-img-main"></div>
-
-  </div>
-</div>
 
 <style>
 

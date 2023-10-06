@@ -8,9 +8,33 @@ var Color = require('../models/subCategory/color')
 
 router.get('/', async (req, res, next) => {
   req.session.indexUrl = 'men'
-  res.render('products/men/index.ejs',{
-    indexUrl: req.session.indexUrl,
-  });
+
+
+
+  try {
+    const perPage = 8;
+    // Define the base query based on gender
+    const query = { $or: [{ gender: 'men' }, { gender: 'unisex' }] };
+    
+  
+    // Fetch the products with pagination and populate the 'brand' field
+    const products = await Product.find(query)
+      .sort({ createdAt: 'desc' })
+      .limit(perPage)
+      .populate('brand');
+
+  
+
+    res.render('products/men/index.ejs', {
+      indexUrl: req.session.indexUrl,
+      products: products,
+
+    });
+  } catch {
+    console.error(error);
+    res.redirect('/women');
+  }
+
 });
 
 

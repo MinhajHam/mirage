@@ -26,7 +26,7 @@
 
 <% } else if (cart) { %>
   <% if(cart.total_items > 0) { %>
-  <table class="table">
+  <table id="cart-table" class="table">
     <thead class="thead-light">
       <tr>
         <th scope="col">○</th>
@@ -53,19 +53,18 @@
           <td><%= item.size %></td>
           <td>
             <form action="/checkout/count" method="post">
-
               <% if(item.quantity > 1) { %>
-
+                <!-- Use button type="button" for the onclick handler -->
                 <button type="button" onclick="updateQuantity('<%= item.id %>', 'decrement')">&larr;</button>
-
               <% } else { %>
-
+                <!-- Disable the button if the quantity is 1 -->
                 <button type="button" name="action" value="decrement" disabled>&larr;</button>
-
-                <% } %>
-
+              <% } %>
+              <!-- Display the item quantity -->
               <%= item.quantity %>
+              <!-- Use button type="button" for the onclick handler -->
               <button type="button" onclick="updateQuantity('<%= item.id %>', 'increment')">&rarr;</button>
+              <!-- Add a hidden input for the itemId -->
               <input type="hidden" name="itemId" value="<%= item.id %>">
             </form>
           </td>
@@ -91,16 +90,6 @@
   <p>Total Price: $<%= cart.total %></p>
 </div>
 
-<!-- <div class="cForm">
-  <p type="button" style="margin-right: 0.5rem;" data-toggle="tooltip" data-placement="left" title='If you would like to redeem your Gift Card/promotion code on this order, please enter the code in the designated field and click "use code"'>
-    <i class="bi bi-exclamation-circle text-secondary"></i>
-  </p>
-  <form action="">
-    
-  <input type="text" id="coupon" name="coupon" placeholder="Gift Card / Coupon / Promo Code" style="width: 20rem;">
-  <input class="bttn bttn-info" type="submit" value="USE CODE">
-</form>
-</div> -->
 
 </div>
 
@@ -160,64 +149,74 @@
 
 
 <script>
-  // Function to update item quantity using AJAX
-  function updateQuantity(itemId, action) {
-    // Create a JSON object with the action and itemId
-    const data = {
-      action: action,
-      itemId: itemId
-    };
 
-    // Send a POST request to your server
-    fetch('/checkout/count', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+  
+ function updateQuantity(itemId, action) {
+  const data = {
+    action: action,
+    itemId: itemId,
+  };
+
+  fetch('/checkout/count', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
     })
-    .then(response => response.json()) // Parse the JSON response
-    .then(updatedCart => {
-      console.log(updatedCart); // Log the updated cart data
+    .then((updatedCart) => {
+      console.log('Updating UI with:', updatedCart);
+      // Call the function to update the UI
       updateCartUI(updatedCart);
-      })
-      .catch(error => {
-        console.error('Error updating quantity:', error);
-      });
-  }
+    })
+    .catch((error) => {
+      console.error('Error updating quantity:', error);
+    });
+}
 
-  // Function to update the cart UI with new data
-  function updateCartUI(cartData) {
-    // Update the cart table, total items, subtotal, and total price on the page
-    // You'll need to write code here to update your HTML elements
-  }
+
+  
 
 
 
-  // Function to update the cart UI with new data
+// Function to update the cart UI with new data
 function updateCartUI(cartData) {
-  // Update the cart table, total items, subtotal, and total price on the page
+  console.log('Updating UI with:', cartData);
+  // Get the cart table
   const cartTable = document.getElementById('cart-table');
-  const totalItems = document.getElementById('total-items');
-  const subtotal = document.getElementById('subtotal');
-  const totalPrice = document.getElementById('total-price');
 
-  // Update the cart table
-  cartTable.innerHTML = ''; // Clear existing table rows
+  // Loop through items and append rows
   cartData.items.forEach((item) => {
-    // Create and append rows to the table based on cartData
-    const row = document.createElement('tr');
-    // Build the row content based on item data
-    // Example:
-    row.innerHTML = `<td>${item.product.name}</td><td>${item.size}</td><td>${item.quantity}</td><td>${item.product.price}</td><td>${item.subtotal}</td>`;
-    cartTable.appendChild(row);
+    // Create a new row
+    const row = cartTable.insertRow();
+
+    // Add cells with item details
+    const cellName = row.insertCell(0);
+    const cellSize = row.insertCell(1);
+    const cellQuantity = row.insertCell(2);
+    const cellPrice = row.insertCell(3);
+    const cellSubtotal = row.insertCell(4);
+
+    // Assign values to cells
+    cellName.textContent = item.name;
+    cellSize.textContent = item.size;
+    cellQuantity.textContent = item.quantity;
+    cellPrice.textContent = item.price;
+    cellSubtotal.textContent = item.subtotal;
   });
 
   // Update total items, subtotal, and total price
-  totalItems.textContent = cartData.total_items;
-  subtotal.textContent = cartData.subtotal;
-  totalPrice.textContent = cartData.total;
+  document.getElementById('total-items').textContent = cartData.total_items;
+  document.getElementById('subtotal').textContent = cartData.subtotal;
+  document.getElementById('total-price').textContent = cartData.total;
 }
+
 
 
 </script>

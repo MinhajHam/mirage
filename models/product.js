@@ -91,5 +91,13 @@ productSchema.virtual('coverImagePath1').get(function() {
   return null; // Handle case when no cover images are available
 });
 
+productSchema.virtual('coverImagePath2').get(function() {
+  if (this.coverImages && this.coverImages.length > 1) {
+    const secondImage = this.coverImages[1];
+    return `data:${secondImage.imageType};charset=utf-8;base64,${secondImage.image.toString('base64')}`;
+  }
+  return null; // Handle case when no second cover image is available
+});
+
 
 module.exports = mongoose.model('Product', productSchema);

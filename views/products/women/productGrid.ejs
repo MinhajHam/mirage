@@ -15,8 +15,9 @@
         </form>
 
         <a href="/women/<%= product.id %>" class="">
-          <img class="img-fluid img-with-underline" src="<%= product.coverImagePath1 %>" alt="<%= product.name %>">
+          <img class="img-fluid img-with-underline product-image" data-cover1="<%= product.coverImagePath1 %>" data-cover2="<%= product.coverImagePath2 %>" src="<%= product.coverImagePath1 %>" alt="<%= product.name %>">
         </a>
+        
         <div class="cover-details">
           <div class="cover-brand-label"><%= product.brand.name %></div>
           <div class="cover-name-label"><%= product.name %></div>
@@ -41,6 +42,26 @@
 
 
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.product-image').hover(
+      function() {
+        // Hover-in event
+        const cover2 = $(this).data('cover2');
+        if (cover2) {
+          $(this).attr('src', cover2);
+        }
+      },
+      function() {
+        // Hover-out event
+        const cover1 = $(this).data('cover1');
+        $(this).attr('src', cover1);
+      }
+    );
+  });
+</script>
 
 <style>
 
