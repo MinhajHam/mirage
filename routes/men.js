@@ -569,9 +569,22 @@ router.get('/:id', async (req, res) => {
     const product = await Product.findById(req.params.id)
                            .populate('brand')
                            .exec();
+
+    // Create a query object based on the brand name
+    const query = { $or: [{ 'brand.name': product.brand.name }, { gender: 'men' }] };
+    
+    const perPage = 5;
+
+    // Fetch the products with pagination and populate the 'brand' field
+    const subProducts = await Product.find(query)
+      .sort({ createdAt: 'desc' })
+      .limit(perPage)
+      .populate('brand');
+
     res.render('products/men/view.ejs', { 
       indexUrl: req.session.indexUrl,
       product: product,
+      subProducts: subProducts,
       userId: userId
     });
   } catch (error) {
