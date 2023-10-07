@@ -225,7 +225,9 @@ router.get('/updateProducts', async (req, res, next) => {
 
       await newPayment.save();
 
-
+ 
+      if (req.session.walletUse == 'true') {
+        
 
         if (user && user.wallet && user.wallet.balance !== undefined) {
             let newAmount = user.wallet.balance - req.session.newBalance;
@@ -238,7 +240,10 @@ router.get('/updateProducts', async (req, res, next) => {
 
         user.wallet.balance = req.session.newBalance;
         await user.save();
-        } 
+        }
+        
+      }
+        
 
 
       res.redirect('/checkout/saveorder');
@@ -251,52 +256,55 @@ router.get('/updateProducts', async (req, res, next) => {
 
 
 router.get('/saveorder', async (req, res) => {
-  try {
-      const userId = req.user._id;
+    try {
+        const userId = req.user._id;
 
-      ;
+        // Find the cart by user_id
+        const cart = await Cart.findOne({
+            user_id: userId
+        });
 
-      // Find the cart by user_id
-      const cart = await Cart.findOne({
-          user_id: userId
-      });
+        if (!cart) {
+            return res.status(404).json({
+                message: 'Cart not found'
+            });
+        }
 
-      console.log(cart);
+        // Loop through items in the cart
+        for (const item of cart.items) {
+            const product = await Product.findById(item.product);
 
-      if (!cart) {
-          return res.status(404).json({
-              message: 'Cart not found'
-          });
-      }
+            if (!product) {
+                console.error('Product not found for item:', item);
+                continue; // Move to the next item if product not found
+            }
 
-      // Loop through items in the cart
-      for (const item of cart.items) {
-          const product = await Product.findById(item.product);
+            let size = product.sizes[item.size];
 
-          if (!product) {
-              continue; // Move to the next item if product not found
-          }
+            if (!size || size < item.quantity) {
+                // Handle insufficient stock
+                console.error('Insufficient stock for item:', item);
+                continue;
+            }
 
-          // Update product stock and total stock
-          const sizeIndex = product.sizes.findIndex(size => size.sizeName === item.size);
-          if (sizeIndex !== -1) {
-              product.sizes[sizeIndex].stock -= item.quantity;
-              product.totalStock -= item.quantity;
-              await product.save();
-          }
-      }
+            // Update product stock and total stock
+            size -= item.quantity;
+            product.totalStock -= item.quantity;
+            product.increment(); // Increment the version for optimistic locking
+            await product.save();
+        }
 
-      await cart.deleteOne();
+        await cart.deleteOne();
 
-      res.render('checkout/save', {
-          indexUrl: req.session.indexUrl,
-      })
-  } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-          message: 'Error updating products and cart'
-      });
-  }
+        res.render('checkout/save', {
+            indexUrl: req.session.indexUrl,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Error updating products and cart'
+        });
+    }
 });
 
 
@@ -306,6 +314,7 @@ router.post("/payment-stripe", async (req, res) => {
   try {
       const user_id = req.user._id;
       const wallet = req.body.wallet;
+      req.session.walletUse = wallet;
       const cents = req.body.price;
       let newBalance;
       

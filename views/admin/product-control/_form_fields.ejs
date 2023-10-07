@@ -46,54 +46,24 @@
 </div>
 
 <div class="form-row">
-  <div class="form-item">
-    <label>Size</label>
-
-    <div class="checkbox-container">
-      <label class="custom-checkbox">
-        <input type="checkbox" name="sizes" value="XS">
-        <span>XS</span>
-      </label>
-      <input type="number" name="stock" placeholder="Stock Count" min="0" >
-
-      <label class="custom-checkbox">
-        <input type="checkbox" name="sizes" value="S">
-        <span>S</span>
-      </label>
-      <input type="number" name="stock" placeholder="Stock Count" min="0">
-
-      <label class="custom-checkbox">
-        <input type="checkbox" name="sizes" value="M">
-        <span>M</span>
-      </label>
-      <input type="number" name="stock" placeholder="Stock Count" min="0">
+  <% Object.keys(product.sizes).slice(0, 3).forEach(size => { %>
+    <div class="form-item">
+      <label><%= size %></label>
+      <input type="number" name="<%= size.toLowerCase() %>" placeholder="Stock Count" min="0" value="<%= product.sizes[size] || 0 %>"/>
     </div>
-  </div>
+  <% }) %>
 </div>
 
 <div class="form-row">
-  <div class="form-item">
-    <div class="checkbox-container">
-      <label class="custom-checkbox">
-        <input type="checkbox" name="sizes" value="L">
-        <span>L</span>
-      </label>
-      <input type="number" name="stock" placeholder="Stock Count" min="0">
-
-      <label class="custom-checkbox">
-        <input type="checkbox" name="sizes" value="XL">
-        <span>XL</span>
-      </label>
-      <input type="number" name="stock" placeholder="Stock Count" min="0">
-
-      <label class="custom-checkbox">
-        <input type="checkbox" name="sizes" value="XXL">
-        <span>XXL</span>
-      </label>
-      <input type="number" name="stock" placeholder="Stock Count" min="0">
+  <% Object.keys(product.sizes).slice(3).forEach(size => { %>
+    <div class="form-item">
+      <label><%= size %></label>
+      <input type="number" name="<%= size.toLowerCase() %>" placeholder="Stock Count" min="0" value="<%= product.sizes[size] || 0 %>"/>
     </div>
-  </div>
+  <% }) %>
 </div>
+
+
 
 
 <div class="form-row">
@@ -148,35 +118,15 @@
     <label>Description</label>
     <textarea name="description"><%= product.description %></textarea>
   </div>
-</div>
 
 
 
-<div class="form-row">
 
   <div class="form-item form-item-no-grow">
     <label>Main Cover</label>
-    <input type="file" name="cover" class="book-cover filepond" />
+    <input type="file" name="cover" class="book-cover" multiple/>
   </div>
 
-  <div class="form-item form-item-no-grow">
-    <label>Cover 2</label>
-    <input type="file" name="cover" class="book-cover filepond" />
-  </div>
-  <div class="form-item form-item-no-grow">
-    <label>Cover 3</label>
-    <input type="file" name="cover" class="book-cover filepond" />
-  </div>
-
-  <div class="form-item form-item-no-grow">
-    <label>Cover 4</label>
-    <input type="file" name="cover" class="book-cover filepond" />
-  </div>
-
-  <div class="form-item form-item-no-grow">
-    <label>Cover 5</label>
-    <input type="file" name="cover" class="book-cover filepond" />
-  </div>
   
 </div>
 
@@ -188,4 +138,26 @@
 
 <label for="totalStock"></label>
     <input type="hidden" id="totalStock" name="totalStock" readonly>
+    
+    <script>
+      // Get all the input elements
+      const sizeInputs = document.querySelectorAll('input[name^="size"]');
+    
+      // Update the total stock when any input changes
+      sizeInputs.forEach(input => {
+        input.addEventListener('input', updateTotalStock);
+      });
+    
+      function updateTotalStock() {
+        // Calculate the total stock by summing up all size inputs
+        let totalStock = 0;
+    
+        sizeInputs.forEach(input => {
+          totalStock += parseInt(input.value) || 0;
+        });
+    
+        // Update the value of the hidden input
+        document.getElementById('totalStock').value = totalStock;
+      }
+    </script>
     

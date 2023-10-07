@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
-// Define the schema
+const path = require('path')
+
+const coverImageBasePath = 'uploads/productCovers'
+
+
 const productSchema = new mongoose.Schema({
   productNo: {
     type: Number,
@@ -47,19 +51,38 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sizes: [
-    {
-    sizeName: {
-      type: String,
-      required: true,
-    },
-    stock: {
+  sizes: {
+    XS: {
       type: Number,
-      required: true,
       default: 0,
+      min: 0,
+    },
+    S: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    M: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    L: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    XL: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    XXL: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
   },
-],
   totalStock: {
     type: Number,
     required: true,
@@ -69,35 +92,40 @@ const productSchema = new mongoose.Schema({
     required: true,
     ref: 'Brand'
   },
-  coverImages: [
+  coverImageNames: [
     {
-      image: {
-        type: Buffer,
-        required: true,
-      },
-      imageType: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: true,
     },
   ],
+  
 });
 
-productSchema.virtual('coverImagePath1').get(function() {
-  if (this.coverImages && this.coverImages.length > 0) {
-    const firstImage = this.coverImages[0]; // Assuming you want to use the first image
-    return `data:${firstImage.imageType};charset=utf-8;base64,${firstImage.image.toString('base64')}`;
+
+productSchema.virtual('coverImagePaths').get(function () {
+  if (this.coverImageNames && this.coverImageNames.length > 0) {
+    return this.coverImageNames.map((imageName) =>
+      path.join('/', 'uploads/productCovers', imageName)
+    );
+  }
+  return []; // Return an empty array when no cover images are available
+});
+
+
+productSchema.virtual('coverImagePath1').get(function () {
+  if (this.coverImageNames && this.coverImageNames.length > 0) {
+    return path.join('/', 'uploads/productCovers', this.coverImageNames[0]);
   }
   return null; // Handle case when no cover images are available
 });
 
-productSchema.virtual('coverImagePath2').get(function() {
-  if (this.coverImages && this.coverImages.length > 1) {
-    const secondImage = this.coverImages[1];
-    return `data:${secondImage.imageType};charset=utf-8;base64,${secondImage.image.toString('base64')}`;
+productSchema.virtual('coverImagePath2').get(function () {
+  if (this.coverImageNames && this.coverImageNames.length > 1) {
+    return path.join('/', 'uploads/productCovers', this.coverImageNames[1]);
   }
   return null; // Handle case when no second cover image is available
 });
 
 
 module.exports = mongoose.model('Product', productSchema);
+module.exports.coverImageBasePath = coverImageBasePath;

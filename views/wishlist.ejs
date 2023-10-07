@@ -10,47 +10,41 @@
 
 
 <div class="container">
-    <div class="row">
+  <div class="row">
       <h2>WISHLIST</h2>
       <% if(wishlists && wishlists.items !== undefined && wishlists.items !== null) { %>
-      <% wishlists.items.forEach(item => { %>
-        <div class="col-md-3 mb-4">
+          <% wishlists.items.forEach(item => { %>
+              <div class="col-md-3 mb-4">
 
-        <form method="POST" action="/wishlist/<%= item.id %>/remove">
+                  <form method="POST" action="/wishlist/<%= item.id %>/remove">
+                      <button type="submit" class="btn btn-link"><i class="bi bi-x-square"></i></button>
+                  </form>
 
-          <button type="submit" class="btn btn-link"><i class="bi bi-x-square"></i></button>
-
-
-        </form>
-
-          <a href="/men/<%= item.product.id %>" class="">
-            <img class="img-fluid img-with-underline" src="<%= item.product.coverImagePath1 %>" alt="<%= item.product.name %>">
-            <div class="cover-details">
-              <div class="cover-name-label"><%= item.product.name %></div>
-            </a>
+                  <a href="/men/<%= item.product.id %>" class="">
+                      <img class="img-fluid img-with-underline" src="<%= item.product.coverImagePath1 %>" alt="<%= item.product.name %>">
+                      <div class="cover-details">
+                          <div class="cover-name-label"><%= item.product.name %></div>
+                          <!-- ... Other content ... -->
+                      </div>
+                  </a>
               <div class="cover-price-label" style="margin-bottom: 0.5rem;">$<%= item.product.price %></div>
 
-
-                <% if(item.product.totalStock < 1 ) { %>
-                  <button class="bttn custom-button" type="button"  style="width: 100%;" disabled>Out of stock <i class="bi bi-emoji-frown"></i></button>
-                <% } else { %>
-                  <button class="bttn bttn-pri" type="button" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#popupModal">add to bag</button>
-                <% }  %>
-              
-
-
-          </div>
-        </div>
-        </div>
-      <% }) %>
+                  <% if(item.product.totalStock < 1 ) { %>
+                    <button class="bttn custom-button" type="button"  style="width: 100%;" disabled>Out of stock <i class="bi bi-emoji-frown"></i></button>
+                  <% } else { %>
+                    <button class="bttn bttn-pri" type="button" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#popupModal">add to bag</button>
+                  <% }  %>
+              </div>
+          <% }) %>
       <% } else { %>
-        <h4 style="color: black;">You have no saved wishlist</h4>
-        <% } %>
-    </div>
+          <h4 style="color: black;">You have no saved wishlist</h4>
+      <% } %>
   </div>
+</div>
 
 
-  <!-- Modal -->
+
+<!-- Modal -->
 <div class="modal fade" id="popupModal" tabindex="-1" aria-labelledby="popupModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -58,42 +52,31 @@
         <h5 class="modal-title" id="popupModalLabel">Select Size</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <div class="modal-body">
-          <% wishlists.items.forEach(item => { %>
-
-          
-            <form action="/checkout/cart/add" method="post">
-
+      <div class="modal-body">
+        <% wishlists.items.forEach(item => { %>
+          <form action="/checkout/cart/add" method="post">
             <% if (userId) { %>
               <input type="hidden" name="userId" value="<%= userId %>">
             <% } %>
             <input type="hidden" name="productId" value="<%= item.product._id %>">
             <input type="hidden" name="productName" value="<%= item.product.name %>">
             <input type="hidden" name="quantity" value="1">
-            
-              <label class="form-label">Size:</label><br>
-              <% item.product.sizes.forEach((size, index) => { %>
-                <input 
-                  type="radio" 
-                  value="<%= size.sizeName %>" 
-                  id="<%= size.sizeName %>" 
-                  name="size" 
-                  <% if (index === 0) { %>checked<% } %>
-                >
-                <label for="<%= size.sizeName %>"><%= size.sizeName %></label><br><br>
+            <label for="size" class="form-label">Size:</label>
+            <select name="size" id="size" class="form-select">
+              <% Object.entries(item.product.sizes).forEach(([size, stock]) => { %>
+                <% if (stock !== null && stock !== 0) { %>
+                  <option value="<%= size %>" <%= stock === 0 ? 'disabled' : '' %>><%= size %><%= stock === 0 ? ' - Out of Stock' : '' %></option>
+                <% } %>
               <% }) %>
-              
-            
-            
+            </select>
             <button class="bttn bttn-pri custom-button">Confirm</button><br>
           </form>
-
-      <% }) %>
-
-        </div>
+        <% }) %>
+      </div>
     </div>
   </div>
 </div>
+
 
 
 <br>

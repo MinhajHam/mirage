@@ -4,9 +4,22 @@ const Product = require("../../models/product");
 const Coupon = require("../../models/coupon");
 const Brand = require("../../models/brand");
 const Color = require("../../models/subCategory/color");
+const multer = require('multer')
+const path = require('path')
+const fs = require('fs')
+const uploadPath = path.join('public', Product.coverImageBasePath)
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif'];
 const bodyParser = require('body-parser');
+
+const upload = multer({
+  dest: uploadPath,
+  fileFilter: (req, file, callback) => {
+    callback(null, imageMimeTypes.includes(file.mimetype))
+  }
+})
+
 router.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Render the main product page with filters and pagination
 router.get('/', async (req, res, next) => {
@@ -119,8 +132,24 @@ router.get('/new', async (req, res) => {
   renderNewPage(res, new Product());
 });
 
+
 // Handle POST request to create a new product
-router.post('/', async (req, res) => {
+router.post('/', upload.array('cover', 5), async (req, res) => {
+  const fileNames = req.files.map(file => file.filename);
+
+  let formSize = {
+    XS: req.body.xs,
+    S: req.body.s,
+    M: req.body.m,
+    L: req.body.l,
+    XL: req.body.xl,
+    XXL: req.body.xxl,
+  } 
+
+  // Calculate total stock dynamically
+
+  const totalStock = Object.values(formSize).reduce((acc, stock) => acc + (parseInt(stock) || 0), 0);
+
   const product = new Product({
     name: req.body.name,
     description: req.body.description,
@@ -131,27 +160,19 @@ router.post('/', async (req, res) => {
     color: req.body.color,
     price: req.body.price,
     discount: req.body.discount,
-    totalStock: req.body.totalStock,
+    totalStock: totalStock, // Use the calculated total stock
+    coverImageNames: fileNames,
+    sizes: formSize,
   });
-
-  saveSizes(product, req.body.sizes, req.body.stock);
-
-  const coverArray = req.body.cover;
-
-  if (!coverArray || coverArray.length === 0) {
-    return renderNewPage(res, product, true, "At least one cover image is required.");
-  }
-
-  const maxCoverCount = 4;
-  const coverCount = Math.min(coverArray.length, maxCoverCount);
-  req.body.cover = coverArray.slice(0, coverCount);
-
-  saveCovers(product, req.body.cover);
 
   try {
     const newProduct = await product.save();
     res.redirect(`/admin/product-control/${newProduct.id}`);
   } catch (error) {
+    if (product.coverImageNames && product.coverImageNames.length > 0) {
+      removeProductCovers(product.coverImageNames);
+    }
+
     console.error("Error saving product:", error);
     renderNewPage(res, product, true);
   }
@@ -167,6 +188,7 @@ router.get('/:id', async (req, res) => {
       .exec();
     res.render('admin/product-control/view.ejs', {
       indexUrl: req.session.indexUrl,
+      layout: false,
       product,
     });
   } catch {
@@ -185,8 +207,22 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 // Update product Route
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.array('cover', 5), async (req, res) => {
   let product;
+
+  let formSize = {
+    XS: req.body.xs,
+    S: req.body.s,
+    M: req.body.m,
+    L: req.body.l,
+    XL: req.body.xl,
+    XXL: req.body.xxl,
+  } 
+
+  // Calculate total stock dynamically
+
+  const totalStock = Object.values(formSize).reduce((acc, stock) => acc + (parseInt(stock) || 0), 0);
+
 
   try {
     product = await Product.findById(req.params.id);
@@ -199,14 +235,23 @@ router.put('/:id', async (req, res) => {
     product.color = req.body.color;
     product.price = req.body.price;
     product.discount = req.body.discount;
-    product.totalStock = req.body.totalStock;
-    if (req.body.cover != null && req.body.cover !== '') {
-      saveCovers(product, req.body.cover);
-      saveSizes(product, req.body.sizes, req.body.stock);
+    product.totalStock = totalStock;
+
+    // Update cover images if new files are uploaded
+    if (req.files && req.files.length > 0) {
+      // Remove existing cover images
+      if (product.coverImageNames && product.coverImageNames.length > 0) {
+        removeProductCovers(product.coverImageNames);
+      }
+
+      // Save new cover images
+      product.coverImageNames = req.files.map(file => file.filename);
     }
+
     await product.save();
     res.redirect(`/admin/product-control/${product.id}`);
-  } catch {
+  } catch (error) {
+    console.error(error);
     if (product != null) {
       renderEditPage(res, product, true);
     } else {
@@ -219,13 +264,44 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const productId = req.params.id;
+
+    // Find the product by ID
+    const product = await Product.findById(productId);
+
+    // Check if the product has cover images
+    if (product.coverImageNames && product.coverImageNames.length > 0) {
+      // Remove cover images
+      removeProductCovers(product.coverImageNames);
+    }
+
+    // Remove the product
     await Product.findByIdAndRemove(productId);
+
     res.redirect('/admin/product-control');
   } catch (error) {
     console.error(error);
     res.redirect('/admin/product-control');
   }
 });
+
+
+function removeProductCovers(fileNames) {
+  fileNames.forEach((fileName) => {
+    const filePath = path.join(uploadPath, fileName);
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          console.log(`File ${fileName} not found. It may have already been deleted.`);
+        } else {
+          console.error(`Error deleting file ${fileName}:`, err);
+        }
+      } else {
+        let success;
+      }
+    });
+  });
+}
+
 
 async function renderNewPage(res, product, hasError = false) {
   renderFormPage(res, product, 'new', hasError);
@@ -243,6 +319,7 @@ async function renderFormPage(res, product, form, hasError = false) {
     let params;
     if (form === 'edit') {
        params = {
+        layout: false,
         brands,
         colors,
         product,

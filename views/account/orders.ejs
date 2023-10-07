@@ -28,11 +28,11 @@
             <% order.cart.items.forEach(item => { %>
               <tr>
                 <td><%= item.product.name %> <br>
-                  <span class="text-secondary">Note: <%= order.message %></span>
                 </td>
                 <td><%= item.product.price %></td>
                 <td><%= item.quantity %></td>
                 <td><%= item.total %></td>
+                <% }) %>
                 <td class="<%= order.status === 'Cancelled' ? 'text-danger' : '' %>"><%= order.status %></td>
                 <td>
                
@@ -41,7 +41,6 @@
                 </td>
               </tr>
               
-            <% }) %>
           <% }) %>
         </tbody>
       </table>

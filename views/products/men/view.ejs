@@ -5,17 +5,24 @@
   <div class="half-container mt-4">
     <div class="row">
       
-      <div class="col-md-7">
+      <div class="col-md-6">
         <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+          
           <div class="carousel-inner">
-            <% for (let i = 0; i < product.coverImages.length; i++) { %>
-              <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-                <a href="data:<%= product.coverImages[i].imageType %>;charset=utf-8;base64,<%= product.coverImages[i].image.toString('base64') %>" data-lightbox="product-images">
-                  <img src="data:<%= product.coverImages[i].imageType %>;charset=utf-8;base64,<%= product.coverImages[i].image.toString('base64') %>" class="d-block custom-carousel-img" alt="Image <%= i + 1 %>">
-                </a>
-              </div>
+            <% if (product && product.coverImagePaths && product.coverImagePaths.length > 0) { %>
+              <% for (let i = 0; i < product.coverImagePaths.length; i++) { %>
+                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                  <a href="<%= product.coverImagePaths[i] %>" data-lightbox="product-images">
+                    <img src="<%= product.coverImagePaths[i] %>" class="d-block w-100 custom-carousel-img" alt="Image <%= i + 1 %>">
+                  </a>
+                </div>
+              <% } %>
+            <% } else { %>
+              <p>No images available</p>
             <% } %>
           </div>
+          
+          
         
           <!-- Carousel controls (optional) -->
           <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
@@ -29,7 +36,7 @@
         </div>
       </div>
     
-      <div class="col-md-5">
+      <div class="col-md-6">
         <h3><%= product.brand.name %></h3>
         <h6 class="text-secondary"><%= product.name %></h6>
         <p><small><span class="font-weight-bold">€ <%= product.price %> <span>
@@ -56,11 +63,14 @@
           <div class="form-group custom-button">
             <label for="size" class="form-label">Size:</label>
             <select name="size" id="size" class="form-select">
-              <% product.sizes.forEach(size => { %>
-                <option value="<%= size.sizeName %>"><%= size.sizeName %></option>
+              <% Object.entries(product.sizes).forEach(([size, stock]) => { %>
+                <% if (stock !== null && stock !== 0) { %>
+                  <option value="<%= size %>" <%= stock === 0 ? 'disabled' : '' %>><%= size %><%= stock === 0 ? ' - Out of Stock' : '' %></option>
+                <% } %>
               <% }) %>
             </select>
           </div>
+                   
           <% if(product.totalStock < 1 ) { %>
             <button class="bttn custom-button" type="submit" disabled>Out of stock <i class="bi bi-emoji-frown"></i></button>
           <% } else { %>

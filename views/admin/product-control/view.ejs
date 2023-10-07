@@ -1,68 +1,213 @@
-<h2 class="page-header"><%= product.brand.name %></h2>
-<div class="book-details">
-    <div class="hover-pinch-zoom-img" style="width: 30vw; height: 70vh">
-        <img class="mob book-cover" src="<%= product.coverImagePath %>" />
+<%- include('../temp_parts/layout_head.ejs') %>
+
+
+
+
+  <body>
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_sidebar.html -->
+      <%- include('../temp_parts/side_bar.ejs') %>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        <%- include('../temp_parts/nav_head.ejs') %>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+             
+            
+
+<div class="container">
+  <div class="half-container mt-4">
+    <div class="row">
+      
+      <div class="col-md-7">
+        <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+          
+          <div class="carousel-inner">
+            <% if (product && product.coverImagePaths && product.coverImagePaths.length > 0) { %>
+              <% for (let i = 0; i < product.coverImagePaths.length; i++) { %>
+                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                  <a href="<%= product.coverImagePaths[i] %>" data-lightbox="product-images">
+                    <img src="<%= product.coverImagePaths[i] %>" class="d-block w-100 custom-carousel-img" alt="Image <%= i + 1 %>">
+                  </a>
+                </div>
+              <% } %>
+            <% } else { %>
+              <p>No images available</p>
+            <% } %>
+          </div>
+          
+          
+          
+        
+          <!-- Carousel controls (optional) -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
       </div>
+    
+      <div class="col-md-5">
+        <h3><%= product.brand.name %></h3>
+        <h6 class="text-secondary"><%= product.name %></h6>
+        <p><small><span class="font-weight-bold">€ <%= product.price %> <span>
+          <% if(product.totalStock < 20 && product.totalStock != 0 ) { %>
+            | 
+            <span style="color: red;">
+            Low on stock
+          </span>
+            <% } else if(product.totalStock < 1 ) { %>
+              | 
+            <span style="color: red;">
+            Out of stock
+          </span>
+              <% }  %>
+        </span> </span><br><span class="text-secondary">VAT not included</span></small></p>
+      
+        <a class="bttn bttn-pri custom-button" style="display: flex; width: 100%;" href="/admin/product-control/<%= product.id %>/edit">Edit</a>
 
-  <div class="book-details-grid">
 
-    <div class="book-details-label">Name:</div>
-    <div><%= product.name %></div>
-    <div class="book-details-label">Description:</div>
-    <div><%= product.description %></div>
-    <div class="book-details-label">Category:</div>
-    <div><%= product.category %></div>
-    <div class="book-details-label">Gender:</div>
-    <div><%= product.gender %></div>
-    <div class="book-details-label">Discount:</div>
-    <div><%= product.discount %></div>
-    <div class="book-details-label">Price:</div>
-    <div><%= product.price %></div>
-    <a class="btn btn-primary" href="/admin/product-control/<%= product.id %>/edit">Edit</a>
-    <%- include('deleteForm', { url: `/admin/product-control/${product.id}`, product: product }) %>
+        <%- include('deleteForm', { url: `/admin/product-control/${product.id}`, product: product }) %>
+
+        
+          <div class="the-line"></div>
+          <p class="custom-bttn text-center d-flex align-items-center justify-content-center" data-bs-toggle="collapse" data-bs-target="#productDetails">Product Details 🡫</p>
+
+          
+          <div id="productDetails" class="collapse">
+            <p class="text-secondary custom-details"><small><%= product.description %></small></p>
+          </div>
+          <div class="the-line"></div>
+          
+          
+          
+          <div class="the-line"></div>
+
+        <div class="faq">
+          <p class="text-secondary">Product category: <%= product.category %></p>
+          <p class="text-secondary">Product gender: <%= product.gender %></p>
+          <p class="text-secondary">Product color: <%= product.color %></p>
+          <p class="text-secondary">Product discount: <%= product.discount %></p>
+          <p class="text-secondary">Product product no: <%= product.productNo %></p>
+          <p class="text-secondary">Product total stock: <%= product.totalStock %></p>
+          <p class="text-secondary">Product sub category: <%= product.subCategory %></p>
+        </div>
+      </div>
+      
+    </div>
   </div>
 </div>
 
 
+      </div>
+    
+  </div>
 
 
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function (event) {
-      var el = document.querySelector("div.hover-pinch-zoom-img");
-      init_zoom(el);
+<%- include('../temp_parts/layout_footer.ejs') %>
+
+
+
+
+
+<script>
+  // Add event listener to collapse elements
+  const collapseButtons = document.querySelectorAll('[data-bs-toggle="collapse"]');
+  collapseButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-bs-target');
+      const target = document.querySelector(targetId);
+
+      // Close all other collapse elements
+      collapseButtons.forEach(otherButton => {
+        if (otherButton !== this) {
+          const otherTargetId = otherButton.getAttribute('data-bs-target');
+          const otherTarget = document.querySelector(otherTargetId);
+
+          if (otherTarget && otherTarget.classList.contains('show')) {
+            const collapse = new bootstrap.Collapse(otherTarget);
+            collapse.hide();
+          }
+        }
+      });
     });
-  </script>
-  <script>
-    try {
-      fetch(
-        new Request(
-          "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
-          { method: "HEAD", mode: "no-cors" }
-        )
-      )
-        .then(function (response) {
-          return true;
-        })
-        .catch(function (e) {
-          var carbonScript = document.createElement("script");
-          carbonScript.src =
-            "//cdn.carbonads.com/carbon.js?serve=CE7DC2JW&placement=wwwcssscriptcom";
-          carbonScript.id = "_carbonads_js";
-          document.getElementById("carbon-block").appendChild(carbonScript);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  </script>
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"
-  ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-    gtag("config", "G-LLWL5N9CSM");
-  </script>
+  });
+</script>
+
+
+
+
+
+<script>
+  // This line will initialize Lightbox2
+  lightbox.option({
+    'resizeDuration': 200,
+    'wrapAround': true
+  });
+</script>
+
+
+
+ <style>
+
+  .the-line {
+  padding-bottom: 0.5rem;
+  width: 100%;
+  border-top: solid 1px rgb(196, 196, 196);
+  }
+
+.custom-bttn {
+  cursor: pointer;
+  align-items: center;
+  margin-top: 0.5rem; 
+}
+.custom-button {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+  .custom-carousel-img {
+    padding: 20px;
+    width: 40vw; 
+    height: 85vh;
+}
+
+  /* Add these styles to your existing <style> section */
+    /* .half-container {
+    
+    border: red 2px solid;
+  }
+  
+ 
+  
+  .left-half {
+    
+    border: blue 2px solid;
+  }
+  
+  .right-half {
+   
+    border: green 2px solid;
+  }
+  
+  .bottom-container {
+   
+    border: blueviolet 2px solid;
+  }
+   */
+  
+  
+  
+  
+  
+    </style> 
