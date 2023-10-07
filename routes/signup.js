@@ -35,107 +35,90 @@ router.get('/', checkNotAuthenticated, (req, res) => {
 // POST / POST / POST / POST / POST /
 // / POST / POST / POST / POST / POST
 
-router.post('/', checkNotAuthenticated, async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+// Function to send OTP and store temporary user data
+async function sendOTPAndStoreData(email, hashedPassword) {
   const otp = randomstring.generate({ length: 6, charset: 'numeric' });
-  const users = new Users({
-    fname: req.body.fname,
-    lname: req.body.lname,
-    email: req.body.email,
-    password: hashedPassword,
+
+  // Send the OTP to the user's email
+  const subject = 'OTP Verification';
+  const text = `Your OTP for verification is: ${otp}`;
+  const html = `<p>Your OTP for verification is: <strong>${otp}</strong></p>`;
+
+  // Store user data in tempUserData with the email as the key
+  tempUserData[email] = {
+    hashedPassword,
     otpSecret: otp,
-  });
+  };
 
+  // Send email
+  await sendMail(email, subject, text, html);
+
+  return otp;
+}
+
+// Route to handle user registration
+router.post('/', checkNotAuthenticated, async (req, res) => {
   try {
-    let userEmail = req.body.email;  
-    const user = await Users.findOne({ email: userEmail });
-    if (user) {
-    console.log("Already registered a user with this email");
-    res.redirect('/signup?message=User%20already%20exists');
-    } else {
-    // Store the 'toEmail' value in the session
-    req.session.toEmail = req.body.email;
-    req.session.fname = req.body.fname;
-    req.session.lname = req.body.lname;
+    const { fname, lname, email, password } = req.body;
 
-    // Send the OTP to the user's email
-    const toEmail = req.body.email;
-    const subject = 'OTP Verification';
-    const text = `Your OTP for verification is: ${otp}`;
-    const html = `<p>Your OTP for verification is: <strong>${otp}</strong></p>`;
-
-    // Store user data in tempUserData with the email as the key
-    tempUserData[toEmail] = {
-      hashedPassword: hashedPassword,
-      otpSecret: otp,
-    };
-
-    sendMail(toEmail, subject, text, html)
-      .then((result) => {
-        console.log('Email sent...', result);
-        res.redirect('/signup/verify'); // Redirect to the OTP verification page
-      })
-      .catch((error) => {
-        console.log(error.message);
-        res.redirect('/signup'); // Redirect to signup page on email sending failure
-      });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Check if the user already exists
+    const existingUser = await Users.findOne({ email });
+    if (existingUser) {
+      console.log("User with this email already exists");
+      return res.redirect('/signup?message=User%20already%20exists');
     }
-  } catch (err) {
-    console.error(err);
-    res.redirect('/signup');
+
+    // Store the 'toEmail' value in the session
+    req.session.toEmail = email;
+    req.session.fname = fname;
+    req.session.lname = lname;
+
+    // Send OTP and store temporary user data
+    const otp = await sendOTPAndStoreData(email, hashedPassword);
+
+    console.log('Email sent successfully');
+    res.redirect('/signup/verify'); // Redirect to the OTP verification page
+  } catch (error) {
+    console.error(error.message);
+    res.redirect('/signup'); // Redirect to signup page on error
   }
 });
 
-// GET GET GET GET GET GET GET GET GET GET
-// GET GET GET GET GET GET GET GET GET GET
-// GET GET GET GET GET GET GET GET GET GET
-// GET GET GET GET GET GET GET GET GET GET
-
-
-router.get('/verify', (req, res) => {
-  const toEmail = req.session.toEmail; // Retrieve 'toEmail' value from the session
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.render('user/verifyotp', { email: toEmail, layout: false });
-});
-
-// POST POST POST POST POST POST POST POST POST POST
-// POST POST POST POST POST POST POST POST POST POST
-// POST POST POST POST POST POST POST POST POST POST
-// POST POST POST POST POST POST POST POST POST POST
 // Route to handle OTP verification
 router.post('/verify', async (req, res) => {
-  const otp = req.body.otp;
-  const email = req.session.toEmail; // Retrieve 'toEmail' value from the session
+  const { otp } = req.body;
+  const email = req.session.toEmail;
 
   console.log('Received OTP:', otp);
-  console.log('Sended OTP:', tempUserData[email].otpSecret);
+  console.log('Stored OTP:', tempUserData[email]?.otpSecret);
 
   // Check if the provided OTP matches the stored OTP for the email
   if (tempUserData[email] && tempUserData[email].otpSecret === otp) {
     // If OTP matches, save the user data in the database
     const { hashedPassword } = tempUserData[email];
-    const users = new Users({
+    const newUser = {
       fname: req.session.fname,
       lname: req.session.lname,
-      email: email,
+      email,
       password: hashedPassword,
       otpSecret: otp,
-    });
+    };
 
-    try {
-      const newUsers = await users.save();
-      delete tempUserData[email]; // Remove the user data from tempUserData
+    // Use findOneAndUpdate to either find and update or create a new user
+    const options = { upsert: true, new: true, useFindAndModify: false };
+    const updatedUser = await Users.findOneAndUpdate({ email }, newUser, options);
 
-      res.redirect('/login'); // Redirect to a success page or the home page
-    } catch (err) {
-      console.error(err);
-      res.redirect('/signup'); // Redirect to the signup page on save failure
-    }
+    delete tempUserData[email]; // Remove the user data from tempUserData
+
+    res.redirect('/login'); // Redirect to a success page or the home page
   } else {
     console.log('error', email, otp);
     res.render('user/verifyotp', {
       layout: false,
-      email: email,
+      email,
       error: 'Invalid OTP. Please try again.',
     });
   }
@@ -146,6 +129,14 @@ router.post('/verify', async (req, res) => {
     res.redirect('/signup/timeout'); // Redirect to a timeout page
   }, timeoutDuration);
 });
+
+// Function to render OTP verification page
+router.get('/verify', (req, res) => {
+  const toEmail = req.session.toEmail; // Retrieve 'toEmail' value from the session
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.render('user/verifyotp', { email: toEmail, layout: false });
+});
+
 
 router.get('/timeout', (req, res) => {
   res.render('user/timeout', {
